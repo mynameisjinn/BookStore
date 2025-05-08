@@ -1,6 +1,7 @@
 package org.example.bookstore.controllers;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +18,12 @@ import java.util.Map;
 @RestController
 public class TestController {
 
+    @Operation(summary="테스트", description="테스트 중입니다.")
     @GetMapping("test")
     public void getTest(){
         log.info("테스트");
     }
+
 
 
 

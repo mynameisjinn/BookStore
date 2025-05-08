@@ -1,9 +1,13 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import Slider from '../../components/Slider.vue';
 </script>
 
 <template>
-  <RouterLink to="/login">로그인 페이지 호출</RouterLink>
+  <!-- <Slider /> -->
+  <div style="background-color: red;">
+    <h1>메인페이지</h1>
+  </div>
 </template>
 
 <style scoped>
