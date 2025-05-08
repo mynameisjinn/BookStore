@@ -17,4 +17,11 @@ public class MemberService {
 
         return memberRepository.selectMemberAll();
     }
+
+    public boolean checkExistMember(String email) {
+
+        boolean exist = (memberRepository.selectMemberByEmail(email) > 0) ? true : false;
+
+        return exist;
+    }
 }

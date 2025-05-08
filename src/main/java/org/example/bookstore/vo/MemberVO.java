@@ -11,5 +11,4 @@ public class MemberVO {
     private String email;
     private String createDate;
     private String password;
-    private String id;
 }

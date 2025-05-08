@@ -14,4 +14,10 @@
         FROM member;
     </select>
 
+    <select id="selectMemberByEmail" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE EMAIL = #{email};
+    </select>
+
 </mapper>

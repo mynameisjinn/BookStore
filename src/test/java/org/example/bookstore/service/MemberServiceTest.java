@@ -22,11 +22,25 @@ class MemberServiceTest {
 
         // then: 결과 출력
         for (MemberVO vo : result) {
-            System.out.println("회원 ID: " + vo.getId());
+            System.out.println("회원 Email: " + vo.getEmail());
         }
 
         // 검증
         assertFalse(result.isEmpty(), "회원 목록이 비어 있으면 안 됩니다.");
+    }
+
+    @Test
+    void checkExistMember(){
+
+        // when
+        String email = "hyejin@example.com11";
+        boolean exist = memberService.checkExistMember(email);
+
+        // then 결과
+        if(exist) System.out.println("해당 이메일 존재");
+
+        if(!exist) System.out.println("가입 가능");
+
     }
 
 
