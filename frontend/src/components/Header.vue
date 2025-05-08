@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue'
-import Slider from './Slider.vue';
+import Slider from './Slider.vue'
 
 const showMenu = ref(false)
 </script>
