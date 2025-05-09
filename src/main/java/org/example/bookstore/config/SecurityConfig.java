@@ -1,7 +1,7 @@
 package org.example.bookstore.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.bookstore.security.CustomUserDetailsService;
+import org.example.bookstore.security.PrincipalUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,9 +24,10 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CustomUserDetailsService userDetailsService;
+    private final PrincipalUserDetailsService userDetailsService;
     private final String FRONTEND_ADDRESS = "http://localhost:8001";
 
+    // TODO : 모든 접근에 permitAll() 해둠? -> security 작동되는거 맞는지 확인 !
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())

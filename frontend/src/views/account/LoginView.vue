@@ -2,18 +2,29 @@
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
+import { useAuthStore } from '../../stores/auth'
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
-const router = useRouter()
 
 const login = async () => {
+    const authStore = useAuthStore()
+
     try {
         const res = await axios.post('/api/login', {
             email: email.value,
             password: password.value
         })
-        // console.log('로그인 성공', res.data)
+        
+        // JWT 토큰과 유저 정보를 store에 저장
+        authStore.setToken(res.data.token)
+        authStore.setUser(res.data.user)
+
+        // console.log(authStore.user)
+        
+
         router.push('/')
     } catch (err) {
         console.error('로그인 실패', err)

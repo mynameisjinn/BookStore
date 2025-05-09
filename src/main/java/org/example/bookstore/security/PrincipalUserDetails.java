@@ -8,12 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class CustomUserDetails implements UserDetails {
+public class PrincipalUserDetails implements UserDetails {
 
     @Getter
     private final MemberVO member;
 
-    public CustomUserDetails(MemberVO member) {
+    public PrincipalUserDetails(MemberVO member) {
         this.member = member;
     }
 

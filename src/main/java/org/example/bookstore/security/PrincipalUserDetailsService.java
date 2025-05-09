@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class PrincipalUserDetailsService implements UserDetailsService {
 
     @Autowired
     private AccountRepository accountRepository; // MyBatis 또는 JPA에 맞게 바꿔도 됨
@@ -20,6 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         MemberVO member = accountRepository.findUserByEmail(email); // email로 사용자 조회
         if (member == null) throw new UsernameNotFoundException("존재하지 않는 사용자");
-        return new CustomUserDetails(member);
+        return new PrincipalUserDetails(member);
     }
 }

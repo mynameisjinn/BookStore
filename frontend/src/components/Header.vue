@@ -1,9 +1,26 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Slider from './Slider.vue'
+import { useAuthStore } from '../stores/auth';
+
+const authStore = useAuthStore()
+const user = computed(() => authStore.user)
+
+// 이메일 앞부분 추출 (user가 존재할 때만)
+const username = computed(() => {
+    const email = user.value?.email
+    return email ? email.split('@')[0] : ''
+})
+
+
+const logout = () => {
+    authStore.logout()
+}
 
 const showMenu = ref(false)
+
+
 </script>
 
 <template>
@@ -22,6 +39,7 @@ const showMenu = ref(false)
                     <a rel="noopener noreferrer" href="#"
                         class="flex items-center px-4 -mb-1 border-b-2 border-transparent">Link</a>
                 </li>
+                <h1>안녕하세요 {{ username }}</h1>
             </ul>
             <RouterLink to="/" aria-label="Back to homepage" class="flex items-center p-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 32 32"
@@ -48,19 +66,27 @@ const showMenu = ref(false)
                     <input type="search" name="Search" placeholder="Search..."
                         class="w-32 py-2 pl-10 text-sm rounded-md sm:w-auto focus:outline-none bg-gray-100 text-gray-800 focus:bg-gray-50">
                 </div>
-                <RouterLink to="/login" class="hidden px-6 py-2 font-semibold rounded lg:block bg-red-600 text-gray-50">
+                <RouterLink 
+                v-if="!user"
+                to="/login" class="hidden px-6 py-2 font-semibold rounded lg:block bg-red-600 text-gray-50">
                     Log in
                 </RouterLink>
+                <Button
+                v-if="user" 
+                @click="logout"
+                class="hidden px-6 py-2 font-semibold rounded lg:block bg-red-600 text-gray-50">
+                    Logout
+                </Button>
             </div>
             <button @click="showMenu = !showMenu" title="Open menu" type="button" class="p-4 lg:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                class="w-6 h-6 text-gray-800">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
-                </path>
-            </svg>
-        </button>
-    </div>
-</header>
-<Slider v-if="showMenu" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    class="w-6 h-6 text-gray-800">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </header>
+    <Slider v-if="showMenu" />
 </template>
 
