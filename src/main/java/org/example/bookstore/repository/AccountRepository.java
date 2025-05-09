@@ -6,8 +6,11 @@ import org.example.bookstore.vo.MemberVO;
 import java.util.List;
 
 @Mapper
-public interface MemberRepository {
+public interface AccountRepository {
     List<MemberVO> selectMemberAll();
 
     int selectMemberByEmail(String email);
+
+    MemberVO findUserByEmail(String email);
+    void insertMember(MemberVO member);
 }

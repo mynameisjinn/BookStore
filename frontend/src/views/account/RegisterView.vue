@@ -28,7 +28,7 @@ const stepLabels = [
                 <TermsAgreement @next="currentStep++" />
             </template>
             <template v-else-if="currentStep === 2">
-                <SignUpInfo />
+                <SignUpInfo @next="currentStep++"/>
             </template>
             <template v-else-if="currentStep === 3">
                 <SignUpSuccess />

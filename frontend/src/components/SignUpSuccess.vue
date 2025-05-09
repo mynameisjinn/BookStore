@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-8">
+    <!-- <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 space-y-8"> -->
         <Steps />
 
         <div class="flex flex-col items-center max-w-md p-8 rounded-md sm:p-10 bg-white shadow-md text-gray-800">
@@ -12,7 +12,7 @@
             </div>
 
             <!-- 메시지 -->
-            <h1 class="text-3xl font-bold mb-2 text-center">가입이 완료되었습니다!</h1>
+            <h1 class="text-2xl font-bold mb-2 text-center">가입이 완료되었습니다!</h1>
             <p class="text-sm text-center text-gray-600 mb-6">이제 로그인을 통해 서비스를 이용하실 수 있습니다.</p>
 
             <!-- 버튼 -->
@@ -22,6 +22,6 @@
                 </button>
             </RouterLink>
         </div>
-    </div>
+    <!-- </div> -->
 </template>
   

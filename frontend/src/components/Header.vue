@@ -48,7 +48,6 @@ const showMenu = ref(false)
                     <input type="search" name="Search" placeholder="Search..."
                         class="w-32 py-2 pl-10 text-sm rounded-md sm:w-auto focus:outline-none bg-gray-100 text-gray-800 focus:bg-gray-50">
                 </div>
-                <!-- <button type="button" class="hidden px-6 py-2 font-semibold rounded lg:block bg-red-600 text-gray-50">Log in</button> -->
                 <RouterLink to="/login" class="hidden px-6 py-2 font-semibold rounded lg:block bg-red-600 text-gray-50">
                     Log in
                 </RouterLink>

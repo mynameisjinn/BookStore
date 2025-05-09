@@ -1,10 +1,11 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
 
 const email = ref('')
 const password = ref('')
+const router = useRouter()
 
 const login = async () => {
     try {
@@ -12,7 +13,8 @@ const login = async () => {
             email: email.value,
             password: password.value
         })
-        console.log('로그인 성공', res.data)
+        // console.log('로그인 성공', res.data)
+        router.push('/')
     } catch (err) {
         console.error('로그인 실패', err)
     }

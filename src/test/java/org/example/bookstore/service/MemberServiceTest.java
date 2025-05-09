@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class MemberServiceTest {
 
     @Autowired
-    private MemberService memberService;
+    private AccountService accountService;
 
     @Test
     void selectMemberInfo() {
         // when: 실제 서비스 호출
-        List<MemberVO> result = memberService.selectMemberInfo();
+        List<MemberVO> result = accountService.selectMemberInfo();
 
         // then: 결과 출력
         for (MemberVO vo : result) {
@@ -34,7 +34,7 @@ class MemberServiceTest {
 
         // when
         String email = "hyejin@example.com11";
-        boolean exist = memberService.checkExistMember(email);
+        boolean exist = accountService.checkExistMember(email);
 
         // then 결과
         if(exist) System.out.println("해당 이메일 존재");
