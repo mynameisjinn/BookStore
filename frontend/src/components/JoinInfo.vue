@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { ref, computed, watch } from 'vue'
-import SignUpButton from './SignUpButton.vue'
+import JoinButton from './JoinButton.vue'
 
 
 const email = ref('')
@@ -123,7 +123,7 @@ async function handleClick() {
     if (errorFields.value.length > 0) return
 
     try {
-        const res = await axios.post('/api/signup', {
+        const res = await axios.post('/api/join', {
             email: email.value,
             password: password.value,
             address: address.value
@@ -218,7 +218,7 @@ async function handleClick() {
             <p>{{ emailError }}, {{ passwordError }}, {{ passwordFormatError }}</p>
              -->
 
-            <SignUpButton :isValid="isValid" @signup="handleClick" />
+            <JoinButton :isValid="isValid" @join="handleClick" />
 
 
 

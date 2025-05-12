@@ -34,7 +34,7 @@ const goToNext = () => {
 
 <template>
     <div class="mb-8 text-center">
-        <h1 class="my-3 text-4xl font-bold">약관동의</h1>
+        <h1 class="my-3 text-3xl font-bold">약관동의</h1>
         <p class="text-sm text-gray-600">아래 약관에 동의해주세요</p>
     </div>
     <div class="space-y-6">

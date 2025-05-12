@@ -96,8 +96,8 @@ public class AccountController {
         }
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody MemberVO member) {
+    @PostMapping("/join")
+    public ResponseEntity<?> join(@RequestBody MemberVO member) {
 //        if (accountService.findByEmail(member.getEmail()) != null) {
 //            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 이메일입니다.");
 //        }

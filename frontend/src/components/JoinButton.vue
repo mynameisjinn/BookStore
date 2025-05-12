@@ -1,12 +1,12 @@
 <script setup>
 defineProps({ isValid: Boolean })
-defineEmits(['signup'])
+defineEmits(['join'])
 </script>
 
 <template>
     <div class="space-y-2">
         <div>
-            <button type="button" @click="$emit('signup')" :disabled="!isValid" :class="[
+            <button type="button" @click="$emit('join')" :disabled="!isValid" :class="[
                 'w-full px-8 py-3 font-semibold rounded-md',
                 isValid ? 'bg-red-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
             ]">

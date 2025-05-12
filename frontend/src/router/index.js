@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 
 import MainView from '../views/pages/MainView.vue'
 import LoginView from '../views/account/LoginView.vue'
-import RegisterView from '../views/account/RegisterView.vue'
+import JoinView from '../views/account/JoinView.vue'
 
 const routes = [
     {
@@ -16,9 +16,9 @@ const routes = [
         component: LoginView,
     },
     {
-        path: '/register',
-        name: 'register',
-        component: RegisterView,
+        path: '/join',
+        name: 'join',
+        component: JoinView,
     },
 
 ]
