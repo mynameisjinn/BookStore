@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref, computed } from 'vue'
-import Slider from './Slider.vue'
+import MenuSlider from './MenuSlider.vue'
 import { useAuthStore } from '../stores/auth';
 
 const authStore = useAuthStore()
@@ -24,7 +24,7 @@ const showMenu = ref(false)
 </script>
 
 <template>
-    <header class="p-4 bg-white-100 text-gray-800">
+    <header class="p-4 bg-white-100 text-gray-800 mx-20">
         <div class="container flex justify-between h-16 mx-auto">
             <ul class="items-stretch hidden space-x-3 lg:flex">
                 <li class="flex">
@@ -87,6 +87,6 @@ const showMenu = ref(false)
             </button>
         </div>
     </header>
-    <Slider v-if="showMenu" />
+    <MenuSlider v-if="showMenu" />
 </template>
 
