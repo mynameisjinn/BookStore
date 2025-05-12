@@ -5,7 +5,7 @@ import './tailwind.css'
 import App from './App.vue'
 import router from './router'
 import { useAuthStore } from './stores/auth.js'
-
+import { isTokenExpired } from './utils/jwt.js'
 
 const app = createApp(App);
 
@@ -19,5 +19,11 @@ app.use(pinia);
 const authStore = useAuthStore()
 authStore.loadToken()
 authStore.loadUser()
+
+if (isTokenExpired(authStore.token)) {
+    console.log("JWT 만료됨, 로그아웃 처리")
+    authStore.logout()
+    // router.push('/login') 
+}
 
 app.mount('#app');

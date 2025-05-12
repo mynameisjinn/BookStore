@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +20,9 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    private final long expirationMs = 1000 * 60 * 60; // 1시간
+    // 테스트
+    @Setter
+    private long expirationMs = 1000 * 60 * 60; // 1시간
 
     // Key 객체 생성
     private Key getSigningKey() {
@@ -59,6 +62,7 @@ public class JwtUtil {
                 .build();
         return parser.parseClaimsJws(token);
     }
+
 }
 
 

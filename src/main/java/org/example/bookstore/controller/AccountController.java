@@ -70,6 +70,10 @@ public class AccountController {
 
         try {
             Authentication auth = authenticationManager.authenticate(authInputToken);
+
+            // 1분 만료 시간 설정
+//            jwtUtil.setExpirationMs(1000 * 60);
+
             String jwt = jwtUtil.generateToken((UserDetails) auth.getPrincipal());
 
             // 로그인한 유저 정보 추출 (CustomUserDetails에서 제공하는 member 정보)

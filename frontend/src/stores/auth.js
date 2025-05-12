@@ -1,11 +1,16 @@
-// stores/auth.js
 import { defineStore } from 'pinia'
+import { isTokenExpired } from '../utils/jwt'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: null,
         user: null, // 로그인한 유저 정보
     }),
+    getters: {
+        isLoggedIn: (state) => {
+            return !!state.token && !isTokenExpired(state.token)
+        }
+    },
     actions: {
         setToken(newToken) {
             this.token = newToken
