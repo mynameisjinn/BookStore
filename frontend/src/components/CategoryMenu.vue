@@ -1,30 +1,27 @@
-<script setup lang="ts">
-defineProps<{
-    category: {
-        name: string
-        link: string
-        subCategories: {
-            title: string
-            items: string[]
-        }[]
+<script setup>
+defineProps({
+    categoryTree: {
+        type: Array,
+        required: true
     }
-}>()
+})
 </script>
 
 <template>
-    <aside class="h-full w-full max-w-xs p-6 bg-gray-50 text-gray-800 shadow-lg">
-        <h1 class="text-lg font-bold">{{ category.name }}</h1>
-        <nav class="space-y-8 text-sm mt-4">
-            <div v-for="(sub, index) in category.subCategories" :key="index" class="space-y-2">
-                <h2 class="text-sm font-semibold tracking-widest uppercase text-gray-600">
-                    {{ sub.title }}
-                </h2>
-                <div class="flex flex-col space-y-1">
-                    <a v-for="(item, idx) in sub.items" :key="idx" href="#" rel="noopener noreferrer">
-                        {{ item }}
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </aside>
+    <div class="p-6 bg-white rounded shadow-sm border border-gray-200">
+        <h2 class="text-xl font-bold text-gray-800 mb-4">소설 카테고리</h2>
+
+        <ul class="space-y-4">
+            <li v-for="mid in categoryTree" :key="mid.menuId">
+                <h3 class="text-base font-semibold text-gray-700 mb-2">{{ mid.name }}</h3>
+                <ul class="space-y-1 pl-4 border-l border-gray-200">
+                    <li v-for="child in mid.children" :key="child.menuId">
+                        <RouterLink :to="child.path" class="text-sm text-gray-600 hover:text-red-500 transition-colors">
+                            {{ child.name }}
+                        </RouterLink>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </template>

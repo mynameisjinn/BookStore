@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useMenuStore } from '../stores/menu'
 import { useRoute } from 'vue-router'
 
@@ -14,15 +14,24 @@ const resetActiveTab = () => {
 }
 
 const menuStore = useMenuStore()
-// main.js에서 fetchMenu를 호출했기 때문에 여기선 다시 호출 안 함
-const structuredMenu = computed(() => menuStore.structuredMenu)
+
+// 메뉴 데이터를 가져오기
+onMounted(() => {
+    menuStore.fetchMenu()  // 메뉴 데이터를 fetchMenu로 불러옴
+})
+
+// 대분류, 중분류, 소분류에 따른 메뉴 처리
+const mainMenu = computed(() => menuStore.mainMenu)
+const subMenu = computed(() => menuStore.subMenu)
+const smallMenu = computed(() => menuStore.smallMenu)
+
 </script>
 
 <template>
     <div class="gap-4 mx-auto max-w-screen-lg bg-white border-t border-b border-gray-200 rounded-md shadow-sm">
-        <!-- 탭 리스트 -->
+        <!-- 대분류 탭 리스트 -->
         <div class="flex space-x-6 px-6 py-3 text-sm font-medium text-gray-600">
-            <button v-for="(tab, index) in structuredMenu" :key="tab.name" @click="setActiveTab(index)" :class="[
+            <button v-for="(tab, index) in mainMenu" :key="tab.menuId" @click="setActiveTab(index)" :class="[
                 'transition-colors duration-200',
                 activeTab === index
                     ? 'text-red-600 border-b-2 border-red-500 pb-2 font-semibold'
@@ -38,34 +47,36 @@ const structuredMenu = computed(() => menuStore.structuredMenu)
                 <!-- 탭제목 + 전체보기 링크 -->
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-bold text-gray-800">
-                        {{ structuredMenu[activeTab].name }}
+                        {{ mainMenu[activeTab].name }}
                     </h2>
-                    <router-link :to="structuredMenu[activeTab].link" class="text-sm text-red-500 hover:underline"
+                    <router-link :to="mainMenu[activeTab].path" class="text-sm text-red-500 hover:underline"
                         @click="resetActiveTab">
                         전체보기 →
                     </router-link>
                 </div>
 
-                <!-- 하위 카테고리 존재 시 -->
-                <template v-if="structuredMenu[activeTab].subCategories">
-                    <div v-for="category in structuredMenu[activeTab].subCategories" :key="category.title" class="mb-5">
+                <!-- 중분류 (하위 카테고리) -->
+                <template v-if="subMenu.some(menu => menu.parentId === mainMenu[activeTab].menuId)">
+                    <div v-for="category in subMenu.filter(menu => menu.parentId === mainMenu[activeTab].menuId)"
+                        :key="category.menuId" class="mb-5">
                         <h3 class="text-gray-800 font-semibold mb-2">
-                            {{ category.title }}
+                            {{ category.name }}
                         </h3>
                         <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-gray-700 text-sm">
-                            <li v-for="item in category.items" :key="item" class="hover:underline cursor-pointer">
-                                {{ item }}
+                            <li v-for="item in smallMenu.filter(menu => menu.parentId === category.menuId)"
+                                :key="item.menuId" class="hover:underline cursor-pointer">
+                                {{ item.name }}
                             </li>
                         </ul>
                     </div>
                 </template>
 
-                <!-- 일반 아이템만 있을 경우 -->
+                <!-- 소분류 (하위 항목) -->
                 <template v-else>
                     <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-gray-700 text-sm">
-                        <li v-for="item in structuredMenu[activeTab].items" :key="item"
-                            class="hover:underline cursor-pointer">
-                            {{ item }}
+                        <li v-for="item in smallMenu.filter(menu => menu.parentId === mainMenu[activeTab].menuId)"
+                            :key="item.menuId" class="hover:underline cursor-pointer">
+                            {{ item.name }}
                         </li>
                     </ul>
                 </template>

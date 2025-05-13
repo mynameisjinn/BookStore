@@ -24,10 +24,10 @@ public class MenuController {
     @GetMapping("/get")
     public ResponseEntity<List<MenuVO>> selectMenu() {
         try {
-            List<MenuVO> menus = menuService.selectMenu(); // 메뉴 전체 조회
-            return ResponseEntity.ok(menus);             // JSON 형태로 리턴
+            List<MenuVO> menus = menuService.selectMenu();
+            return ResponseEntity.ok(menus);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();  // 오류 시 400 리턴
+            return ResponseEntity.badRequest().build();
         }
     }
 
