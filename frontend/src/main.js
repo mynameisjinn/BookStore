@@ -5,6 +5,7 @@ import './tailwind.css'
 import App from './App.vue'
 import router from './router'
 import { useAuthStore } from './stores/auth.js'
+import { useMenuStore } from './stores/menu.js'
 import { isTokenExpired } from './utils/jwt.js'
 
 const app = createApp(App);
@@ -25,5 +26,8 @@ if (isTokenExpired(authStore.token)) {
     authStore.logout()
     // router.push('/login') 
 }
+
+const menuStore = useMenuStore(pinia)
+await menuStore.fetchMenu() // 앱 시작 시 메뉴 호출
 
 app.mount('#app');

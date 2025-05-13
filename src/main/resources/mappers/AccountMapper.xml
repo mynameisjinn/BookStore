@@ -11,7 +11,7 @@
 <!--    </select>-->
 
     <select id="selectMemberAll" resultType="org.example.bookstore.vo.MemberVO">
-        SELECT member_id, address, email, create_date, password, id
+        SELECT member_id, address, email, create_date, password
         FROM member;
     </select>
 
