@@ -6,6 +6,8 @@ import CategoryMenu from '../../components/CategoryMenu.vue'
 import Tabs from '../../components/Tabs.vue';
 import CardList from '../../components/CardList.vue'
 import Test from '../../components/Test.vue'
+import PageTab from '../../components/PageTab.vue'
+
 // script setup 안에서 추가
 import { useMenuStore } from '../../stores/menu'
 
@@ -51,17 +53,21 @@ const tabs = [
 
 </script>
 <template>
-    <BreadCrumb />
 
-    <div class="flex">
-        <div class="w-1/4">
+    <!-- <div class="mx-auto max-w-screen-lg">
+        <BreadCrumb />
+    </div> -->
+
+    <div class="flex gap-4 mx-auto my-10 max-w-screen-lg ">
+        <div class="flex-[1]">
             <!-- <CategoryMenu /> -->
             <CategoryMenu :categoryTree="novelCategoryTree" />
 
             <!-- <Test /> -->
         </div>
-        <div class="w-3/4">
+        <div class="flex-[3]">
             <Tabs title="소설" :tabs="tabs" />
+            <!-- <Tabs :title="'소설'" :tabs="tabs" :activeTab="activeTab" @update:activeTab="activeTab = $event" /> -->
         </div>
     </div>
 </template>

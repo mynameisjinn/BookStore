@@ -25,20 +25,26 @@ const mainMenu = computed(() => menuStore.mainMenu)
 const subMenu = computed(() => menuStore.subMenu)
 const smallMenu = computed(() => menuStore.smallMenu)
 
+const currentActiveTab = computed(() => {
+    return mainMenu.value.findIndex(menu => route.path.startsWith(menu.path))
+})
 </script>
 
 <template>
-    <div class="gap-4 mx-auto max-w-screen-lg bg-white border-t border-b border-gray-200 rounded-md shadow-sm">
+    <div class="gap-4 mx-auto max-w-screen-lg bg-white border-t border-b border-gray-200 rounded-md shadow-sm"
+        @mouseleave="resetActiveTab">
         <!-- 대분류 탭 리스트 -->
         <div class="flex space-x-6 px-6 py-3 text-sm font-medium text-gray-600">
-            <button v-for="(tab, index) in mainMenu" :key="tab.menuId" @click="setActiveTab(index)" :class="[
-                'transition-colors duration-200',
-                activeTab === index
-                    ? 'text-red-600 border-b-2 border-red-500 pb-2 font-semibold'
-                    : 'text-gray-500 hover:text-red-400'
-            ]">
+            <div v-for="(tab, index) in mainMenu" :key="tab.menuId"
+                @mouseover="setActiveTab(index)"
+                class="cursor-pointer transition-colors duration-200"
+                :class="[
+                    activeTab === index || currentActiveTab === index
+                        ? 'text-red-600 border-b-2 border-red-500 pb-2 font-semibold'
+                        : 'text-gray-500 hover:text-red-400'
+                ]">
                 {{ tab.name }}
-            </button>
+            </div>
         </div>
 
         <!-- 콘텐츠 -->
@@ -84,6 +90,8 @@ const smallMenu = computed(() => menuStore.smallMenu)
         </transition>
     </div>
 </template>
+
+
 
 <style scoped>
 .fade-enter-active,
