@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref, computed } from 'vue'
-import MenuSlider from './MenuSlider.vue'
+// import MenuSlider from './MenuSlider.vue'
 import { useAuthStore } from '../stores/auth';
 
 const authStore = useAuthStore()
@@ -46,4 +46,3 @@ const showMenu = ref(false)
 
     <MenuSlider v-if="showMenu" />
 </template>
-  

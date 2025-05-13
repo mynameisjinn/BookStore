@@ -10,7 +10,7 @@ import { RouterLink } from 'vue-router';
                 <div class="sm:col-span-2">
                     <a href="/" aria-label="Go home" title="Company" class="inline-flex items-center">
                         <!-- SVG 로고 -->
-                        <img src="/images/search.svg" />
+                        <img src="/logo.svg" alt="Logo" class="w-12 h-auto"  />
                         <span class="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">Mebooks</span>
                     </a>
                     <div class="mt-6 lg:max-w-sm">
