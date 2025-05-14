@@ -24,15 +24,15 @@
         SELECT  EMAIL,
                 PASSWORD,
                 ADDRESS,
-                ROLE,
+                ROLE_ID,
                 CREATE_DATE
         FROM MEMBER
         WHERE EMAIL = #{email};
     </select>
 
     <insert id="insertMember">
-        INSERT INTO member (EMAIL, PASSWORD, ADDRESS, ROLE, create_date)
-        VALUES (#{email}, #{password}, #{address}, 'USER',NOW())
+        INSERT INTO member (EMAIL, PASSWORD, ADDRESS, ROLE_ID)
+        VALUES (#{email}, #{password}, #{address}, 1)
     </insert>
 
 </mapper>

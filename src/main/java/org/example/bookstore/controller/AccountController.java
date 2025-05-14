@@ -1,5 +1,7 @@
 package org.example.bookstore.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bookstore.security.PrincipalUserDetails;
@@ -14,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Account", description = "계정 관련 API")
 @RestController
 public class AccountController {
 
@@ -105,6 +109,17 @@ public class AccountController {
         member.setPassword(passwordEncoder.encode(member.getPassword())); // 비밀번호 암호화
         accountService.saveMember(member);
         return ResponseEntity.ok("회원가입 성공");
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity<Map<String, Object>> mypage(@AuthenticationPrincipal UserDetails userDetails) {
+        log.info("마이페이지 접근: " + userDetails.getUsername());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("username", userDetails.getUsername());
+        response.put("message", "마이페이지 접근 가능");
+
+        return ResponseEntity.ok(response);
     }
 
 
