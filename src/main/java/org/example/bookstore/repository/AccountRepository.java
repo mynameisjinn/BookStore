@@ -2,6 +2,7 @@ package org.example.bookstore.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.example.bookstore.vo.MemberVO;
+import org.example.bookstore.vo.RoleVO;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface AccountRepository {
 
     MemberVO findUserByEmail(String email);
     void insertMember(MemberVO member);
+
+    RoleVO selectRoleByMemberID(MemberVO member);
 }

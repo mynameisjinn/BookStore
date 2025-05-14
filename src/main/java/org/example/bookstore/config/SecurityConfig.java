@@ -28,7 +28,7 @@ import java.util.List;
 @Slf4j
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class SecurityConfig {
     @Autowired
     private PrincipalUserDetailsService userDetailsService;
@@ -36,21 +36,7 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final String FRONTEND_ADDRESS = "http://localhost:8001";
-
-    // TODO : 모든 접근에 permitAll() 해둠? -> security 작동되는거 맞는지 확인 !
-    /*@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().permitAll()
-                )
-                .authenticationProvider(authenticationProvider());
-
-        return http.build();
-    }*/
+//    private final String FRONTEND_ADDRESS = "http://localhost:8001";
 
 
     @Bean
@@ -60,7 +46,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/mypage").authenticated()
+                        .requestMatchers("/mypage").hasRole("USER")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .exceptionHandling(ex -> ex
@@ -72,6 +59,7 @@ public class SecurityConfig {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                         })
                 )
+                // jwtAuthenticationFilter 에서 인증된 사용자 확인
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider());
 
@@ -98,18 +86,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(); // 회원가입 시에도 이걸로 암호화해야 함
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(FRONTEND_ADDRESS));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowedOrigins(List.of(FRONTEND_ADDRESS));
+//        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+//        config.setAllowedHeaders(List.of("*"));
+//        config.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", config);
+//        return source;
+//    }
 
 }
 

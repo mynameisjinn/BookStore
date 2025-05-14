@@ -1,8 +1,12 @@
 package org.example.bookstore.security;
 
 import lombok.Getter;
+import org.example.bookstore.repository.AccountRepository;
 import org.example.bookstore.vo.MemberVO;
+import org.example.bookstore.vo.RoleVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -13,8 +17,12 @@ public class PrincipalUserDetails implements UserDetails {
     @Getter
     private final MemberVO member;
 
-    public PrincipalUserDetails(MemberVO member) {
+    @Getter
+    private final RoleVO role;
+
+    public PrincipalUserDetails(MemberVO member, RoleVO role) {
         this.member = member;
+        this.role = role;
     }
 
     @Override
@@ -30,7 +38,8 @@ public class PrincipalUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(); // 권한 없음 (필요 시 추가)
+
+        return List.of(new SimpleGrantedAuthority(role.getRole()));
     }
 
     @Override public boolean isAccountNonExpired() { return true; }
