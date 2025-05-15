@@ -43,7 +43,7 @@ const mypage = async () => {
             router.push('/login')
         } else {
             // console.error('서버오류', error)
-            alert('사용자만 접근가능한 메뉴\n 사용자임에도 접근불가시 관리자 문의')
+            alert('사용자만 접근가능한 메뉴\n사용자임에도 접근불가시 관리자 문의')
         }
     }
 }

@@ -19,7 +19,7 @@ export const useMenuStore = defineStore('menu', {
 
             // if(!role) role = 'NOT_LOGIN'
 
-            console.log(role)
+            // console.log(role)
             try {
                 const res = await axios.get('/api/menu/get', {
                     params: { roleName: role }

@@ -5,7 +5,7 @@ import FooterView from './components/Footer.vue';
 import HeaderLayout from './layouts/HeaderLayout.vue';
 const route = useRoute();
 
-const hideLayout = ['/login', '/join'];
+const hideLayout = ['/login', '/join','/admin/login'];
 </script>
 
 <template>

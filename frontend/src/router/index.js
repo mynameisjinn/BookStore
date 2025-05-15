@@ -7,6 +7,10 @@ import JoinView from '../views/account/JoinView.vue'
 import MypageView from '../views/account/MypageView.vue'
 import NovelView from '../views/pages/NovelView.vue'
 
+import AdminLoginView from '../views/admin/AdminLoginView.vue'
+import AdminMainView from '../views/admin/AdminMainView.vue'
+import ManageBooksView from '../views/admin/ManageBooksView.vue'
+
 const routes = [
     {
         path: '/',
@@ -40,6 +44,29 @@ const routes = [
         component: NovelView,
     },
 
+
+
+
+    // 관리자 페이지 
+    {
+        path: '/admin/login',
+        name: 'admin-login',
+        component: AdminLoginView,
+        // meta: { requiresAuth: true }
+    },
+    {
+        path: '/admin',
+        name: 'admin-main',
+        component: AdminMainView,
+        meta: { requiresAdmin: true }
+    },
+    {
+        path: '/admin/books',
+        name: 'admin-books',
+        component: ManageBooksView,
+        meta: { requiresAdmin: true }
+    },
+
 ]
 
 const router = createRouter({
@@ -51,12 +78,30 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
     const isAuthenticated = !!authStore.token
 
+    const userRole = authStore.role
+
+    // 인증이 필요한 페이지 접근시 
     if (to.meta.requiresAuth && !isAuthenticated) {
-        // 인증이 필요한데 로그인 안 됨 → 로그인 페이지로
         next({ name: 'login' })
-    } else {
-        next()
     }
+
+
+
+    // 관리자 권한 체크 
+    if (to.meta.requiresAdmin) {
+        // if (!isAuthenticated) {
+        //     alert('로그인이 필요합니다.')
+        //     return next({ name: 'login' })
+        // }
+
+        if (userRole !== 'ROLE_ADMIN') {
+            // alert('관리자만 접근할 수 있습니다.')
+            return next({ name: 'admin-login' })
+        }
+    }
+
+
+    next()
 })
 
 export default router;

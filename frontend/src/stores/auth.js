@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', {
         loadRole() {
             const savedRole = localStorage.getItem('role')
             if (savedRole && savedRole !== 'undefined') {
-                this.role = JSON.parse(savedRole)
+                this.role = savedRole
             }
             return this.role
         },
