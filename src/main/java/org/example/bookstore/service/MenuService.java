@@ -13,7 +13,7 @@ public class MenuService {
     @Autowired
     private MenuRepository menuRepository;
 
-    public List<MenuVO> selectMenu(){
-        return menuRepository.selectMenu();
+    public List<MenuVO> selectMenu(String role){
+        return menuRepository.selectMenu(role);
     }
 }

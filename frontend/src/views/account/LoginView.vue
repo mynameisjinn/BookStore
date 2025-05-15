@@ -3,6 +3,7 @@ import { useRouter, RouterLink } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
 import { useAuthStore } from '../../stores/auth'
+import { useMenuStore } from '../../stores/menu'
 import SimpleFooter from '../../components/SimpleFooter.vue'
 
 
@@ -13,7 +14,8 @@ const password = ref('')
 
 const login = async () => {
     const authStore = useAuthStore()
-
+    const menuStore = useMenuStore()
+        
     try {
         const res = await axios.post('/api/login', {
             email: email.value,
@@ -23,9 +25,12 @@ const login = async () => {
         // JWT 토큰과 유저 정보를 store에 저장
         authStore.setToken(res.data.token)
         authStore.setUser(res.data.user)
-
+        authStore.setRole(res.data.role)
+        
         // console.log(authStore.user)
 
+        menuStore.resetMenu()
+        menuStore.fetchMenu() 
 
         router.push('/')
     } catch (err) {

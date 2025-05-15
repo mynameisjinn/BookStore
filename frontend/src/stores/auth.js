@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import { isTokenExpired } from '../utils/jwt'
+import { useMenuStore } from './menu'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: null,
-        user: null, // 로그인한 유저 정보
+        user: null,
+        role: null,
     }),
     getters: {
         isLoggedIn: (state) => {
@@ -18,7 +20,11 @@ export const useAuthStore = defineStore('auth', {
         },
         setUser(newUser) {
             this.user = newUser
-            localStorage.setItem('user', JSON.stringify(newUser)) // 유저 정보도 저장
+            localStorage.setItem('user', JSON.stringify(newUser))
+        },
+        setRole(newRole) {
+            this.role = newRole
+            localStorage.setItem('role', newRole)
         },
         loadToken() {
             const savedToken = localStorage.getItem('token')
@@ -30,11 +36,24 @@ export const useAuthStore = defineStore('auth', {
                 this.user = JSON.parse(savedUser)
             }
         },
+        loadRole() {
+            const savedRole = localStorage.getItem('role')
+            if (savedRole && savedRole !== 'undefined') {
+                this.role = JSON.parse(savedRole)
+            }
+            return this.role
+        },
         logout() {
             this.token = null
             this.user = null
+            this.role = null
             localStorage.removeItem('token')
             localStorage.removeItem('user')
+            localStorage.removeItem('role')
+
+            const menuStore = useMenuStore()
+            menuStore.resetMenu()
+            menuStore.fetchMenu() 
         }
     }
 })

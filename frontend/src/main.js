@@ -16,10 +16,11 @@ const pinia = createPinia();
 app.use(router);
 app.use(pinia);
 
-// pina 사용 , localStorage 저장 (새로고침시 리셋방지)
+// pinia 사용 , localStorage 저장 (새로고침시 리셋방지)
 const authStore = useAuthStore()
 authStore.loadToken()
 authStore.loadUser()
+authStore.loadRole() 
 
 if (isTokenExpired(authStore.token)) {
     console.log("JWT 만료됨, 로그아웃 처리")

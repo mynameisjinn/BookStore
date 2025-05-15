@@ -6,8 +6,17 @@
 <mapper namespace="org.example.bookstore.repository.MenuRepository">
 
     <select id="selectMenu" resultType="org.example.bookstore.vo.MenuVO">
-        SELECT menu_id as menuId, name, path, parent_id as parentId, depth
-        FROM menu;
+        SELECT  MENU_ID as menuId,
+                NAME,
+                PATH,
+                PARENT_ID as parentId,
+                DEPTH
+        FROM MENU M
+        JOIN ROLE R
+        ON M.ROLE_ID = R.ROLE_ID
+        <if test='role != null and role !=""'>
+        AND R.ROLE = #{role}
+        </if>
     </select>
 
 </mapper>

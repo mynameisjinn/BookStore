@@ -42,24 +42,11 @@ public class AccountController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PrincipalUserDetailsService userDetailsService;
-
     @GetMapping("/check-email")
     public ResponseEntity<Map<String, Boolean>> checkEmail(@RequestParam String email) {
         boolean exists = accountService.checkExistMember(email);
         return ResponseEntity.ok(Map.of("exists", exists));
     }
-
-//    @PostMapping("/login")
-//    public String login(@RequestBody Map<String, String> params) {
-//        try {
-//            log.info("로그인 성공");
-//            return "Login success";
-//        } catch (AuthenticationException e) {
-//            return "Login failed";
-//        }
-//    }
 
 
     // TODO : 비밀번호 오류시 return body 에 string 말고 custom exception 만들어서 내보내기
@@ -93,6 +80,7 @@ public class AccountController {
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwt);
             response.put("user", loginUser); // 유저 정보 포함
+            response.put("role", userDetails.getRole().getRole());
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
@@ -102,9 +90,6 @@ public class AccountController {
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody MemberVO member) {
-//        if (accountService.findByEmail(member.getEmail()) != null) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 이메일입니다.");
-//        }
 
         member.setPassword(passwordEncoder.encode(member.getPassword())); // 비밀번호 암호화
         accountService.saveMember(member);

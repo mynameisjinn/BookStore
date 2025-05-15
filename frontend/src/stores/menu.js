@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { useAuthStore } from '../stores/auth';
 import axios from 'axios'
 
 export const useMenuStore = defineStore('menu', {
@@ -13,8 +14,17 @@ export const useMenuStore = defineStore('menu', {
         async fetchMenu() {
             if (this.isLoaded) return
 
+            const authStore = useAuthStore()
+            const role = authStore.role ?? 'NOT_LOGIN' 
+
+            // if(!role) role = 'NOT_LOGIN'
+
+            console.log(role)
             try {
-                const res = await axios.get('/api/menu/get')
+                const res = await axios.get('/api/menu/get', {
+                    params: { roleName: role }
+                })
+
                 this.rawMenu = res.data
                 this.isLoaded = true
                 this.getMainMenu()  // 대분류 가져오기
@@ -38,6 +48,14 @@ export const useMenuStore = defineStore('menu', {
         // 소분류 (parentId가 중분류 menuId와 일치하는 항목들) 가져오기
         getSmallMenu() {
             this.smallMenu = this.rawMenu.filter(menu => menu.parentId !== 0 && this.subMenu.some(sub => sub.menuId === menu.parentId))
+        },
+
+        resetMenu() {
+            this.rawMenu = []
+            this.mainMenu = []
+            this.subMenu = []
+            this.smallMenu = []
+            this.isLoaded = false
         },
     }
 })
