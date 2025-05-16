@@ -1,11 +1,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import AuthorModal from '../modal/Modal.vue'
+import SearchModal from '../modal/SearchModal.vue'
 import CategoryModal from '../modal/CategoryModal.vue'
 import SelectBox from './SelectBox.vue'
 import FileUploadButton from './FileUploadButton.vue'
 import { storeToRefs } from 'pinia'
 import { useCategoryStore } from '../../stores/category'
+import AddButton from "./AddButton.vue";
+import SearchButton from "./SearchButton.vue";
 
 const selectedMain = ref('')
 const selectedSub = ref('')
@@ -96,43 +98,25 @@ const submitForm = () => {
                         <div class="flex space-x-2">
                             <input type="text" v-model="selectedAuthorName" readonly
                                 class="flex-1 p-2.5 text-sm rounded-md border border-gray-300 bg-gray-100 text-gray-900" />
-                            <button type="button" @click="showModal = true"
-                                class="px-4 py-2 text-sm border rounded-md border-gray-800 bg-white hover:bg-gray-100">
-                                검색
-                            </button>
+<!--                            <button type="button" @click="showModal = true"-->
+<!--                                class="px-4 py-2 text-sm border rounded-md border-gray-800 bg-white hover:bg-gray-100">-->
+<!--                                검색-->
+<!--                            </button>-->
+                          <SearchButton @search="showModal = true"/>
                         </div>
                     </div>
 
                     <div class="col-span-full flex items-center space-x-2">
-                        <label class="text-sm select-none">카테고리</label>
-                        <button type="button" @click="showCategoryModal = true"
-                            class="w-6 h-6 flex items-center justify-center text-gray-700 border border-gray-400 rounded-full hover:bg-gray-300 transition"
-                            aria-label="카테고리 추가">
-                            +
-                        </button>
+<!--                        <label class="text-sm select-none">카테고리</label>-->
+<!--                        <button type="button" @click="showCategoryModal = true"-->
+<!--                            class="w-6 h-6 flex items-center justify-center text-gray-700 border border-gray-400 rounded-full hover:bg-gray-300 transition"-->
+<!--                            aria-label="카테고리 추가">-->
+<!--                            +-->
+<!--                        </button>-->
+                      <AddButton  @add="showCategoryModal= true"/>
                     </div>
 
                     <!-- 카테고리 -->
-                    <!-- <div class="col-span-full sm:col-span-2">
-                        <SelectBox v-model="form.category1" :label="'대분류'" :options="[
-                            { value: '문학', label: '문학' },
-                            { value: '과학', label: '과학' }
-                        ]" />
-                    </div>
-
-                    <div class="col-span-full sm:col-span-2">
-                        <SelectBox v-model="form.category1" :label="'중분류'" :options="[
-                            { value: '문학2', label: '문학2' },
-                            { value: '과학2', label: '과학2' }
-                        ]" />
-                    </div>
-
-                    <div class="col-span-full sm:col-span-2">
-                        <SelectBox v-model="form.category1" :label="'소분류'" :options="[
-                            { value: '문학3', label: '문학3' },
-                            { value: '과학3', label: '과학3' }
-                        ]" />
-                    </div> -->
 
 
                     <div class="col-span-full sm:col-span-2">
@@ -160,10 +144,11 @@ const submitForm = () => {
                         <div class="flex space-x-2">
                             <input type="text" v-model="selectedAuthorName" readonly
                                 class="flex-1 p-2.5 text-sm rounded-md border border-gray-300 bg-gray-100 text-gray-900" />
-                            <button type="button" @click="showModal = true"
-                                class="px-4 py-2 text-sm border rounded-md border-gray-800 bg-white hover:bg-gray-100">
-                                검색
-                            </button>
+<!--                            <button type="button" @click="showModal = true"-->
+<!--                                class="px-4 py-2 text-sm border rounded-md border-gray-800 bg-white hover:bg-gray-100">-->
+<!--                                검색-->
+<!--                            </button>-->
+                            <SearchButton @search="showModal = true"/>
                         </div>
                     </div>
 
@@ -193,10 +178,9 @@ const submitForm = () => {
         </form>
 
         <!-- 저자 모달 -->
-        <AuthorModal v-if="showModal" @close="showModal = false" @select="selectAuthor" />
+        <SearchModal v-if="showModal" @close="showModal = false" @select="selectAuthor" />
 
         <!-- 카테고리 추가 모달 -->
-        <!-- <CategoryModal v-if="showCategoryModal" />  -->
         <CategoryModal :isOpen="showCategoryModal" @close="showCategoryModal = false" />
     </section>
 </template>
