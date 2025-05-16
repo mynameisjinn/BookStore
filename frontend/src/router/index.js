@@ -7,6 +7,8 @@ import JoinView from '../views/account/JoinView.vue'
 import MypageView from '../views/account/MypageView.vue'
 import NovelView from '../views/pages/NovelView.vue'
 
+import ServerErrorView from '../views/pages/ServerErrorView.vue'
+
 import AdminLoginView from '../views/admin/AdminLoginView.vue'
 import AdminMainView from '../views/admin/AdminMainView.vue'
 import ManageBooksView from '../views/admin/ManageBooksView.vue'
@@ -26,6 +28,12 @@ const routes = [
         path: '/join',
         name: 'join',
         component: JoinView,
+    },
+
+    // Error 
+    { 
+        path: '/server-error', 
+        component: ServerErrorView 
     },
 
     // Mypage

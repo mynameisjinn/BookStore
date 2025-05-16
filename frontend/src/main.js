@@ -8,6 +8,8 @@ import { useAuthStore } from './stores/auth.js'
 import { useMenuStore } from './stores/menu.js'
 import { isTokenExpired } from './utils/jwt.js'
 
+import './plugins/axios-error.js'
+
 const app = createApp(App);
 
 const pinia = createPinia();

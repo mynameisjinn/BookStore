@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { useAuthStore } from './auth';
 import axios from 'axios'
 
+
 export const useCategoryStore = defineStore('category', {
     state: () => ({
         rawCategory: [],     // 원본  
@@ -14,11 +15,15 @@ export const useCategoryStore = defineStore('category', {
         async fetchCategory() {
             if (this.isLoaded) return
 
-            // const authStore = useAuthStore()
-            // const role = authStore.role ?? 'NOT_LOGIN' 
+            const authStore = useAuthStore()
+            authStore.loadToken()
 
             try {
-                const res = await axios.get('/api/admin/category')
+                const res = await axios.get('/api/admin/category', {
+                    headers: {
+                        Authorization: `Bearer ${authStore.token}`
+                    }
+                })
 
                 this.rawCategory = res.data
                 this.isLoaded = true
@@ -26,7 +31,8 @@ export const useCategoryStore = defineStore('category', {
                 this.getSubCategory()   // 중분류 가져오기
                 this.getSmallCategory() // 소분류 가져오기
             } catch (e) {
-                console.error('카테고리 불러오기 실패:', e)
+                // alert(e.response);
+                console.log(e.response)
             }
         },
 
