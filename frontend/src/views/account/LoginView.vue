@@ -5,7 +5,9 @@ import axios from 'axios'
 import { useAuthStore } from '../../stores/auth'
 import { useMenuStore } from '../../stores/menu'
 import SimpleFooter from '../../components/SimpleFooter.vue'
+import { useToast } from 'vue-toastification'
 
+const toast = useToast();
 
 const router = useRouter()
 
@@ -38,6 +40,7 @@ const login = async () => {
             router.push('/')
         }
 
+        toast.success('로그인 성공!')
     } catch (err) {
         console.error('로그인 실패', err)
         alert('아이디, 비밀번호를 확인해주세요')

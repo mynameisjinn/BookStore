@@ -7,7 +7,8 @@ import JoinView from '../views/account/JoinView.vue'
 import MypageView from '../views/account/MypageView.vue'
 import NovelView from '../views/pages/NovelView.vue'
 
-import ServerErrorView from '../views/pages/ServerErrorView.vue'
+import ServerErrorView from '../views/error/ServerErrorView.vue'
+import NotFoundView from '../views/error/NotFoundView.vue'
 
 import AdminLoginView from '../views/admin/AdminLoginView.vue'
 import AdminMainView from '../views/admin/AdminMainView.vue'
@@ -23,18 +24,15 @@ const routes = [
         path: '/login',
         name: 'login',
         component: LoginView,
+        meta: { hideLayout: true }
     },
     {
         path: '/join',
         name: 'join',
         component: JoinView,
+        meta: { hideLayout: true }
     },
 
-    // Error 
-    { 
-        path: '/server-error', 
-        component: ServerErrorView 
-    },
 
     // Mypage
 
@@ -75,6 +73,19 @@ const routes = [
         meta: { requiresAdmin: true }
     },
 
+    // Error 
+    {
+        path: '/server-error',
+        component: ServerErrorView,
+        meta: { hideLayout: true }
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFoundView',
+        component: NotFoundView,
+        meta: { hideLayout: true }
+    }
+
 ]
 
 const router = createRouter({
@@ -97,11 +108,6 @@ router.beforeEach((to, from, next) => {
 
     // 관리자 권한 체크 
     if (to.meta.requiresAdmin) {
-        // if (!isAuthenticated) {
-        //     alert('로그인이 필요합니다.')
-        //     return next({ name: 'login' })
-        // }
-
         if (userRole !== 'ROLE_ADMIN') {
             // alert('관리자만 접근할 수 있습니다.')
             return next({ name: 'admin-login' })

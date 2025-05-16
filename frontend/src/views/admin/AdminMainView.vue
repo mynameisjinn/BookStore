@@ -2,7 +2,7 @@
 import AuthorForm from '../../components/admin/AuthorForm.vue';
 import BookFrom from '../../components/admin/BookForm.vue'
 import SelectBox from '../../components/admin/SelectBox.vue';
-import CategoryModal from '../../components/admin/CategoryModal.vue';
+import CategoryModal from '../../components/modal/CategoryModal.vue';
 </script>
 
 <template>

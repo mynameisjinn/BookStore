@@ -4,6 +4,9 @@ import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { computed } from 'vue'
 import axios from 'axios'
+import { useToast } from 'vue-toastification'
+
+const toast = useToast();
 
 const router = useRouter()
 
@@ -18,6 +21,7 @@ const username = computed(() => {
 const logout = () => {
     authStore.logout()
     router.push('/')
+    toast.warning("로그아웃 되었습니다");
 }
 
 const mypage = async () => {

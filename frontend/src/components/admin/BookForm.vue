@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import AuthorModal from './Modal.vue'
-import CategoryModal from './CategoryModal.vue'
+import AuthorModal from '../modal/Modal.vue'
+import CategoryModal from '../modal/CategoryModal.vue'
 import SelectBox from './SelectBox.vue'
 import FileUploadButton from './FileUploadButton.vue'
 import { storeToRefs } from 'pinia'
@@ -16,19 +16,6 @@ const categoryStore = useCategoryStore()
 onMounted(() => {
     categoryStore.fetchCategory()
 })
-
-// const mainCategory = computed(() => categoryStore.getMainCategory)
-// const subCategory = computed(() => categoryStore.getSubCategory)
-// const smallCategory = computed(() => categoryStore.getSmallCategory)
-
-
-// const filteredSub = computed(() =>
-//     subCategory.value.filter(sub => sub.parentId === Number(selectedMain.value))
-// )
-
-// const filteredSmall = computed(() =>
-//     smallCategory.value.filter(small => small.parentId === Number(selectedSub.value))
-// )
 
 const { mainCategory, rawCategory } = storeToRefs(categoryStore)
 

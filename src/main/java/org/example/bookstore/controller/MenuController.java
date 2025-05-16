@@ -1,5 +1,7 @@
 package org.example.bookstore.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bookstore.service.MenuService;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "/Menu", description = "메뉴 관련 API")
 @RequestMapping("/menu")
 @RestController
 public class MenuController {
@@ -28,6 +31,8 @@ public class MenuController {
 
     @Value("${role.user}")
     private String user;
+
+    @Operation(summary="메뉴조회", description="권한별 메뉴조회")
     @GetMapping("/get")
     public ResponseEntity<List<MenuVO>> selectMenu(@RequestParam String roleName){
         try {
