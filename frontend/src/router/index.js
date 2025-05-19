@@ -59,7 +59,8 @@ const routes = [
         path: '/admin/login',
         name: 'admin-login',
         component: AdminLoginView,
-        meta: { requiresAuth: true }
+        // meta: { requiresAuth: true }
+        meta: { hideLayout: true }
     },
     {
         path: '/admin',

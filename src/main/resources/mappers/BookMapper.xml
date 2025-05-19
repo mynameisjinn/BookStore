@@ -15,7 +15,7 @@
 
     <select id="selectAuthor" resultType="org.example.bookstore.vo.AuthorVO" parameterType="String">
         SELECT  ID,
-                NAME,
+                NAME
         FROM AUTHOR
         <if test='searchVal != null and searchVal !=""'>
             WHERE NAME = #{searchVal}

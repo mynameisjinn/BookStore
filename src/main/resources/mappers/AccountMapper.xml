@@ -26,7 +26,7 @@
                 ADDRESS,
                 ROLE_ID,
                 CREATE_DATE,
-                MEMBER_ID
+                ID
         FROM MEMBER
         WHERE EMAIL = #{email};
     </select>
@@ -42,7 +42,7 @@
             resultType="org.example.bookstore.vo.RoleVO">
         SELECT R.ROLE
         FROM ROLE R
-        JOIN MEMBER M ON R.ROLE_ID = M.ROLE_ID
+        JOIN MEMBER M ON R.ID = M.ROLE_ID
         WHERE
         <if test="id != null">
             M.id = #{id}

@@ -8,6 +8,7 @@ import org.example.bookstore.exception.CustomBadRequestException;
 import org.example.bookstore.service.BookService;
 import org.example.bookstore.vo.AuthorVO;
 import org.example.bookstore.vo.CategoryVO;
+import org.example.bookstore.vo.PublisherVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,17 +43,17 @@ public class BookController {
     public ResponseEntity<?> authorList(@RequestParam("searchVal") String searchVal) {
         try {
             List<AuthorVO> authors = bookService.selectAuthor(searchVal);
-            return ResponseEntity.ok("OK");
+            return ResponseEntity.ok(authors);
         } catch (Exception e) {
             throw new CustomBadRequestException("작가 목록 조회 실패");
         }
     }
 
     @GetMapping("/publisher")
-    public ResponseEntity<?> publisherList(String searchVal) {
+    public ResponseEntity<?> publisherList(@RequestParam("searchVal") String searchVal) {
         try {
-            // select
-            return ResponseEntity.ok("OK");
+            List<PublisherVO> publishers = bookService.selectPublisher(searchVal);
+            return ResponseEntity.ok(publishers);
         } catch (Exception e) {
             throw new CustomBadRequestException("출판사 목록 조회 실패");
         }

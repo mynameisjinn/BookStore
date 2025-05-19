@@ -17,11 +17,12 @@ axios.interceptors.response.use(
         }
 
         if (status === 401) {
-            alert(errorMessage || '인증 정보가 유효하지 않습니다.');
+            // alert(errorMessage);
         }
 
         if (status === 400) {
             alert(errorMessage || '잘못된 요청입니다.');
+            // router.push('/')
         }
 
         return Promise.reject(error);

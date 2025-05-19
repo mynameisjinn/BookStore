@@ -35,7 +35,7 @@ const currentActiveTab = computed(() => {
         @mouseleave="resetActiveTab">
         <!-- 대분류 탭 리스트 -->
         <div class="flex space-x-6 px-6 py-3 text-sm font-medium text-gray-600">
-            <div v-for="(tab, index) in mainMenu" :key="tab.menuId"
+            <div v-for="(tab, index) in mainMenu" :key="tab.id"
                 @mouseover="setActiveTab(index)"
                 class="cursor-pointer transition-colors duration-200"
                 :class="[
@@ -62,15 +62,15 @@ const currentActiveTab = computed(() => {
                 </div>
 
                 <!-- 중분류 (하위 카테고리) -->
-                <template v-if="subMenu.some(menu => menu.parentId === mainMenu[activeTab].menuId)">
-                    <div v-for="category in subMenu.filter(menu => menu.parentId === mainMenu[activeTab].menuId)"
-                        :key="category.menuId" class="mb-5">
+                <template v-if="subMenu.some(menu => menu.parentId === mainMenu[activeTab].id)">
+                    <div v-for="category in subMenu.filter(menu => menu.parentId === mainMenu[activeTab].id)"
+                        :key="category.id" class="mb-5">
                         <h3 class="text-gray-800 font-semibold mb-2">
                             {{ category.name }}
                         </h3>
                         <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-gray-700 text-sm">
-                            <li v-for="item in smallMenu.filter(menu => menu.parentId === category.menuId)"
-                                :key="item.menuId" class="hover:underline cursor-pointer">
+                            <li v-for="item in smallMenu.filter(menu => menu.parentId === category.id)"
+                                :key="item.id" class="hover:underline cursor-pointer">
                                 {{ item.name }}
                             </li>
                         </ul>
@@ -80,8 +80,8 @@ const currentActiveTab = computed(() => {
                 <!-- 소분류 (하위 항목) -->
                 <template v-else>
                     <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-gray-700 text-sm">
-                        <li v-for="item in smallMenu.filter(menu => menu.parentId === mainMenu[activeTab].menuId)"
-                            :key="item.menuId" class="hover:underline cursor-pointer">
+                        <li v-for="item in smallMenu.filter(menu => menu.parentId === mainMenu[activeTab].id)"
+                            :key="item.id" class="hover:underline cursor-pointer">
                             {{ item.name }}
                         </li>
                     </ul>

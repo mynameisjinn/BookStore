@@ -42,12 +42,12 @@ export const useMenuStore = defineStore('menu', {
 
         // 중분류 (parentId가 대분류 menuId와 일치하는 항목들) 가져오기
         getSubMenu() {
-            this.subMenu = this.rawMenu.filter(menu => menu.parentId !== 0 && this.mainMenu.some(main => main.menuId === menu.parentId))
+            this.subMenu = this.rawMenu.filter(menu => menu.parentId !== 0 && this.mainMenu.some(main => main.id === menu.parentId))
         },
 
         // 소분류 (parentId가 중분류 menuId와 일치하는 항목들) 가져오기
         getSmallMenu() {
-            this.smallMenu = this.rawMenu.filter(menu => menu.parentId !== 0 && this.subMenu.some(sub => sub.menuId === menu.parentId))
+            this.smallMenu = this.rawMenu.filter(menu => menu.parentId !== 0 && this.subMenu.some(sub => sub.id === menu.parentId))
         },
 
         resetMenu() {

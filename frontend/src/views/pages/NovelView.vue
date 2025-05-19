@@ -23,16 +23,16 @@ const novelCategoryTree = computed(() => {
     const result = []
 
     // 중분류만 먼저 뽑기 (예: 장르별, 국가별)
-    const midCategories = menuStore.rawMenu.filter(menu => menu.parentId === novelMenu.value.menuId)
+    const midCategories = menuStore.rawMenu.filter(menu => menu.parentId === novelMenu.value.id)
 
     // 중분류 하나씩 돌면서
     midCategories.forEach(mid => {
         // 해당 중분류의 자식(소분류)을 찾아
-        const children = menuStore.rawMenu.filter(menu => menu.parentId === mid.menuId)
+        const children = menuStore.rawMenu.filter(menu => menu.parentId === mid.id)
 
         // 하나의 객체로 묶어서 result에 넣어
         result.push({
-            menuId: mid.menuId,
+            id: mid.id,
             name: mid.name,
             path: mid.path,
             parentId: mid.parentId,

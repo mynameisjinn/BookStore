@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import SearchModal from '../modal/SearchModal.vue'
+import SearchAuthor from '../modal/SearchModal.vue'
+import SearchPublisher from '../modal/SearchModal.vue'
 import CategoryModal from '../modal/CategoryModal.vue'
 import SelectBox from './SelectBox.vue'
 import FileUploadButton from './FileUploadButton.vue'
@@ -8,6 +9,8 @@ import { storeToRefs } from 'pinia'
 import { useCategoryStore } from '../../stores/category'
 import AddButton from "./AddButton.vue";
 import SearchButton from "./SearchButton.vue";
+import axios from "axios";
+import {useAuthStore} from "../../stores/auth.js";
 
 const selectedMain = ref('')
 const selectedSub = ref('')
@@ -33,6 +36,7 @@ const filteredSmall = computed(() =>
 const form = ref({
     title: '',
     authorId: '',
+    authorName: '',
     category1: '',
     category2: '',
     category3: '',
@@ -43,28 +47,88 @@ const form = ref({
 })
 
 const selectedAuthorName = ref('')
-const showModal = ref(false)
+const selectedAuthorName2 = ref('')
+
+const showAuthorModal = ref(false)
+const showPublisherModal = ref(false)
+
 const showCategoryModal = ref(false)
 const defaultImage = 'https://source.unsplash.com/60x60/?book'
 
-
-
-
-
 const selectAuthor = ({ id, name }) => {
-    form.value.authorId = id
+    form.value.AuthorId = id
     selectedAuthorName.value = name
-    showModal.value = false
+    showAuthorModal.value = false
 }
+
+const selectPublisher = ({ id, name }) => {
+  form.value.PublisherId = id
+  selectedAuthorName2.value = name
+  showPublisherModal.value = false
+}
+
+const searchAuthor = async (query) => {
+
+  const authStore = useAuthStore()
+  authStore.loadToken()
+
+  try {
+    const res = await axios.get('/api/admin/book/author', {
+      headers: {
+        Authorization: `Bearer ${authStore.token}`
+      },
+      params: {
+        searchVal: query
+      }
+    })
+    return res.data
+
+  } catch (e) {
+    console.log(e)
+  }
+
+}
+
+
+const searchPublisher = async (query) => {
+
+  const authStore = useAuthStore()
+  authStore.loadToken()
+
+  try {
+    const res = await axios.get('/api/admin/book/publisher', {
+      headers: {
+        Authorization: `Bearer ${authStore.token}`
+      },
+      params: {
+        searchVal: query
+      }
+    })
+    console.log(res.data)
+
+    return res.data
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 
 const submitForm = () => {
-    if (form.value.photo) {
-        console.log('업로드된 파일:', form.value.photo)
-    } else {
-        // console.log('파일 없음')
-        form.value.photo.value = defaultImage
-    }
+  if (form.value.photo) {
+    console.log('업로드된 파일:', form.value.photo)
+  } else {
+    // console.log('파일 없음')
+    form.value.photo.value = defaultImage
+  }
 }
+
+const handleSubmit = () => {
+  console.log('도서 등록 폼 데이터:', form.value)
+}
+
+
+
 
 </script>
 
@@ -98,27 +162,15 @@ const submitForm = () => {
                         <div class="flex space-x-2">
                             <input type="text" v-model="selectedAuthorName" readonly
                                 class="flex-1 p-2.5 text-sm rounded-md border border-gray-300 bg-gray-100 text-gray-900" />
-<!--                            <button type="button" @click="showModal = true"-->
-<!--                                class="px-4 py-2 text-sm border rounded-md border-gray-800 bg-white hover:bg-gray-100">-->
-<!--                                검색-->
-<!--                            </button>-->
-                          <SearchButton @search="showModal = true"/>
+                          <SearchButton @search="showAuthorModal = true"/>
                         </div>
                     </div>
 
                     <div class="col-span-full flex items-center space-x-2">
-<!--                        <label class="text-sm select-none">카테고리</label>-->
-<!--                        <button type="button" @click="showCategoryModal = true"-->
-<!--                            class="w-6 h-6 flex items-center justify-center text-gray-700 border border-gray-400 rounded-full hover:bg-gray-300 transition"-->
-<!--                            aria-label="카테고리 추가">-->
-<!--                            +-->
-<!--                        </button>-->
                       <AddButton  @add="showCategoryModal= true"/>
                     </div>
 
                     <!-- 카테고리 -->
-
-
                     <div class="col-span-full sm:col-span-2">
                         <SelectBox v-model="selectedMain" :label="'대분류'"
                             :options="mainCategory.map(c => ({ value: c.categoryId, label: c.name }))" />
@@ -142,13 +194,9 @@ const submitForm = () => {
                     <div class="col-span-full sm:col-span-3">
                         <label class="text-sm">출판사</label>
                         <div class="flex space-x-2">
-                            <input type="text" v-model="selectedAuthorName" readonly
+                            <input type="text" v-model="selectedAuthorName2" readonly
                                 class="flex-1 p-2.5 text-sm rounded-md border border-gray-300 bg-gray-100 text-gray-900" />
-<!--                            <button type="button" @click="showModal = true"-->
-<!--                                class="px-4 py-2 text-sm border rounded-md border-gray-800 bg-white hover:bg-gray-100">-->
-<!--                                검색-->
-<!--                            </button>-->
-                            <SearchButton @search="showModal = true"/>
+                            <SearchButton @search="showPublisherModal = true"/>
                         </div>
                     </div>
 
@@ -177,10 +225,23 @@ const submitForm = () => {
             </div>
         </form>
 
-        <!-- 저자 모달 -->
-        <SearchModal v-if="showModal" @close="showModal = false" @select="selectAuthor" />
+      <SearchAuthor
+          v-if="showAuthorModal"
+          @close="showAuthorModal = false"
+          @select="selectAuthor"
+          :onSearch="searchAuthor"
+          sub="저자"
+      />
 
-        <!-- 카테고리 추가 모달 -->
+      <SearchPublisher
+          v-if="showPublisherModal"
+          @close="showPublisherModal = false"
+          @select="selectPublisher"
+          :onSearch="searchPublisher"
+          sub="출판사"
+      />
+
+      <!-- 카테고리 추가 모달 -->
         <CategoryModal :isOpen="showCategoryModal" @close="showCategoryModal = false" />
     </section>
 </template>

@@ -6,7 +6,7 @@
 <mapper namespace="org.example.bookstore.repository.MenuRepository">
 
     <select id="selectMenu" resultType="org.example.bookstore.vo.MenuVO">
-        SELECT  ID,
+        SELECT  M.ID,
                 NAME,
                 PATH,
                 PARENT_ID as parentId,
