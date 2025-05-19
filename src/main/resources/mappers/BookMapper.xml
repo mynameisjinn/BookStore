@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.bookstore.repository.BookRepository">
+
+    <select id="selectCategory" resultType="org.example.bookstore.vo.CategoryVO">
+        SELECT  CATEGORY_ID AS categoryId,
+                NAME,
+                PARENT_ID AS parentId,
+                DEPTH
+        FROM CATEGORY
+    </select>
+
+    <select id="selectAuthor" resultType="org.example.bookstore.vo.AuthorVO" parameterType="String">
+        SELECT  AUTHOR_ID AS authorId,
+                AUTHOR_NAME AS authorName
+        FROM AUTHOR
+        <if test='searchVal != null and searchVal !=""'>
+            WHERE AUTHOR_NAME = #{searchVal}
+        </if>
+    </select>
+
+    <select id="selectPublisher" resultType="org.example.bookstore.vo.PublisherVO" parameterType="String">
+        SELECT  PUBLISHER_ID AS publisherId,
+                PUBLISHER_NAME AS publisherName
+        FROM PUBLISHER
+        <if test='searchVal != null and searchVal !=""'>
+            WHERE PUBLISHER_NAME = #{searchVal}
+        </if>
+    </select>
+
+</mapper>

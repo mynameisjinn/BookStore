@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class PublisherVO {
-    private long publisherId;
+    private int publisherId;
     private String publisherName;
 }

@@ -23,10 +23,10 @@ public class TestController {
     @GetMapping("test")
     public void getTest(){
 
-        log.info("테스트");
+//        log.info("테스트");
 
-        List<MemberVO> list = accountService.selectMemberInfo();
-        log.info(list.toString());
+//        List<MemberVO> list = accountService.selectMemberInfo();
+        log.info("서버와 연결되었습니다");
     }
 
 

@@ -23,20 +23,20 @@ import java.util.List;
 @RestController
 public class AdminController {
 
-    @Autowired
-    private AdminService adminService;
-
-
-    @Operation(summary="카테고리조회", description="관리자페이지 카테고리조회")
-    @GetMapping("/category")
-    public ResponseEntity<?> selectCategory(){
-        try {
-            List<CategoryVO> categories = adminService.selectCategory();
-            return ResponseEntity.ok(categories);
-        } catch (Exception e) {
-            throw new CustomBadRequestException("카테고리 데이터 로드 실패");
-        }
-    }
+//    @Autowired
+//    private AdminService adminService;
+//
+//
+//    @Operation(summary="책 카테고리조회", description="관리자페이지 책 카테고리조회")
+//    @GetMapping("/category")
+//    public ResponseEntity<?> selectCategory(){
+//        try {
+//            List<CategoryVO> categories = adminService.selectCategory();
+//            return ResponseEntity.ok(categories);
+//        } catch (Exception e) {
+//            throw new CustomBadRequestException("카테고리 데이터 로드 실패");
+//        }
+//    }
 
     /*@PostMapping
     public ResponseEntity<?> addCategory() {

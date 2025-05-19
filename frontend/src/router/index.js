@@ -13,6 +13,7 @@ import NotFoundView from '../views/error/NotFoundView.vue'
 import AdminLoginView from '../views/admin/AdminLoginView.vue'
 import AdminMainView from '../views/admin/AdminMainView.vue'
 import ManageBooksView from '../views/admin/ManageBooksView.vue'
+import axios from "axios";
 
 const routes = [
     {
@@ -40,7 +41,7 @@ const routes = [
         path: '/mypage',
         name: 'mypage',
         component: MypageView,
-        meta: { requiresAuth: true }, // 인증 필요 플래그
+        meta: { requiresAuth: true,  requiresUser: true }, // 인증 필요 플래그
     },
 
     // 소설
@@ -77,7 +78,17 @@ const routes = [
     {
         path: '/server-error',
         component: ServerErrorView,
-        meta: { hideLayout: true }
+        meta: { hideLayout: true },
+        beforeEnter: async (to, from, next) => {
+            try {
+                await axios.get('/api/test');
+                // 서버 정상 -> 홈으로 리디렉션
+                next('/');
+            } catch (e) {
+                // 서버 여전히 문제 -> 페이지 표시
+                next();
+            }
+        }
     },
     {
         path: '/:pathMatch(.*)*',
@@ -105,12 +116,19 @@ router.beforeEach((to, from, next) => {
     }
 
 
-
     // 관리자 권한 체크 
     if (to.meta.requiresAdmin) {
         if (userRole !== 'ROLE_ADMIN') {
             // alert('관리자만 접근할 수 있습니다.')
             return next({ name: 'admin-login' })
+        }
+    }
+
+    // 사용자자 권한 체크 
+    if (to.meta.requiresUser) {
+        if (userRole !== 'ROLE_USER') {
+            alert('사용자 전용 페이지')
+            return next({ name: 'admin-main' })
         }
     }
 

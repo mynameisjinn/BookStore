@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class BookVO {
-    private long bookId;
+    private int bookId;
     private String title;
     private String author;
     private String category;

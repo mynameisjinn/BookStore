@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @AutoConfigureMockMvc // MockMvc 자동 설정 (실제 서버 실행 없이 컨트롤러 테스트 가능)
 @SpringBootTest // 통합 테스트 환경 구성 (스프링 빈들 실제로 띄움)
-class AdminServiceTest {
+class BookServiceTest {
 
     @Autowired
     private MockMvc mockMvc; // 가짜 HTTP 요청을 만들어주는 테스트용 객체
@@ -45,7 +45,7 @@ class AdminServiceTest {
 
         // When: 인증 토큰을 가지고 /admin/category 요청
         // Then: 200 OK 반환되어야 함
-        mockMvc.perform(get("/admin/category")
+        mockMvc.perform(get("/admin/book/category")
                         .header("Authorization", "Bearer " + jwt)) // JWT를 Authorization 헤더에 포함
                 .andExpect(status().isOk()); // 접근 성공 검증
     }

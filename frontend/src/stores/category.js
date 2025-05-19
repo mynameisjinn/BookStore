@@ -19,7 +19,7 @@ export const useCategoryStore = defineStore('category', {
             authStore.loadToken()
 
             try {
-                const res = await axios.get('/api/admin/category', {
+                const res = await axios.get('/api/admin/book/category', {
                     headers: {
                         Authorization: `Bearer ${authStore.token}`
                     }

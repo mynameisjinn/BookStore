@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class LikesVO {
-    private long likeId;
+    private int likeId;
     private String memberId;
     private String bookId;
 }
