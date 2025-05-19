@@ -45,11 +45,30 @@ const novelCategoryTree = computed(() => {
 
 
 
-const tabs = [
-    { label: '전체', content: CardList },
-    { label: '장르별', content: { template: '<div>소설 콘텐츠</div>' } },
-    { label: '국가별', content: { template: '<div>컴퓨터/IT 콘텐츠</div>' } }
-]
+// const tabs = [
+//     { label: '전체', content: CardList },
+//     { label: '장르별', content: { template: '<div>소설 콘텐츠</div>' } },
+//     { label: '국가별', content: { template: '<div>컴퓨터/IT 콘텐츠</div>' } }
+// ]
+
+const tabs = computed(() => {
+  const baseTab = {
+    label: '전체',
+    content: CardList
+  }
+
+  const dynamicTabs = novelCategoryTree.value.map(mid => ({
+    label: mid.name,
+    path: mid.path,
+    content: {
+      template: `<div>${mid.name} 콘텐츠</div>`
+    }
+  }))
+
+  return [baseTab, ...dynamicTabs]
+})
+
+
 
 </script>
 <template>

@@ -5,6 +5,7 @@ const props = defineProps<{
     title: string
     tabs: {
         label: string
+        path?: string
         content: any  // 컴포넌트 자체
     }[]
 }>()

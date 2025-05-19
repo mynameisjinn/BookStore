@@ -46,7 +46,7 @@ const routes = [
 
     // 소설
     {
-        path: '/category/novel',
+        path: '/category/novel/:catchAll(.*)*',
         name: 'novel',
         component: NovelView,
     },

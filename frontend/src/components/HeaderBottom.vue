@@ -69,10 +69,23 @@ const currentActiveTab = computed(() => {
                             {{ category.name }}
                         </h3>
                         <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-gray-700 text-sm">
-                            <li v-for="item in smallMenu.filter(menu => menu.parentId === category.id)"
-                                :key="item.id" class="hover:underline cursor-pointer">
-                                {{ item.name }}
-                            </li>
+<!--                            <li v-for="item in smallMenu.filter(menu => menu.parentId === category.id)"-->
+<!--                                :key="item.id" class="hover:underline cursor-pointer">-->
+<!--                                {{ item.name }}-->
+<!--                            </li>-->
+
+                          <router-link
+                              v-for="item in smallMenu.filter(menu => menu.parentId === category.id)"
+                              :key="item.id"
+                              :to="item.path"
+                              class="hover:underline cursor-pointer"
+                              @click="resetActiveTab"
+                          >
+                            {{ item.name }}
+                          </router-link>
+
+
+
                         </ul>
                     </div>
                 </template>
@@ -80,10 +93,20 @@ const currentActiveTab = computed(() => {
                 <!-- 소분류 (하위 항목) -->
                 <template v-else>
                     <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-gray-700 text-sm">
-                        <li v-for="item in smallMenu.filter(menu => menu.parentId === mainMenu[activeTab].id)"
-                            :key="item.id" class="hover:underline cursor-pointer">
-                            {{ item.name }}
-                        </li>
+<!--                        <li v-for="item in smallMenu.filter(menu => menu.parentId === mainMenu[activeTab].id)"-->
+<!--                            :key="item.id" class="hover:underline cursor-pointer">-->
+<!--                            {{ item.name }}-->
+<!--                        </li>-->
+
+                      <router-link
+                          v-for="item in smallMenu.filter(menu => menu.parentId === mainMenu[activeTab].id)"
+                          :key="item.id"
+                          :to="item.path"
+                          class="hover:underline cursor-pointer"
+                          @click="resetActiveTab"
+                      >
+                        {{ item.name }}
+                      </router-link>
                     </ul>
                 </template>
             </div>
