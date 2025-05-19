@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/admin")
-@Tag(name = "Admin", description = "관리자 권한 관련 API")
+//@Tag(name = "Admin", description = "관리자 권한 관련 API")
 @RestController
 public class AdminController {
 

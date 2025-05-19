@@ -11,7 +11,7 @@
 <!--    </select>-->
 
     <select id="selectMemberAll" resultType="org.example.bookstore.vo.MemberVO">
-        SELECT member_id, address, email, create_date, password
+        SELECT id, address, email, create_date, password
         FROM member;
     </select>
 
@@ -44,8 +44,8 @@
         FROM ROLE R
         JOIN MEMBER M ON R.ROLE_ID = M.ROLE_ID
         WHERE
-        <if test="memberId != null">
-            M.MEMBER_ID = #{memberId}
+        <if test="id != null">
+            M.id = #{id}
         </if>
     </select>
 

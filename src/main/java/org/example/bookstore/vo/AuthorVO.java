@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class AuthorVO {
-    private int authorId;
-    private String authorName;
+    private int id;
+    private String name;
 }

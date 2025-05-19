@@ -6,7 +6,7 @@
 <mapper namespace="org.example.bookstore.repository.AdminRepository">
 
     <select id="selectCategory" resultType="org.example.bookstore.vo.CategoryVO">
-        SELECT  CATEGORY_ID as categoryId,
+        SELECT  ID,
                 NAME,
                 PARENT_ID as parentId,
                 DEPTH

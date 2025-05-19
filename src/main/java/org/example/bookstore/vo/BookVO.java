@@ -4,13 +4,14 @@ import lombok.Data;
 
 @Data
 public class BookVO {
-    private int bookId;
+    private int id;
     private String title;
-    private String author;
-    private String category;
+    private int authorId;
     private String bookOrigin;
     private String price;
     private String publishedDate;
-    private String publisherId;
+    private int publisherId;
+    private int categoryId;
+    private String imgPath;
 
 }

@@ -74,7 +74,7 @@ public class AccountController {
             MemberVO loginUser = new MemberVO();
             loginUser.setEmail(member.getEmail());
             loginUser.setAddress(member.getAddress());
-            loginUser.setMemberId(member.getMemberId());
+            loginUser.setId(member.getId());
 
             // JWT 토큰과 유저 정보를 함께 반환
             Map<String, Object> response = new HashMap<>();

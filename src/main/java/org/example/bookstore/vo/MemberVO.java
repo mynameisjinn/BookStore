@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Data
 public class MemberVO {
-    private int memberId;
+    private int id;
     private String address;
     private String email;
     private String password;

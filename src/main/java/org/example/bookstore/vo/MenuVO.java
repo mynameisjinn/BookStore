@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MenuVO {
 
-  private int menuId;
+  private int id;
   private String name;
   private String path;
   private int parentId;
