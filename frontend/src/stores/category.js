@@ -43,12 +43,12 @@ export const useCategoryStore = defineStore('category', {
 
         // 중분류 (parentId가 대분류 categoryId 일치하는 항목들) 가져오기
         getSubCategory() {
-            this.subCategory = this.rawCategory.filter(menu => menu.parentId !== 0 && this.mainCategory.some(main => main.categoryId === menu.parentId))
+            this.subCategory = this.rawCategory.filter(menu => menu.parentId !== 0 && this.mainCategory.some(main => main.id === menu.parentId))
         },
 
         // 소분류 (parentId가 중분류 categoryId 일치하는 항목들) 가져오기
         getSmallCategory() {
-            this.smallCategory = this.rawCategory.filter(menu => menu.parentId !== 0 && this.subMenu.some(sub => sub.categoryId === menu.parentId))
+            this.smallCategory = this.rawCategory.filter(menu => menu.parentId !== 0 && this.subMenu.some(sub => sub.id === menu.parentId))
         },
 
         resetCategory() {

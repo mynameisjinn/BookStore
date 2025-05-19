@@ -14,11 +14,11 @@
     </select>
 
     <select id="selectAuthor" resultType="org.example.bookstore.vo.AuthorVO" parameterType="String">
-        SELECT  ID,
-                NAME
+        SELECT ID,
+        NAME
         FROM AUTHOR
-        <if test='searchVal != null and searchVal !=""'>
-            WHERE NAME = #{searchVal}
+        <if test='searchVal != null and searchVal != ""'>
+            WHERE NAME LIKE CONCAT('%', #{searchVal}, '%')
         </if>
     </select>
 
@@ -27,8 +27,23 @@
                 NAME
         FROM PUBLISHER
         <if test='searchVal != null and searchVal !=""'>
-            WHERE NAME = #{searchVal}
+            WHERE NAME LIKE CONCAT('%', #{searchVal}, '%')
         </if>
     </select>
+
+
+    <insert id="saveBook" parameterType="org.example.bookstore.vo.BookVO">
+        INSERT INTO BOOK (TITLE,
+                        AUTHOR_ID,
+                        PRICE,
+                        PUBLISHED_DATE,
+                        PUBLISHER_ID,
+                        CATEGORY_ID,
+                        IMG_PATH)
+        VALUES  (#{title}, #{authorId}, #{price}, #{publishedDate},
+                #{publisherId}, #{categoryId}, #{imgPath} )
+
+
+    </insert>
 
 </mapper>

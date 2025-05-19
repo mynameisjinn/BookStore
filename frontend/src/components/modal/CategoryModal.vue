@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useCategoryStore } from '../../stores/category'
-import CloseButton from '../admin/CloseBtn.vue'
+import CloseButton from '../admin/CloseButton.vue'
 
 const props = defineProps(['isOpen'])
 const emit = defineEmits(['close'])
@@ -37,7 +37,7 @@ const filteredSubCategory = computed(() => {
 
 const submitForm = () => {
     console.log('Form submitted:', form.value)
-    emit('close')
+    // emit('close')
 }
 </script>
 <template>
@@ -80,8 +80,8 @@ const submitForm = () => {
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">대분류 선택</label>
                             <select id="parentCategory" v-model="form.parentCategory" class="input">
                                 <option disabled value="">대분류 선택</option>
-                                <option v-for="item in categoryStore.mainCategory" :key="item.categoryId"
-                                    :value="item.categoryId">
+                                <option v-for="item in categoryStore.mainCategory" :key="item.id"
+                                    :value="item.id">
                                     {{ item.name }}
                                 </option>
                             </select>
@@ -93,7 +93,7 @@ const submitForm = () => {
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">중분류 선택</label>
                             <select id="middleCategory" v-model="form.middleCategory" class="input">
                                 <option disabled value="">중분류 선택</option>
-                                <option v-for="item in filteredSubCategory" :key="item.categoryId" :value="item.categoryId">
+                                <option v-for="item in filteredSubCategory" :key="item.id" :value="item.id">
                                     {{ item.name }}
                                 </option>
                             </select>
