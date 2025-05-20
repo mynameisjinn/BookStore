@@ -5,6 +5,7 @@
 
 <mapper namespace="org.example.bookstore.repository.BookRepository">
 
+
     <select id="selectCategory" resultType="org.example.bookstore.vo.CategoryVO">
         SELECT  ID,
                 NAME,
@@ -44,6 +45,24 @@
             ON B.PUBLISHER_ID = P.ID
     </select>
 
+    <select id="selectBookByBookId" resultType="org.example.bookstore.vo.BookVO">
+        SELECT  B.ID,
+            TITLE,
+            A.NAME AS authorName,
+            P.NAME AS publisherName,
+            PUBLISHED_DATE AS publishedDate,
+            B.AUTHOR_ID AS authorId,
+            B.PUBLISHER_ID AS publisherId,
+            B.PRICE,
+            B.CATEGORY_ID AS categoryId
+        FROM BOOK B
+            JOIN AUTHOR A
+            ON B.AUTHOR_ID = A.ID
+            JOIN PUBLISHER P
+            ON B.PUBLISHER_ID = P.ID
+        WHERE B.ID = #{id}
+    </select>
+
     <insert id="saveBook" parameterType="org.example.bookstore.vo.BookVO">
         INSERT INTO BOOK (TITLE,
                         AUTHOR_ID,
@@ -54,8 +73,18 @@
                         IMG_PATH)
         VALUES  (#{title}, #{authorId}, #{price}, #{publishedDate},
                 #{publisherId}, #{categoryId}, #{imgPath} )
-
-
     </insert>
+
+    <update id="updateBook">
+        UPDATE BOOK
+        SET TITLE = #{title},
+            AUTHOR_ID = #{authorId},
+            PRICE = #{price},
+            PUBLISHED_DATE = #{publishedDate},
+            PUBLISHER_ID = #{publisherId},
+            CATEGORY_ID = #{categoryId},
+            IMG_PATH = #{imgPath}
+        WHERE ID = #{id}
+    </update>
 
 </mapper>

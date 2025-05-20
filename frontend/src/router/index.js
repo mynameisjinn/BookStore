@@ -17,6 +17,7 @@ import BookRegisterView from "../views/admin/BookRegisterView.vue";
 
 import AdminPageLayout from "../layouts/AdminPageLayout.vue";
 import BookListView from "../views/admin/BookListView.vue";
+import BookEditView from "../views/admin/BookEditView.vue";
 
 const routes = [
     {
@@ -85,6 +86,11 @@ const routes = [
                 path: 'book/list',
                 name: 'admin-book-list',
                 component: BookListView
+            },
+            {
+                path: 'book/edit/:id',
+                name: 'admin-book-edit',
+                component: BookEditView
             }
         ]
     },

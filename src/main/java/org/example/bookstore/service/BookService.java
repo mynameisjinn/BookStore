@@ -53,4 +53,22 @@ public class BookService {
     public List<BookVO> selectBookList() {
         return bookRepository.selectBookList();
     }
+
+    public BookVO selectBookByBookId(int bookId){ return bookRepository.selectBookByBookId(bookId); }
+
+    public void updateBook(BookVO vo, MultipartFile imgFile) throws IOException {
+
+        if (imgFile != null && !imgFile.isEmpty()) {
+            String fileName = UUID.randomUUID() + "_" + imgFile.getOriginalFilename();
+            Path savePath = Paths.get(uploadDir + fileName);
+            Files.createDirectories(savePath.getParent());
+            imgFile.transferTo(savePath.toFile());
+
+            vo.setImgPath(savePath.toString()); // 파일 경로
+        } else {
+            vo.setImgPath("D:\\project\\2025\\book-store\\frontend\\public\\images\\default-book.jpg"); // 기본 이미지 처리
+        }
+
+        bookRepository.updateBook(vo);
+    }
 }

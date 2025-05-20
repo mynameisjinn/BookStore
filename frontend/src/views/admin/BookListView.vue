@@ -4,6 +4,7 @@ import BookTable from "../../components/admin/Table.vue";
 
 import axios from 'axios'
 import {useAuthStore} from "../../stores/auth.js";
+import router from "../../router/index.js";
 
 const fetchBooks = async () => {
   const authStore = useAuthStore()
@@ -35,7 +36,7 @@ const headers = [
 
 <template>
 <!--  <BookTable />-->
-  <BookTable title="도서 리스트" :headers="headers" :fetchData="fetchBooks" />
+  <BookTable title="도서 리스트" :headers="headers" :fetchData="fetchBooks"  @edit="(id) => router.push(`/admin/book/edit/${id}`)" />
 </template>
 
 <style scoped>

@@ -103,4 +103,24 @@ public class BookController {
         }
     }
 
+    @GetMapping("/edit/{id}")
+    public ResponseEntity<BookVO> getBookById(@PathVariable("id") int bookId) {
+        BookVO book = bookService.selectBookByBookId(bookId);
+        return ResponseEntity.ok(book);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> updateBook(@ModelAttribute BookVO vo,
+                                             @RequestParam(value = "imgFile", required = false) MultipartFile imgFile) {
+        try {
+            bookService.updateBook(vo,imgFile);
+
+            return ResponseEntity.ok("수정 성공");
+
+        } catch (Exception e) {
+
+            throw new CustomBadRequestException("수정 실패");
+        }
+    }
+
 }

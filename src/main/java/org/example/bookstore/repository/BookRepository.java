@@ -20,4 +20,8 @@ public interface BookRepository {
     void saveBook(BookVO vo);
 
     List<BookVO> selectBookList();
+
+    BookVO selectBookByBookId(int bookId);
+
+    void updateBook (BookVO vo);
 }
