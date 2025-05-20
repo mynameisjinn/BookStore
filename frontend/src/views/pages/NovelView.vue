@@ -7,9 +7,25 @@ import Tabs from '../../components/Tabs.vue';
 import CardList from '../../components/CardList.vue'
 import Test from '../../components/Test.vue'
 import PageTab from '../../components/PageTab.vue'
+import { useRoute } from 'vue-router'
+
+
+const route = useRoute()
+
+const isRootNovelPage = computed(() => {
+  return route.path === novelMenu.value?.path
+})
+
+
+const currentMidCategory = computed(() => {
+  const segments = route.path.split('/').slice(0, 4)
+  return segments.join('/')
+})
+
 
 // script setup 안에서 추가
 import { useMenuStore } from '../../stores/menu'
+import BookAdvertisement from "../../components/BookAdvertisement.vue";
 
 const menuStore = useMenuStore()
 
@@ -52,21 +68,32 @@ const novelCategoryTree = computed(() => {
 // ]
 
 const tabs = computed(() => {
+
+  const matchedMid = novelCategoryTree.value.find(mid => {
+    return mid.path === currentMidCategory.value
+  })
+
   const baseTab = {
     label: '전체',
+    path: matchedMid.path,
     content: CardList
   }
 
-  const dynamicTabs = novelCategoryTree.value.map(mid => ({
-    label: mid.name,
-    path: mid.path,
+
+
+  if (!matchedMid) return [baseTab]
+
+  const dynamicTabs = matchedMid.children.map(sub => ({
+    label: sub.name,
+    path: sub.path,
     content: {
-      template: `<div>${mid.name} 콘텐츠</div>`
+      template: `<div>${sub.name} 콘텐츠</div>`
     }
   }))
 
   return [baseTab, ...dynamicTabs]
 })
+
 
 
 
@@ -85,8 +112,11 @@ const tabs = computed(() => {
             <!-- <Test /> -->
         </div>
         <div class="flex-[3]">
-            <Tabs title="소설" :tabs="tabs" />
+<!--            <Tabs title="소설" :tabs="tabs" />-->
             <!-- <Tabs :title="'소설'" :tabs="tabs" :activeTab="activeTab" @update:activeTab="activeTab = $event" /> -->
+          <component :is="isRootNovelPage ? BookAdvertisement : Tabs"
+                     :title="'소설'"
+                     :tabs="!isRootNovelPage ? tabs : undefined" />
         </div>
     </div>
 </template>

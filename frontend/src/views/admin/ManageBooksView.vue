@@ -1,3 +1,7 @@
+<script setup>
+import BookForm from "../../components/admin/BookForm.vue";
+</script>
+
 <template>
-    여기서 책등록! 
+    <BookForm />
 </template>
