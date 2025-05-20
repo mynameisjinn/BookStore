@@ -18,4 +18,6 @@ public interface BookRepository {
     List<PublisherVO> selectPublisher(String searchVal);
 
     void saveBook(BookVO vo);
+
+    List<BookVO> selectBookList();
 }

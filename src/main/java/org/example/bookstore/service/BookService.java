@@ -49,4 +49,8 @@ public class BookService {
 
         bookRepository.saveBook(vo);
     }
+
+    public List<BookVO> selectBookList() {
+        return bookRepository.selectBookList();
+    }
 }

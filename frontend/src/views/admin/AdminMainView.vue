@@ -1,20 +1,10 @@
-<script setup>
-import AuthorForm from '../../components/admin/AuthorForm.vue';
-import BookFrom from '../../components/admin/BookForm.vue'
-import SelectBox from '../../components/admin/SelectBox.vue';
-import CategoryModal from '../../components/modal/CategoryModal.vue';
-</script>
+<script setup></script>
 
 <template>
-  <div>
-    여기는 관리자 메인페이지 
+  <div class="flex flex-col items-center justify-center min-h-[60vh] py-10 text-center bg-gray-50">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">관리자 페이지</h1>
+    <p class="text-lg text-gray-600">원하시는 메뉴를 선택하여 작업을 진행해주세요.</p>
   </div>
-  <CategoryModal />
-  <!-- <SelectBox /> -->
-  <!-- <AuthorForm /> -->
-  <BookFrom />
 </template>
 
 
-<style scoped>
-</style>

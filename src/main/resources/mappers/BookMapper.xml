@@ -31,6 +31,18 @@
         </if>
     </select>
 
+    <select id="selectBookList" resultType="org.example.bookstore.vo.BookVO">
+        SELECT  B.ID,
+                TITLE,
+                A.NAME AS authorName,
+                P.NAME AS publisherName,
+                PUBLISHED_DATE AS publishedDate
+        FROM BOOK B
+        JOIN AUTHOR A
+            ON B.AUTHOR_ID = A.ID
+        JOIN PUBLISHER P
+            ON B.PUBLISHER_ID = P.ID
+    </select>
 
     <insert id="saveBook" parameterType="org.example.bookstore.vo.BookVO">
         INSERT INTO BOOK (TITLE,

@@ -1,5 +1,5 @@
-import { createWebHistory, createRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
+import {createRouter, createWebHistory} from 'vue-router'
+import {useAuthStore} from '../stores/auth'
 
 import MainView from '../views/pages/MainView.vue'
 import LoginView from '../views/account/LoginView.vue'
@@ -12,8 +12,11 @@ import NotFoundView from '../views/error/NotFoundView.vue'
 
 import AdminLoginView from '../views/admin/AdminLoginView.vue'
 import AdminMainView from '../views/admin/AdminMainView.vue'
-import ManageBooksView from '../views/admin/ManageBooksView.vue'
 import axios from "axios";
+import BookRegisterView from "../views/admin/BookRegisterView.vue";
+
+import AdminPageLayout from "../layouts/AdminPageLayout.vue";
+import BookListView from "../views/admin/BookListView.vue";
 
 const routes = [
     {
@@ -56,23 +59,34 @@ const routes = [
 
     // 관리자 페이지 
     {
-        path: '/admin/login',
+        path: '/login-admin',
         name: 'admin-login',
         component: AdminLoginView,
         // meta: { requiresAuth: true }
         meta: { hideLayout: true }
     },
+
     {
         path: '/admin',
-        name: 'admin-main',
-        component: AdminMainView,
-        meta: { requiresAdmin: true }
-    },
-    {
-        path: '/admin/books',
-        name: 'admin-books',
-        component: ManageBooksView,
-        meta: { requiresAdmin: true }
+        component: AdminPageLayout,
+        meta: { requiresAdmin: true },
+        children: [
+            {
+                path: '',
+                name: 'admin-main',
+                component: AdminMainView,
+            },
+            {
+                path: 'book/register',
+                name: 'admin-book-register',
+                component: BookRegisterView
+            },
+            {
+                path: 'book/list',
+                name: 'admin-book-list',
+                component: BookListView
+            }
+        ]
     },
 
     // Error 

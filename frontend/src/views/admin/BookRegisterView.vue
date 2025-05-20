@@ -1,19 +1,46 @@
 <script setup>
 import {ref, computed, onMounted, watch} from 'vue'
-import SearchAuthor from '../modal/SearchModal.vue'
-import SearchPublisher from '../modal/SearchModal.vue'
-import CategoryModal from '../modal/CategoryModal.vue'
-import SelectBox from './SelectBox.vue'
-import FileUploadButton from './FileUploadButton.vue'
+import SearchAuthor from '../../components/modal/SearchModal.vue'
+import SearchPublisher from '../../components/modal/SearchModal.vue'
+import CategoryModal from '../../components/modal/CategoryModal.vue'
+import SelectBox from '../../components/admin/SelectBox.vue'
+import FileUploadButton from '../../components/admin/FileUploadButton.vue'
 import { storeToRefs } from 'pinia'
-import { useCategoryStore } from '../../stores/category'
-import AddButton from "./AddButton.vue";
-import SearchButton from "./SearchButton.vue";
+import { useCategoryStore } from '../../stores/category.js'
+import AddButton from "../../components/admin/AddButton.vue";
+import SearchButton from "../../components/admin/SearchButton.vue";
 import axios from "axios";
 import {useAuthStore} from "../../stores/auth.js";
+import SubmitButton from "../../components/admin/SubmitButton.vue";
 
 const selectedMain = ref('')
 const selectedSub = ref('')
+
+const selectedAuthorName = ref('')
+const selectedAuthorName2 = ref('')
+
+const showAuthorModal = ref(false)
+const showPublisherModal = ref(false)
+const showCategoryModal = ref(false)
+
+const isSubmitted = ref(false)
+
+
+const titleInput = ref(null)
+const authorInput = ref(null)
+const publisherInput = ref(null)
+const priceInput = ref(null)
+const dateInput = ref(null)
+
+
+const validationErrors = ref({
+  title: false,
+  authorId: false,
+  categoryId: false,
+  price: false,
+  publishedDate: false,
+  publisherId: false
+})
 
 const categoryStore = useCategoryStore()
 
@@ -43,18 +70,6 @@ const form = ref({
     imgFile: null,
 })
 
-const selectedAuthorName = ref('')
-const selectedAuthorName2 = ref('')
-
-const showAuthorModal = ref(false)
-const showPublisherModal = ref(false)
-
-const showCategoryModal = ref(false)
-
-const isSubmitted = ref(false)
-
-
-const defaultImage = 'https://source.unsplash.com/60x60/?book'
 
 const selectAuthor = ({ id, name }) => {
     form.value.authorId = id
@@ -114,30 +129,6 @@ const searchPublisher = async (query) => {
   }
 }
 
-// const submitForm = () => {
-//   if (form.value.photo) {
-//     console.log('업로드된 파일:', form.value.photo)
-//   } else {
-//     // console.log('파일 없음')
-//     form.value.photo.value = defaultImage
-//   }
-// }
-
-const titleInput = ref(null)
-const authorInput = ref(null)
-const publisherInput = ref(null)
-const priceInput = ref(null)
-const dateInput = ref(null)
-
-
-const validationErrors = ref({
-  title: false,
-  authorId: false,
-  categoryId: false,
-  price: false,
-  publishedDate: false,
-  publisherId: false
-})
 
 
 
@@ -215,15 +206,11 @@ const handleSubmit = async () => {
         Authorization: `Bearer ${authStore.token}`
       }
     })
-
     alert('등록 성공!')
   } catch (err) {
     console.error(err)
-    // alert('등록 실패')
   }
-
 }
-
 
 
 </script>
@@ -232,12 +219,12 @@ const handleSubmit = async () => {
 <template>
     <section class="p-6 bg-gray-100 text-gray-900">
         <form @submit.prevent="handleSubmit" class="container flex flex-col mx-auto space-y-5">
-            <div class="space-y-1 col-span-full px-2">
+      <div class="space-y-1 col-span-full px-2">
                 <p class="text-2xl font-semibold">도서 등록</p>
                 <p class="text-sm text-gray-600">도서 정보를 입력해주세요</p>
             </div>
 
-            <div class="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm bg-gray-50">
+            <div class="grid grid-cols-3 gap-6 p-6 rounded-md shadow-sm bg-gray-50">
                 <div class="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
 
                     <!-- 커버 이미지 -->
@@ -337,10 +324,7 @@ const handleSubmit = async () => {
 
             <!-- 저장 버튼 -->
             <div class="self-end">
-                <button type="submit"
-                    class="px-6 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
-                    도서 등록
-                </button>
+              <SubmitButton text="등록 ? 수정"/>
             </div>
         </form>
 

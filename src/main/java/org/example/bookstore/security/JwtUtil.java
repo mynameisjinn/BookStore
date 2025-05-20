@@ -22,7 +22,7 @@ public class JwtUtil {
 
     // 테스트
     @Setter
-    private long expirationMs = 1000 * 60 * 60; // 1시간
+    private long expirationMs = 1000 * 60 * 120; // 2시간
 
     // Key 객체 생성
     private Key getSigningKey() {

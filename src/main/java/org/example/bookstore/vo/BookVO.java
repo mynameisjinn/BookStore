@@ -13,4 +13,7 @@ public class BookVO {
     private int categoryId;
     private String imgPath;
 
+    private String authorName;
+    private String publisherName;
+
 }

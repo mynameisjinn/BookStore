@@ -92,4 +92,15 @@ public class BookController {
         }
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> selectBookList() {
+        try {
+            List<BookVO> bookList = bookService.selectBookList();
+
+            return ResponseEntity.ok(bookList);
+        } catch (Exception e) {
+            throw new CustomBadRequestException("도서 목록 불러오기 실패");
+        }
+    }
+
 }
