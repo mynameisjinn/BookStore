@@ -1,8 +1,21 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
+
+
+const props = defineProps({
+  images: {
+    type: Array,
+    required: true
+  },
+  height: {
+    type: String,
+    default: 'h-[400px]'
+  }
+})
+
 const activeSlide = ref(0)
-const slides = 3
+const slides = props.images.length
 let timer = null
 
 const startAutoSlide = () => {
@@ -45,9 +58,18 @@ onUnmounted(() => {
             <div class="relative overflow-hidden rounded-lg shadow-xl">
                 <div class="flex transition-transform duration-500 ease-in-out"
                     :style="`transform: translateX(-${activeSlide * 100}%)`">
-                    <div class="min-w-full h-[400px] bg-blue-500 flex items-center justify-center text-white text-4xl">1</div>
-                    <div class="min-w-full h-[400px] bg-green-500 flex items-center justify-center text-white text-4xl">2</div>
-                    <div class="min-w-full h-[400px] bg-purple-500 flex items-center justify-center text-white text-4xl">3</div>
+                  <div
+                      v-for="(image, index) in images"
+                      :key="index"
+                      class="min-w-full flex items-center justify-center text-white text-4xl overflow-hidden"
+                      :class="height"
+                  >
+                    <img
+                        :src="image"
+                        :alt="`슬라이드 ${index + 1}`"
+                        class="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
             </div>
 

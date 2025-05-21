@@ -25,7 +25,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-screen-lg">
+  <div class="mx-auto max-w-screen-lg ">
     <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ title }}</h2>
 
     <ul class="flex border-b">
