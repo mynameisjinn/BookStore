@@ -56,8 +56,8 @@ public class BookService {
 
 
             // 가격 한국 원화로 저장
-            NumberFormat koreanMoney = NumberFormat.getInstance(Locale.KOREA);
-            vo.setPrice(koreanMoney.format(vo.getPrice()));
+//            NumberFormat koreanMoney = NumberFormat.getInstance(Locale.KOREA);
+//            vo.setPrice(koreanMoney.format(vo.getPrice()));
 
         } else {
             vo.setImgPath(defaultDir); // 기본 이미지 처리 ( 실제 해당 경로에 이미지 존재할 것 ! )
@@ -75,14 +75,21 @@ public class BookService {
     public void updateBook(BookVO vo, MultipartFile imgFile) throws IOException {
 
         if (imgFile != null && !imgFile.isEmpty()) {
+
             String fileName = UUID.randomUUID() + "_" + imgFile.getOriginalFilename();
             Path savePath = Paths.get(uploadDir + fileName);
             Files.createDirectories(savePath.getParent());
             imgFile.transferTo(savePath.toFile());
 
-            vo.setImgPath(savePath.toString()); // 파일 경로
+            // 절대 경로를 상대 경로로 변환
+            String fullPath = savePath.toString().replace("\\", "/"); // 윈도우 경로 슬래시 정리
+            int idx = fullPath.indexOf("/public");
+            String relativePath = (idx != -1) ? fullPath.substring(idx + "/public".length()) : fullPath;
+
+            vo.setImgPath(relativePath);
+
         } else {
-            vo.setImgPath("D:\\project\\2025\\book-store\\frontend\\public\\images\\default-book.jpg"); // 기본 이미지 처리
+            if(vo.getImgPath() == null) vo.setImgPath(defaultDir);
         }
 
         bookRepository.updateBook(vo);

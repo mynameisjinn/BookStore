@@ -20,6 +20,8 @@ const fetchBookDetail = async () => {
       headers: { Authorization: `Bearer ${authStore.token}` }
     })
     bookData.value = res.data
+    console.log('저장된 도서 데이터')
+    console.log(bookData.value)
   } catch (e) {
     console.error('도서 정보 불러오기 실패:', e)
   }
@@ -44,7 +46,6 @@ const handleUpdate = async (formData) => {
     router.push('/admin/book/list') // 수정 후 목록으로 이동
   } catch (e) {
     console.error('수정 실패:', e)
-    // alert('도서 수정 실패')
   }
 }
 </script>

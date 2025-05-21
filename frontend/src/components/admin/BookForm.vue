@@ -49,7 +49,8 @@ const form = ref({
   price: '',
   publishedDate: '',
   publisherId: '',
-  imgFile: null,
+  imgPath: '',
+  imgFile: null
 })
 
 
@@ -80,16 +81,6 @@ const filteredSub = computed(() =>
 const filteredSmall = computed(() =>
     rawCategory.value.filter(small => small.parentId === Number(selectedSub.value))
 )
-
-
-// watch(() => props.defaultFormData, (newVal) => {
-//   form.value = { ...form.value, ...newVal }
-// }, { immediate: true })
-
-
-
-
-
 
 
 const selectAuthor = ({ id, name }) => {
@@ -222,7 +213,11 @@ const handleSubmit = async () => {
 
           <!-- 커버 이미지 -->
           <div class="col-span-full">
-            <FileUploadButton v-model:file="form.imgFile" />
+<!--            <FileUploadButton v-model:file="form.imgPath" />-->
+            <FileUploadButton
+                :imgPath="form.imgPath"
+                @update:file="form.imgFile = $event"
+            />
           </div>
 
           <!--                  focus:outline-none focus:ring-1-->

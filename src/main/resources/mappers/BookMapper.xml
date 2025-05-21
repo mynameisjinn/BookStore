@@ -54,7 +54,8 @@
             B.AUTHOR_ID AS authorId,
             B.PUBLISHER_ID AS publisherId,
             B.PRICE,
-            B.CATEGORY_ID AS categoryId
+            B.CATEGORY_ID AS categoryId,
+            B.IMG_PATH AS imgPath
         FROM BOOK B
             JOIN AUTHOR A
             ON B.AUTHOR_ID = A.ID

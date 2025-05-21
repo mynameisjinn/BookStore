@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import RedButton from "./admin/RedButton.vue"
+import ImgBox from "./ImgBox.vue";
 
 const isLiked = ref(false)
 
@@ -24,13 +25,9 @@ const handleLike = async () => {
 <!--  <h1> {{ book.imgPath  }}</h1>-->
   <div class="flex flex-col md:flex-row border-b border-gray-200 py-4">
     <!-- 이미지 -->
-    <div class="flex-shrink-0">
-      <img
-          :src="book.imgPath || '/images/default-book-front.jpg'"
-          alt="Product image"
-          class="w-32 h-32 object-cover"
-      >
-    </div>
+
+    <ImgBox :imgPath="book.imgPath || '/images/default-book-front.jpg'" />
+
 
     <!-- 내용 -->
     <div class="mt-4 md:mt-0 md:ml-6 flex flex-col justify-between flex-1">
