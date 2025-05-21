@@ -76,7 +76,7 @@ const routes = [
     {
         path: '/admin',
         component: AdminPageLayout,
-        meta: { requiresAdmin: true },
+        meta: { requiresAdmin: true, hideLayout: true, adminHeader: true },
         children: [
             {
                 path: '',

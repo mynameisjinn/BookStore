@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import RedButton from "./admin/RedButton.vue"
 import ImgBox from "./ImgBox.vue";
+import {useConfirmStore} from "../stores/confirm.js";
 
 const isLiked = ref(false)
+const confirmStore = useConfirmStore()
 
 defineProps({
   book: {
@@ -13,11 +15,15 @@ defineProps({
 })
 
 const handleLike = async () => {
-  const confirmed = window.confirm(isLiked.value ? '좋아요를 취소하시겠습니까?' : '좋아요를 누르시겠습니까?')
-  if (confirmed) {
-    isLiked.value = !isLiked.value
-    alert(isLiked.value ? '좋아요 클릭!' : '좋아요 취소!')
-  }
+  const message = isLiked.value ? '좋아요를 취소하시겠습니까?' : '좋아요를 누르시겠습니까?'
+  confirmStore.openConfirm({
+
+    msg: message,
+    onOk: () => {
+      isLiked.value = !isLiked.value
+      alert(isLiked.value ? '좋아요 클릭!' : '좋아요 취소!')
+    }
+  })
 }
 </script>
 
