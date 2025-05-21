@@ -1,13 +1,11 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import { ref, computed, onMounted } from 'vue'
-import BreadCrumb from '../../components/BreadCrumb.vue'
+import {useRoute} from 'vue-router';
+import {computed} from 'vue'
 import CategoryMenu from '../../components/CategoryMenu.vue'
 import Tabs from '../../components/Tabs.vue';
 import CardList from '../../components/CardList.vue'
-import Test from '../../components/Test.vue'
-import PageTab from '../../components/PageTab.vue'
-import { useRoute } from 'vue-router'
+import {useMenuStore} from '../../stores/menu'
+import BookAdvertisement from "../../components/BookAdvertisement.vue";
 
 
 const route = useRoute()
@@ -21,11 +19,6 @@ const currentMidCategory = computed(() => {
   const segments = route.path.split('/').slice(0, 4)
   return segments.join('/')
 })
-
-
-// script setup 안에서 추가
-import { useMenuStore } from '../../stores/menu'
-import BookAdvertisement from "../../components/BookAdvertisement.vue";
 
 const menuStore = useMenuStore()
 
@@ -60,13 +53,6 @@ const novelCategoryTree = computed(() => {
 })
 
 
-
-// const tabs = [
-//     { label: '전체', content: CardList },
-//     { label: '장르별', content: { template: '<div>소설 콘텐츠</div>' } },
-//     { label: '국가별', content: { template: '<div>컴퓨터/IT 콘텐츠</div>' } }
-// ]
-
 const tabs = computed(() => {
 
   const matchedMid = novelCategoryTree.value.find(mid => {
@@ -78,7 +64,6 @@ const tabs = computed(() => {
     path: matchedMid.path,
     content: CardList
   }
-
 
 
   if (!matchedMid) return [baseTab]
@@ -99,21 +84,15 @@ const tabs = computed(() => {
 
 </script>
 <template>
-
     <!-- <div class="mx-auto max-w-screen-lg">
         <BreadCrumb />
     </div> -->
 
     <div class="flex gap-4 mx-auto my-10 max-w-screen-lg ">
         <div class="flex-[1]">
-            <!-- <CategoryMenu /> -->
             <CategoryMenu :categoryTree="novelCategoryTree" />
-
-            <!-- <Test /> -->
         </div>
         <div class="flex-[3]">
-<!--            <Tabs title="소설" :tabs="tabs" />-->
-            <!-- <Tabs :title="'소설'" :tabs="tabs" :activeTab="activeTab" @update:activeTab="activeTab = $event" /> -->
           <component :is="isRootNovelPage ? BookAdvertisement : Tabs"
                      :title="'소설'"
                      :tabs="!isRootNovelPage ? tabs : undefined" />

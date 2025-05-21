@@ -36,7 +36,7 @@ authStore.loadRole()
 if (isTokenExpired(authStore.token)) {
     console.log("JWT 만료됨, 로그아웃 처리")
     authStore.logout()
-    router.push('/login')
+    // router.push('/login')
 }
 
 const menuStore = useMenuStore(pinia)

@@ -18,6 +18,7 @@ import BookRegisterView from "../views/admin/BookRegisterView.vue";
 import AdminPageLayout from "../layouts/AdminPageLayout.vue";
 import BookListView from "../views/admin/BookListView.vue";
 import BookEditView from "../views/admin/BookEditView.vue";
+import SearchView from "../views/pages/SearchView.vue";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         name: 'join',
         component: JoinView,
         meta: { hideLayout: true }
+    },
+    {
+        path: '/search',
+        name: 'search',
+        component: SearchView,
     },
 
 
@@ -60,7 +66,7 @@ const routes = [
 
     // 관리자 페이지 
     {
-        path: '/login-admin',
+        path: '/login/admin',
         name: 'admin-login',
         component: AdminLoginView,
         // meta: { requiresAuth: true }

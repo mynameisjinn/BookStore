@@ -87,4 +87,27 @@
         WHERE ID = #{id}
     </update>
 
+    <select id="selectBookListBySearchVar" resultType="org.example.bookstore.vo.BookVO">
+        SELECT  B.ID,
+                TITLE,
+                A.NAME AS authorName,
+                P.NAME AS publisherName,
+                PUBLISHED_DATE AS publishedDate,
+                B.AUTHOR_ID AS authorId,
+                B.PUBLISHER_ID AS publisherId,
+                B.PRICE,
+                B.CATEGORY_ID AS categoryId,
+                B.IMG_PATH AS imgPath
+        FROM    BOOK B
+        JOIN AUTHOR A
+            ON B.AUTHOR_ID = A.ID
+        JOIN PUBLISHER P
+            ON B.PUBLISHER_ID = P.ID
+        <if test='searchVal != null and searchVal !=""'>
+            WHERE B.TITLE LIKE CONCAT('%', #{searchVal}, '%')
+            OR A.NAME LIKE CONCAT('%', #{searchVal}, '%')
+            OR P.NAME LIKE CONCAT('%', #{searchVal}, '%')
+        </if>
+    </select>
+
 </mapper>

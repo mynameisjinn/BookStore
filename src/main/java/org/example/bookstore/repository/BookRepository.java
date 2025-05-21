@@ -24,4 +24,6 @@ public interface BookRepository {
     BookVO selectBookByBookId(int bookId);
 
     void updateBook (BookVO vo);
+
+    List<BookVO> selectBookListBySearchVar(String searchVal);
 }
