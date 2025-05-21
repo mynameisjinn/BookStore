@@ -26,4 +26,8 @@ public interface BookRepository {
     void updateBook (BookVO vo);
 
     List<BookVO> selectBookListBySearchVar(String searchVal);
+
+    void deleteBookOne(int bookId);
+
+    void deleteBookList(List<Integer> ids);
 }

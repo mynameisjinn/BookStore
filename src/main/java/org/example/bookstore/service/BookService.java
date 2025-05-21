@@ -99,4 +99,12 @@ public class BookService {
 
         return bookRepository.selectBookListBySearchVar(searchVal);
     }
+
+    public void deleteBookOne(int bookId) {
+        bookRepository.deleteBookOne(bookId);
+    }
+
+    public void deleteBookList(List<Integer> bookIdList) {
+        bookRepository.deleteBookList(bookIdList);
+    }
 }

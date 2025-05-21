@@ -3,7 +3,9 @@ import axios from 'axios'
 import { useAuthStore } from '../../stores/auth'
 import BookForm from "../../components/admin/BookForm.vue";
 import router from "../../router/index.js";
+import {useToast} from "vue-toastification";
 
+const toast = useToast();
 const handleRegister = async (formData) => {
   const authStore = useAuthStore()
   authStore.loadToken()
@@ -14,16 +16,18 @@ const handleRegister = async (formData) => {
   })
 
   try {
-    await axios.post('/api/admin/book/upload', data, {
+    const res = await axios.post('/api/admin/book/upload', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${authStore.token}`
       }
     })
-    alert('도서 등록 성공!')
+    // alert('도서 등록 성공!')
     router.push('/admin/book/list')
+    toast.success(res.data)
   } catch (e) {
-    console.error('등록 실패:', e)
+    // console.error('등록 실패:', e)
+    toast.error(e)
   }
 }
 </script>

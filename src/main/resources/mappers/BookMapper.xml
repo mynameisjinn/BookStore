@@ -5,7 +5,6 @@
 
 <mapper namespace="org.example.bookstore.repository.BookRepository">
 
-
     <select id="selectCategory" resultType="org.example.bookstore.vo.CategoryVO">
         SELECT  ID,
                 NAME,
@@ -111,4 +110,16 @@
         </if>
     </select>
 
+    <delete id="deleteBookOne">
+        DELETE FROM BOOK
+        WHERE ID = #{bookId}
+    </delete>
+
+    <delete id="deleteBookList">
+        DELETE FROM BOOK
+        WHERE ID IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
