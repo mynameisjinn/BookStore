@@ -3,6 +3,7 @@ import {computed, onMounted, ref, watch} from 'vue';
 import RedButton from "./RedButton.vue";
 import {useToast} from "vue-toastification";
 import {useConfirmStore} from "../../stores/confirm.js";
+import Pagination from "../Pagination.vue";
 
 const toast = useToast()
 const confirmStore = useConfirmStore()
@@ -21,6 +22,23 @@ const searchQuery = ref('');
 
 const selectedList = ref([]);
 const selectAll = ref(false);
+
+const currentPage = ref(1);
+const itemsPerPage = ref(10); // 페이지당 항목 수
+
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredSearchVar.value.slice(start, end);
+});
+
+// 페이지 변경 처리 함수
+function onPageChanged(page) {
+  currentPage.value = page;
+}
+
+
 
 // 데이터 fetch
 async function fetchData() {
@@ -136,7 +154,7 @@ defineExpose({
         </thead>
         <tbody class="text-gray-600 text-sm">
         <tr
-            v-for="item in filteredSearchVar"
+            v-for="item in paginatedData"
             :key="item.id"
             class="border-b border-gray-200 hover:bg-gray-100"
         >
@@ -173,4 +191,10 @@ defineExpose({
       </table>
     </div>
   </div>
+  <Pagination
+      :current-page="currentPage"
+      :total-items="filteredSearchVar.length"
+      :items-per-page="itemsPerPage"
+      @page-changed="onPageChanged"
+  />
 </template>
