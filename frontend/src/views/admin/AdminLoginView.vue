@@ -5,12 +5,18 @@ import axios from 'axios'
 import { useAuthStore } from '../../stores/auth'
 import { useMenuStore } from '../../stores/menu'
 import SimpleFooter from '../../components/SimpleFooter.vue'
+import {useConfirmStore} from "../../stores/confirm.js";
+import {useToast} from "vue-toastification";
 
 
 const router = useRouter()
 
 const email = ref('')
 const password = ref('')
+
+const confirmStore = useConfirmStore()
+
+const toast = useToast()
 
 const login = async () => {
     const authStore = useAuthStore()
@@ -27,16 +33,27 @@ const login = async () => {
         authStore.setUser(res.data.user)
         authStore.setRole(res.data.role)
         
-        // console.log(authStore.user)
+        // console.log(res.data.role)
+        if(res.data.role === 'ROLE_USER') {
+          confirmStore.openConfirm({
+            msg: '회원 전용 로그인 페이지를 이용해주세요',
+            onOk: () => {
+              router.push('/login')
+            }
+          })
+        }
 
         menuStore.resetMenu()
         menuStore.fetchMenu() 
 
         router.push('/admin')
     } catch (err) {
-        console.error('로그인 실패', err)
-        alert('아이디, 비밀번호를 확인해주세요')
+        // console.error('로그인 실패', err)
+        // alert('아이디, 비밀번호를 확인해주세요')
+      toast.error('아이디, 비밀번호를 확인해주세요')
+      password.value = ''
     }
+
 }
 
 </script>

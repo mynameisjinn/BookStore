@@ -37,6 +37,12 @@
         </if>
     </select>
 
+    <select id="selectPublisherAll" resultType="org.example.bookstore.vo.PublisherVO">
+        SELECT  ID,
+        NAME
+        FROM PUBLISHER
+    </select>
+
     <select id="selectBookList" resultType="org.example.bookstore.vo.BookVO">
         SELECT  B.ID,
                 TITLE,

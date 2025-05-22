@@ -46,7 +46,7 @@ const handleLike = async () => {
           <span class="hidden sm:inline">|</span>
           <span>{{ book.publishedDate }}</span>
         </div>
-        <p class="mt-3 text-xl font-semibold text-black">₩{{ book.price}}</p>
+        <p class="mt-3 text-xl font-semibold text-black">{{ book.price}}</p>
       </div>
 
       <!-- 버튼들 -->

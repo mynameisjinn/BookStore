@@ -87,6 +87,16 @@ public class BookController {
         }
     }
 
+    @GetMapping("/publisher/all")
+    public ResponseEntity<?> publisherAll() {
+        try {
+            List<PublisherVO> publishers = bookService.selectPublisherAll();
+            return ResponseEntity.ok(publishers);
+        } catch (Exception e) {
+            throw new CustomBadRequestException("출판사 목록 전체 조회 실패");
+        }
+    }
+
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadBook(@ModelAttribute BookVO vo,

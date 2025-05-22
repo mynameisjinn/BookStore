@@ -1,140 +1,103 @@
 <script setup>
-import {ref, computed, onMounted, watch} from 'vue'
-import SearchAuthor from '../../components/modal/SearchModal.vue'
-import SearchPublisher from '../../components/modal/SearchModal.vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import axios from 'axios'
+
+// Components
+import SearchModal from '../../components/modal/SearchModal.vue'
 import CategoryModal from '../../components/modal/CategoryModal.vue'
 import SelectBox from '../../components/admin/SelectBox.vue'
 import FileUploadButton from '../../components/admin/FileUploadButton.vue'
-import { storeToRefs } from 'pinia'
+import AddButton from '../../components/admin/AddButton.vue'
+import SearchButton from '../../components/admin/SearchButton.vue'
+import SubmitButton from '../../components/admin/SubmitButton.vue'
+
+// Stores
 import { useCategoryStore } from '../../stores/category.js'
-import AddButton from "../../components/admin/AddButton.vue";
-import SearchButton from "../../components/admin/SearchButton.vue";
-import axios from "axios";
-import {useAuthStore} from "../../stores/auth.js";
-import SubmitButton from "../../components/admin/SubmitButton.vue";
+import { useAuthorStore } from '../../stores/author.js'
+import { usePublisherStore } from '../../stores/publisher.js'
 
-const selectedMain = ref('')
-const selectedSub = ref('')
+// Form 상태
+const form = ref({
+  title: '', authorId: '', categoryId: '',
+  price: '', publishedDate: '', publisherId: '',
+  imgPath: '', imgFile: null
+})
 
-const selectedAuthorName = ref('')
-const selectedPublisherName  = ref('')
-
-const showAuthorModal = ref(false)
-const showPublisherModal = ref(false)
-const showCategoryModal = ref(false)
+const validationErrors = ref({
+  title: false, authorId: false, categoryId: false,
+  price: false, publishedDate: false, publisherId: false
+})
 
 const isSubmitted = ref(false)
 
-
+// 입력창 포커스용 ref
 const titleInput = ref(null)
 const authorInput = ref(null)
 const publisherInput = ref(null)
 const priceInput = ref(null)
 const dateInput = ref(null)
 
-
-const validationErrors = ref({
-  title: false,
-  authorId: false,
-  categoryId: false,
-  price: false,
-  publishedDate: false,
-  publisherId: false
-})
-
-const form = ref({
-  title: '',
-  authorId: '',
-  categoryId: '',
-  price: '',
-  publishedDate: '',
-  publisherId: '',
-  imgPath: '',
-  imgFile: null
-})
-
-
-
+// props, emit
 const emit = defineEmits(['submit'])
-
 const props = defineProps({
-  mode: { type: String, default: 'create' }, // 'create' or 'edit'
+  mode: { type: String, default: 'create' },
   defaultFormData: { type: Object, default: () => ({}) }
 })
 
+// 모달 상태
+const showAuthorModal = ref(false)
+const showPublisherModal = ref(false)
+const showCategoryModal = ref(false)
 
+const selectedAuthorName = ref('')
+const selectedPublisherName = ref('')
 
-// 카테고리 데이터를 가져오기
+// 카테고리 선택
+const selectedMain = ref('')
+const selectedSub = ref('')
+
+// 카테고리 불러오기
 const categoryStore = useCategoryStore()
-onMounted(() => {
-  categoryStore.fetchCategory()
-})
-
+onMounted(() => categoryStore.fetchCategory())
 const { mainCategory, rawCategory } = storeToRefs(categoryStore)
-
-
 
 const filteredSub = computed(() =>
     rawCategory.value.filter(sub => sub.parentId === Number(selectedMain.value))
 )
-
 const filteredSmall = computed(() =>
     rawCategory.value.filter(small => small.parentId === Number(selectedSub.value))
 )
 
+// 작가 & 출판사 검색
+const searchVar = ref('')
+const authorStore = useAuthorStore()
+const publisherStore = usePublisherStore()
 
-const selectAuthor = ({ id, name }) => {
-  form.value.authorId = id
-  selectedAuthorName.value = name
-  showAuthorModal.value = false
+onMounted(async () => {
+  await authorStore.fetchAuthors()
+  await publisherStore.fetchPublishers()
+})
+
+const filteredAuthors = computed(() => authorStore.filteredAuthors(searchVar.value))
+const filteredPublishers = computed(() => publisherStore.filteredPublishers(searchVar.value))
+
+const selectItem = (target, { id, name }) => {
+  form.value[target] = id
+  if (target === 'authorId') selectedAuthorName.value = name
+  if (target === 'publisherId') selectedPublisherName.value = name
+  if (target === 'authorId') showAuthorModal.value = false
+  if (target === 'publisherId') showPublisherModal.value = false
 }
 
-const selectPublisher = ({ id, name }) => {
-  form.value.publisherId = id
-  selectedPublisherName .value = name
-  showPublisherModal.value = false
-}
-
-const searchAuthor = async (query) => {
-
-  const authStore = useAuthStore()
-  authStore.loadToken()
-
-  const res = await axios.get('/api/admin/book/author', {
-    headers: {
-      Authorization: `Bearer ${authStore.token}`
-    },
-    params: { searchVal: query }
-  })
-  return res.data
-}
-
-
-const searchPublisher = async (query) => {
-
-  const authStore = useAuthStore()
-  authStore.loadToken()
-
-  const res = await axios.get('/api/admin/book/publisher', {
-    headers: {
-      Authorization: `Bearer ${authStore.token}`
-    },
-    params: { searchVal: query }
-  })
-  return res.data
-}
-
-// 컴포넌트 마운트 시, props 변경 시 watch 가 추적
-// newVal : props로 받은 defaultFormData, 바뀐 최신 데이터
+// props로 받은 값 세팅
 watch(() => props.defaultFormData, (newVal) => {
   form.value = { ...form.value, ...newVal }
 
   if (props.mode === 'edit') {
-    // 수정 모드일 경우 초기값 셋팅
     selectedAuthorName.value = newVal.authorName || ''
     selectedPublisherName.value = newVal.publisherName || ''
 
-    // 대분류, 중분류 추적용
     const smallCategory = rawCategory.value.find(c => c.id === newVal.categoryId)
     if (smallCategory) {
       const subCategory = rawCategory.value.find(c => c.id === smallCategory.parentId)
@@ -146,43 +109,32 @@ watch(() => props.defaultFormData, (newVal) => {
   }
 }, { immediate: true })
 
-// 제출전 폼값 검사
+// 유효성 검사
 watch(form, (newForm) => {
   if (!isSubmitted.value) return
-  validationErrors.value.title = !newForm.title
-  validationErrors.value.authorId = !newForm.authorId
-  validationErrors.value.categoryId = !newForm.categoryId
-  validationErrors.value.price = !newForm.price
-  validationErrors.value.publishedDate = !newForm.publishedDate
-  validationErrors.value.publisherId = !newForm.publisherId
+  validateForm()
 }, { deep: true })
 
-
-// 대분류 값이 바뀜에 따라 중분류,소분류 리셋
 watch(selectedMain, () => {
   selectedSub.value = ''
   form.value.categoryId = ''
 })
 
+const validateForm = () => {
+  const f = form.value
+  validationErrors.value.title = !f.title
+  validationErrors.value.authorId = !f.authorId
+  validationErrors.value.categoryId = !f.categoryId || !selectedMain.value || !selectedSub.value
+  validationErrors.value.price = !f.price
+  validationErrors.value.publishedDate = !f.publishedDate
+  validationErrors.value.publisherId = !f.publisherId
+}
 
-const handleSubmit = async () => {
+const handleSubmit = () => {
   isSubmitted.value = true
+  validateForm()
   const errors = validationErrors.value
-
-  errors.title = !form.value.title
-  errors.authorId = !form.value.authorId
-  errors.categoryId = !form.value.categoryId || !selectedMain.value || !selectedSub.value
-  errors.price = !form.value.price
-  errors.publishedDate = !form.value.publishedDate
-  errors.publisherId = !form.value.publisherId
-
-  const focusMap = {
-    title: titleInput,
-    authorId: authorInput,
-    price: priceInput,
-    publishedDate: dateInput,
-    publisherId: publisherInput
-  }
+  const focusMap = { title: titleInput, authorId: authorInput, price: priceInput, publishedDate: dateInput, publisherId: publisherInput }
 
   for (const key in errors) {
     if (errors[key]) {
@@ -190,16 +142,9 @@ const handleSubmit = async () => {
       return
     }
   }
-
-  console.log('도서 등록 폼 데이터:', form.value)
   emit('submit', { ...form.value })
 }
-
-
-
 </script>
-
-
 <template>
   <section class="p-6 bg-gray-100 text-gray-900">
     <form @submit.prevent="handleSubmit" class="container flex flex-col mx-auto space-y-5">
@@ -213,7 +158,7 @@ const handleSubmit = async () => {
 
           <!-- 커버 이미지 -->
           <div class="col-span-full">
-<!--            <FileUploadButton v-model:file="form.imgPath" />-->
+            <!--            <FileUploadButton v-model:file="form.imgPath" />-->
             <FileUploadButton
                 :imgPath="form.imgPath"
                 @update:file="form.imgFile = $event"
@@ -316,24 +261,12 @@ const handleSubmit = async () => {
       </div>
     </form>
 
-    <SearchAuthor
-        v-if="showAuthorModal"
-        @close="showAuthorModal = false"
-        @select="selectAuthor"
-        :onSearch="searchAuthor"
-        sub="저자"
-    />
+    <SearchModal v-if="showAuthorModal" @close="showAuthorModal = false" @select="item => selectItem('authorId', item)"
+                 sub="저자" :search-var="searchVar" :dataArray="filteredAuthors" @update-search="val => searchVar = val" />
 
-    <SearchPublisher
-        v-if="showPublisherModal"
-        @close="showPublisherModal = false"
-        @select="selectPublisher"
-        :onSearch="searchPublisher"
-        sub="출판사"
-    />
+    <SearchModal v-if="showPublisherModal" @close="showPublisherModal = false" @select="item => selectItem('publisherId', item)"
+                 sub="출판사" :search-var="searchVar" :dataArray="filteredPublishers" @update-search="val => searchVar = val" />
 
-    <!-- 카테고리 추가 모달 -->
     <CategoryModal :isOpen="showCategoryModal" @close="showCategoryModal = false" />
   </section>
 </template>
-

@@ -42,8 +42,10 @@ const login = async () => {
 
         toast.success('로그인 성공!')
     } catch (err) {
-        console.error('로그인 실패', err)
-        alert('아이디, 비밀번호를 확인해주세요')
+        // console.error('로그인 실패', err)
+        // alert('아이디, 비밀번호를 확인해주세요')
+        toast.error('아이디, 비밀번호를 확인해주세요')
+        password.value = ''
     }
 }
 

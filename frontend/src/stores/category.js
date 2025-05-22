@@ -58,5 +58,12 @@ export const useCategoryStore = defineStore('category', {
             this.smallCategory = []
             this.isLoaded = false
         },
+    },
+    getters: {
+        getSubCategoryByMain: (state) => (mainId) =>
+            state.rawCategory.filter(sub => sub.parentId === Number(mainId)),
+
+        getSmallCategoryBySub: (state) => (subId) =>
+            state.rawCategory.filter(small => small.parentId === Number(subId))
     }
 })

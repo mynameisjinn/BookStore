@@ -39,6 +39,7 @@ public class BookService {
     public List<AuthorVO> selectAuthorAll() { return bookRepository.selectAuthorAll(); }
 
     public List<PublisherVO> selectPublisher(String searchVal) { return bookRepository.selectPublisher(searchVal); }
+    public List<PublisherVO> selectPublisherAll() { return bookRepository.selectPublisherAll(); }
 
     public void saveBook(BookVO vo, MultipartFile imgFile) throws IOException {
 
