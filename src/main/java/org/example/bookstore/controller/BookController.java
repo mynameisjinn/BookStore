@@ -131,29 +131,29 @@ public class BookController {
                                              @RequestParam(value = "imgFile", required = false) MultipartFile imgFile) {
         try {
             bookService.updateBook(vo,imgFile);
-            return ResponseEntity.ok("수정 성공");
+            return ResponseEntity.ok("도서 수정 성공");
         } catch (Exception e) {
-            throw new CustomBadRequestException("수정 실패");
+            throw new CustomBadRequestException("도서 수정 실패");
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBookOne(@PathVariable("id") int bookId) {
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteBookOne(@RequestBody BookVO vo) {
         try {
-            bookService.deleteBookOne(bookId);
-            return ResponseEntity.ok("삭제 성공");
+            bookService.deleteBookOne(vo);
+            return ResponseEntity.ok("도서 삭제 성공");
         } catch (Exception e) {
-            throw new CustomBadRequestException("삭제 실패");
+            throw new CustomBadRequestException("도서 삭제 실패");
         }
     }
 
     @PostMapping("/delete-list")
-    public ResponseEntity<String> deleteBookList(@RequestBody List<Integer> bookIdList) {
+    public ResponseEntity<String> deleteBookList(@RequestBody List<BookVO> bookList) {
         try {
-            bookService.deleteBookList(bookIdList);
-            return ResponseEntity.ok("삭제 성공");
+            bookService.deleteBookList(bookList);
+            return ResponseEntity.ok("도서 리스트 삭제 성공");
         } catch (Exception e) {
-            throw new CustomBadRequestException("삭제 실패");
+            throw new CustomBadRequestException("도서 리스트 삭제 실패");
         }
     }
 

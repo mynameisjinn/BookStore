@@ -24,7 +24,8 @@ const fetchBooks = async () => {
     title: book.title,
     authorName: book.authorName,
     publisherName: book.publisherName,
-    publishedDate: book.publishedDate
+    publishedDate: book.publishedDate,
+    imgPath: book.imgPath
   }))
 }
 
@@ -36,9 +37,14 @@ const headers = [
   { label: '출판일', key: 'publishedDate' }
 ]
 
-const deleteOne = async (id) => {
+const deleteOne = async (book) => {
+  const data = {
+    id:book.id,
+    imgPath:book.imgPath
+  }
+
   try {
-    const res = await axios.delete(`/api/admin/book/delete/${id}`, {
+    const res = await axios.post(`/api/admin/book/delete`, data,{
       headers: {
         Authorization: `Bearer ${authStore.token}`
       }
@@ -52,18 +58,14 @@ const deleteOne = async (id) => {
 }
 
 const deleteList = async (list) => {
-  const idList = list.value;
-  console.log(list.value)
-
   try {
-    const authStore = useAuthStore();
 
-    const res = await axios({
-      method: 'post',
-      url: '/api/admin/book/delete-list',
-      data: JSON.stringify(idList),
+    const data = list.value
+
+    console.log(data)
+
+    const res = await axios.post('/api/admin/book/delete-list',data,{
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${authStore.token}`
       }
     });

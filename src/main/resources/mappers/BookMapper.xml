@@ -48,7 +48,8 @@
                 TITLE,
                 A.NAME AS authorName,
                 P.NAME AS publisherName,
-                PUBLISHED_DATE AS publishedDate
+                PUBLISHED_DATE AS publishedDate,
+                B.IMG_PATH AS imgPath
         FROM BOOK B
         JOIN AUTHOR A
             ON B.AUTHOR_ID = A.ID

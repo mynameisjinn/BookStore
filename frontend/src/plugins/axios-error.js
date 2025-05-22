@@ -12,7 +12,7 @@ axios.interceptors.response.use(
 
 
         if (status === 500) {
-            console.error('500 에러 감지됨, 페이지 이동');
+            // console.error('500 에러 감지됨, 페이지 이동');
             router.push('/server-error');
         }
 

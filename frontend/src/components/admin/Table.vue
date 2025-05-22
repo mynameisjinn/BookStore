@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import RedButton from "./RedButton.vue";
 import {useToast} from "vue-toastification";
 import {useConfirmStore} from "../../stores/confirm.js";
@@ -19,14 +19,13 @@ const emit = defineEmits(['edit', 'delete']);
 const dataList = ref([]);
 const searchQuery = ref('');
 
-const selectedIds = ref([]);
+const selectedList = ref([]);
 const selectAll = ref(false);
 
 // 데이터 fetch
 async function fetchData() {
   try {
-    const data = await props.fetchData();
-    dataList.value = data;
+    dataList.value = await props.fetchData();
   } catch (error) {
     console.error('데이터 가져오기 실패:', error);
   }
@@ -50,16 +49,18 @@ const filteredSearchVar = computed(() => {
 // 전체 선택 토글
 watch(selectAll, (val) => {
   if (val) {
-    selectedIds.value = filteredSearchVar.value.map(item => item.id);
+    selectedList.value = filteredSearchVar.value.map(item => item); // 객체 자체 저장
   } else {
-    selectedIds.value = [];
+    selectedList.value = [];
   }
 });
 
 // 선택된 항목이 전체와 일치하는지 확인해서 selectAll 갱신
-watch([filteredSearchVar, selectedIds], () => {
+watch([filteredSearchVar, selectedList], () => {
   const visibleIds = filteredSearchVar.value.map(item => item.id);
-  selectAll.value = visibleIds.length > 0 && visibleIds.every(id => selectedIds.value.includes(id));
+  const selectedIds = selectedList.value.map(item => item.id);
+
+  selectAll.value = visibleIds.length > 0 && visibleIds.every(id => selectedIds.includes(id));
 }, { deep: true });
 
 function editData(id) {
@@ -70,17 +71,18 @@ function deleteSelected() {
   confirmStore.openConfirm({
     msg: '선택한 항목을 모두 삭제하시겠습니까?',
     onOk: () => {
-      emit('deleteList', selectedIds);
+      emit('deleteList', selectedList);
     }
   })
 }
 
 
-const deleteData = async (id) => {
+const deleteData = async (book) => {
+  // console.log(id)
   confirmStore.openConfirm({
     msg: '선택한 항목을 삭제하시겠습니까',
     onOk: () => {
-      emit('delete', id)
+      emit('delete', book)
     }
   })
 }
@@ -138,8 +140,8 @@ defineExpose({
           <td class="w-10 py-3 px-2 text-center">
             <input
                 type="checkbox"
-                :value="item.id"
-                v-model="selectedIds"
+                :value="item"
+                v-model="selectedList"
             />
           </td>
           <!-- 데이터 셀 -->
@@ -157,7 +159,7 @@ defineExpose({
               <button class="w-4 hover:text-blue-500" @click="editData(item.id)">
                 <img src="/images/edit.svg" alt="edit" />
               </button>
-              <button class="w-4 hover:text-red-500" @click="deleteData(item.id)">
+              <button class="w-4 hover:text-red-500" @click="deleteData(item)">
                 <img src="/images/delete.svg" alt="delete" />
               </button>
             </div>

@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -26,10 +28,13 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Value("${file.book.cover.upload.dir}")
-    private String uploadDir;
+    private String uploadBookDir;
 
     @Value("${file.book.cover.upload.default}")
     private String defaultDir;
+
+    @Value("${file.frontend.upload.dir}")
+    private String uploadDir;
 
     public List<CategoryVO> selectCategory(){
         return bookRepository.selectCategory();
@@ -45,7 +50,7 @@ public class BookService {
 
         if (imgFile != null && !imgFile.isEmpty()) {
             String fileName = UUID.randomUUID() + "_" + imgFile.getOriginalFilename();
-            Path savePath = Paths.get(uploadDir + fileName);
+            Path savePath = Paths.get(uploadBookDir + fileName);
             Files.createDirectories(savePath.getParent());
             imgFile.transferTo(savePath.toFile());
 
@@ -79,7 +84,7 @@ public class BookService {
         if (imgFile != null && !imgFile.isEmpty()) {
 
             String fileName = UUID.randomUUID() + "_" + imgFile.getOriginalFilename();
-            Path savePath = Paths.get(uploadDir + fileName);
+            Path savePath = Paths.get(uploadBookDir + fileName);
             Files.createDirectories(savePath.getParent());
             imgFile.transferTo(savePath.toFile());
 
@@ -102,11 +107,31 @@ public class BookService {
         return bookRepository.selectBookListBySearchVar(searchVal);
     }
 
-    public void deleteBookOne(int bookId) {
-        bookRepository.deleteBookOne(bookId);
+    public void deleteBookOne(BookVO vo) throws Exception {
+
+        // 이미지 삭제하기
+        File file = new File(uploadDir + vo.getImgPath());
+        if (!vo.getImgPath().equals(defaultDir) && file.exists()) {
+            file.delete();
+        }
+
+        // 도서 삭제
+        bookRepository.deleteBookOne(vo.getId());
+
     }
 
-    public void deleteBookList(List<Integer> bookIdList) {
-        bookRepository.deleteBookList(bookIdList);
+    public void deleteBookList(List<BookVO> bookList) {
+        List<Integer> bookIdList = new ArrayList<>();
+
+        if(!bookList.isEmpty()){
+            for(BookVO vo : bookList){
+                File file = new File(uploadDir + vo.getImgPath());
+                if (!vo.getImgPath().equals(defaultDir) && file.exists()) {
+                    file.delete();
+                }
+                bookIdList.add(vo.getId());
+            }
+            bookRepository.deleteBookList(bookIdList);
+        }
     }
 }
