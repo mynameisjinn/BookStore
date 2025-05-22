@@ -14,6 +14,7 @@ public interface BookRepository {
     List<CategoryVO> selectCategory();
 
     List<AuthorVO> selectAuthor(String searchVal);
+    List<AuthorVO> selectAuthorAll();
 
     List<PublisherVO> selectPublisher(String searchVal);
 

@@ -36,6 +36,7 @@ public class BookService {
     }
 
     public List<AuthorVO> selectAuthor(String searchVal) { return bookRepository.selectAuthor(searchVal); }
+    public List<AuthorVO> selectAuthorAll() { return bookRepository.selectAuthorAll(); }
 
     public List<PublisherVO> selectPublisher(String searchVal) { return bookRepository.selectPublisher(searchVal); }
 

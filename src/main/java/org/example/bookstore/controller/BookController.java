@@ -67,6 +67,16 @@ public class BookController {
         }
     }
 
+    @GetMapping("/author/all")
+    public ResponseEntity<?> authorAll() {
+        try {
+            List<AuthorVO> authors = bookService.selectAuthorAll();
+            return ResponseEntity.ok(authors);
+        } catch (Exception e) {
+            throw new CustomBadRequestException("작가 전체 조회 실패");
+        }
+    }
+
     @GetMapping("/publisher")
     public ResponseEntity<?> publisherList(@RequestParam("searchVal") String searchVal) {
         try {

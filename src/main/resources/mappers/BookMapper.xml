@@ -22,6 +22,12 @@
         </if>
     </select>
 
+    <select id="selectAuthorAll" resultType="org.example.bookstore.vo.AuthorVO">
+        SELECT ID,
+        NAME
+        FROM AUTHOR
+    </select>
+
     <select id="selectPublisher" resultType="org.example.bookstore.vo.PublisherVO" parameterType="String">
         SELECT  ID,
                 NAME
@@ -109,6 +115,7 @@
             OR P.NAME LIKE CONCAT('%', #{searchVal}, '%')
         </if>
     </select>
+
 
     <delete id="deleteBookOne">
         DELETE FROM BOOK

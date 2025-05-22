@@ -10,7 +10,7 @@ const toast = useToast()
 const authStore = useAuthStore()
 authStore.loadToken()
 
-const tableRef = ref(null)
+const callBookTable = ref(null)
 
 const fetchBooks = async () => {
   const res = await axios.get('/api/admin/book/list', {
@@ -44,7 +44,7 @@ const deleteOne = async (id) => {
       }
     })
     // BookTable 내부 fetchData() 호출
-    tableRef.value?.fetchData()
+    callBookTable.value?.fetchData()
     toast.warning(res.data)
   } catch (e) {
     toast.error('삭제에 실패했습니다.');
@@ -69,7 +69,7 @@ const deleteList = async (list) => {
     });
 
     toast.warning(res.data);
-    tableRef.value?.fetchData();
+    callBookTable.value?.fetchData();
   } catch (e) {
     // console.log(e.response.data)
     toast.error(e.response?.data || '삭제에 실패하였습니다.');
@@ -81,7 +81,7 @@ const deleteList = async (list) => {
 
 <template>
   <BookTable
-      ref="tableRef"
+      ref="callBookTable"
       title="도서 리스트"
       :headers="headers"
       :fetchData="fetchBooks"
