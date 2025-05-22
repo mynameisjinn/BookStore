@@ -7,7 +7,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="flex-shrink-0 w-32 h-48 overflow-hidden rounded border">
+  <div class="flex-shrink-0 w-32 h-50 overflow-hidden rounded border">
     <img
         :src=imgPath
         alt="Product image"

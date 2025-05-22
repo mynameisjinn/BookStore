@@ -68,6 +68,10 @@ function editData(id) {
 }
 
 function deleteSelected() {
+  if(selectedList.value.length === 0) {
+    toast.warning('삭제할 데이터를 선택해주세요!')
+    return
+  }
   confirmStore.openConfirm({
     msg: '선택한 항목을 모두 삭제하시겠습니까?',
     onOk: () => {

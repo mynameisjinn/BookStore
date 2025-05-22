@@ -59,11 +59,7 @@ const deleteOne = async (book) => {
 
 const deleteList = async (list) => {
   try {
-
     const data = list.value
-
-    console.log(data)
-
     const res = await axios.post('/api/admin/book/delete-list',data,{
       headers: {
         Authorization: `Bearer ${authStore.token}`

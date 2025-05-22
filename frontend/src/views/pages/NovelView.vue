@@ -3,9 +3,9 @@ import {useRoute} from 'vue-router';
 import {computed} from 'vue'
 import CategoryMenu from '../../components/CategoryMenu.vue'
 import Tabs from '../../components/Tabs.vue';
-import CardList from '../../components/CardList.vue'
 import {useMenuStore} from '../../stores/menu'
 import BookAdvertisement from "../../components/BookAdvertisement.vue";
+import BookCardList from "../../components/BookCardList.vue";
 
 
 const route = useRoute()
@@ -48,7 +48,6 @@ const novelCategoryTree = computed(() => {
             children: children
         })
     })
-
     return result
 })
 
@@ -62,7 +61,7 @@ const tabs = computed(() => {
   const baseTab = {
     label: '전체',
     path: matchedMid.path,
-    content: CardList
+    content: BookCardList
   }
 
 
@@ -84,10 +83,6 @@ const tabs = computed(() => {
 
 </script>
 <template>
-    <!-- <div class="mx-auto max-w-screen-lg">
-        <BreadCrumb />
-    </div> -->
-
     <div class="flex gap-4 mx-auto my-10 max-w-screen-lg ">
         <div class="flex-[1]">
             <CategoryMenu :categoryTree="novelCategoryTree" />
