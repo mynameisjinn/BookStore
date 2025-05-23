@@ -10,5 +10,6 @@ public class MenuVO {
   private String path;
   private int parentId;
   private int depth;
+  private int categoryId;
 
 }

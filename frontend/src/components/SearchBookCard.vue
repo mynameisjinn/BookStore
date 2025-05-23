@@ -21,7 +21,7 @@ const handleLike = async () => {
     msg: message,
     onOk: () => {
       isLiked.value = !isLiked.value
-      alert(isLiked.value ? '좋아요 클릭!' : '좋아요 취소!')
+      // alert(isLiked.value ? '좋아요 클릭!' : '좋아요 취소!')
     }
   })
 }

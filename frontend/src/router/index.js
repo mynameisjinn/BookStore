@@ -19,6 +19,7 @@ import AdminPageLayout from "../layouts/AdminPageLayout.vue";
 import BookListView from "../views/admin/BookListView.vue";
 import BookEditView from "../views/admin/BookEditView.vue";
 import SearchView from "../views/pages/SearchView.vue";
+import NovelView_R from "../views/pages/NovelView_R.vue";
 
 const routes = [
     {
@@ -58,7 +59,8 @@ const routes = [
     {
         path: '/category/novel/:catchAll(.*)*',
         name: 'novel',
-        component: NovelView,
+        component: NovelView_R
+        ,
     },
 
 

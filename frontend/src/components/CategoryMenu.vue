@@ -23,10 +23,18 @@ const handleClick = (name) => {
 
         <ul class="space-y-4">
             <li v-for="mid in categoryTree" :key="mid.id">
-                <h3 class="text-base font-semibold text-gray-700 mb-2 cursor-pointer hover:text-red-500"
-                    @click="handleClick(mid.name)">
+              <RouterLink :to="mid.path">
+                <h3
+                    @click="handleClick(mid.name)"
+                    :class="[
+                      route.path === mid.path
+                      ? 'ext-base font-semibold text-red-500'
+                      : 'ext-base font-semibold text-gray-700 mb-2'
+                      ]"
+                >
                     {{ mid.name }}
                 </h3>
+              </RouterLink>
               <ul class="space-y-1 pl-4 border-l border-gray-200">
                 <li v-for="child in mid.children" :key="child.id">
                   <RouterLink :to="child.path"

@@ -1,7 +1,10 @@
 <script setup>
 
 const props = defineProps({
-  imgPath: String
+  imgPath: {
+    type: String,
+    default: '/images/default-book-front.jpg'
+  }
 })
 
 </script>
@@ -15,7 +18,3 @@ const props = defineProps({
     >
   </div>
 </template>
-
-<style scoped>
-
-</style>

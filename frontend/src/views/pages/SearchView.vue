@@ -28,7 +28,7 @@ watch(
     { immediate: true } // 처음 로딩 시에도 실행되도록
 )
 
-const searchImgPath = "/images/book/minibanner.jpg";
+const searchImgPath = "/images/main/mini_banner_01.jpg";
 </script>
 
 <template>
