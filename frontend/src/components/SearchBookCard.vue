@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import RedButton from "./admin/RedButton.vue"
+import RedButton from "./buttons/RedButton.vue"
 import ImgBox from "./ImgBox.vue";
 import {useConfirmStore} from "../stores/confirm.js";
 

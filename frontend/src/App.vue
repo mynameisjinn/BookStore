@@ -2,8 +2,8 @@
 import { RouterView, useRoute } from 'vue-router';
 import FooterView from './components/Footer.vue';
 import HeaderLayout from './layouts/HeaderLayout.vue';
-import PopupModal from "./components/modal/PopupModal.vue";
-import TopButton from "./components/TopButton.vue";
+import PopupModal from "./components/modals/PopupModal.vue";
+import TopButton from "./components/buttons/TopButton.vue";
 import AdminHeaderLayout from "./layouts/AdminHeaderLayout.vue";
 
 const route = useRoute();

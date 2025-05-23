@@ -4,13 +4,13 @@ import { storeToRefs } from 'pinia'
 import axios from 'axios'
 
 // Components
-import SearchModal from '../../components/modal/SearchModal.vue'
-import CategoryModal from '../../components/modal/CategoryModal.vue'
+import SearchModal from '../modals/SearchModal.vue'
+import CategoryModal from '../modals/CategoryModal.vue'
 import SelectBox from '../../components/admin/SelectBox.vue'
-import FileUploadButton from '../../components/admin/FileUploadButton.vue'
-import AddButton from '../../components/admin/AddButton.vue'
-import SearchButton from '../../components/admin/SearchButton.vue'
-import SubmitButton from '../../components/admin/SubmitButton.vue'
+import FileUploadButton from '../buttons/FileUploadButton.vue'
+import AddButton from '../buttons/AddButton.vue'
+import SearchButton from '../buttons/SearchButton.vue'
+import SubmitButton from '../buttons/SubmitButton.vue'
 
 // Stores
 import { useCategoryStore } from '../../stores/category.js'

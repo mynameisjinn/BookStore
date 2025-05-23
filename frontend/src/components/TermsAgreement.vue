@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
-import NextButton from './NextButton.vue';
+import NextButton from './buttons/NextButton.vue';
 
 const emit = defineEmits(['next'])
 

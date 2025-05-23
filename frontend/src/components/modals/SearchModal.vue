@@ -1,5 +1,5 @@
 <script setup>
-import CloseButton from '../admin/CloseButton.vue';
+import CloseButton from '../buttons/CloseButton.vue';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps({

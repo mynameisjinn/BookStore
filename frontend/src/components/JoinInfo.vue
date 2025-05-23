@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios'
 import { ref, computed, watch } from 'vue'
-import JoinButton from './JoinButton.vue'
+import JoinButton from './buttons/JoinButton.vue'
 
 
 const email = ref('')

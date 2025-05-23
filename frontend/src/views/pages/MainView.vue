@@ -3,7 +3,7 @@ import Tabs from '../../components/Tabs.vue'
 import Banner from '../../components/Banner.vue';
 import Hero from '../../components/Hero.vue';
 import SubMainList from "../../components/SubMainList.vue";
-import MainPopup from "../../components/modal/MainAdPopup.vue";
+import MainPopup from "../../components/modals/MainAdPopup.vue";
 
 
 const tabs = [

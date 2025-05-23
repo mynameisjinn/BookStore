@@ -1,6 +1,6 @@
 <script setup>
 import {computed, onMounted, ref, watch} from 'vue';
-import RedButton from "./RedButton.vue";
+import RedButton from "../buttons/RedButton.vue";
 import {useToast} from "vue-toastification";
 import {useConfirmStore} from "../../stores/confirm.js";
 import Pagination from "../Pagination.vue";

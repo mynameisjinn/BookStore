@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useCategoryStore } from '../../stores/category'
-import CloseButton from '../admin/CloseButton.vue'
+import CloseButton from '../buttons/CloseButton.vue'
 
 const props = defineProps(['isOpen'])
 const emit = defineEmits(['close'])
