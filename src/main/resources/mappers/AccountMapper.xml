@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.bookstore.repository.AccountRepository">
+
+    <!--    <select id="selectMemberAll" resultType="org.example.bookstore.vo.MemberVO">-->
+<!--        SELECT *-->
+<!--        FROM member;-->
+<!--    </select>-->
+
+    <select id="selectMemberAll" resultType="org.example.bookstore.vo.MemberVO">
+        SELECT id, address, email, create_date, password
+        FROM member;
+    </select>
+
+    <select id="selectMemberByEmail" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM MEMBER
+        WHERE EMAIL = #{email};
+    </select>
+    <select id="findUserByEmail" resultType="org.example.bookstore.vo.MemberVO">
+        SELECT  EMAIL,
+                PASSWORD,
+                ADDRESS,
+                ROLE_ID,
+                CREATE_DATE,
+                ID
+        FROM MEMBER
+        WHERE EMAIL = #{email};
+    </select>
+
+
+    <insert id="insertMember">
+        INSERT INTO member (EMAIL, PASSWORD, ADDRESS, ROLE_ID)
+        VALUES (#{email}, #{password}, #{address}, 1)
+    </insert>
+
+    <select id="selectRoleByMemberID"
+            parameterType="org.example.bookstore.vo.MemberVO"
+            resultType="org.example.bookstore.vo.RoleVO">
+        SELECT R.ROLE
+        FROM ROLE R
+        JOIN MEMBER M ON R.ID = M.ROLE_ID
+        WHERE
+        <if test="id != null">
+            M.id = #{id}
+        </if>
+    </select>
+
+</mapper>
