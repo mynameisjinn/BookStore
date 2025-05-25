@@ -2,6 +2,7 @@
 import BookCard from "./BookCard.vue";
 import {computed, onMounted, watch} from 'vue'
 import {useBookStore} from "../stores/book.js";
+import LoadingBar from "./LoadingBar.vue";
 
 
 const props = defineProps({
@@ -26,15 +27,18 @@ const books = computed(() => {
   return bookStore.getBooksByCategory(props.categoryId)
 })
 
+const isLoaded = computed(() => bookStore.loading)
+
 
 </script>
 
 <template>
-<!--  {{ categoryId }}-->
-<!--  {{ bookStore.bookList }}-->
-<!--  {{ books }}-->
-  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-<!--    <BookCard :books="bookStore.bookList" />-->
+  <div v-if="isLoaded"
+       class="mt-20">
+    <LoadingBar />
+  </div>
+  <div v-else
+      class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
     <BookCard :books="books" />
   </div>
 </template>

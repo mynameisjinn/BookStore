@@ -1,7 +1,7 @@
-// import { defineStore } from 'pinia'
-// import { ref } from 'vue'
-// import axios from 'axios'
-//
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import axios from 'axios'
+
 // export const useBookStore = defineStore('book', () => {
 //     const bookList = ref([])
 //     const loading = ref(false)
@@ -22,16 +22,10 @@
 //     return { bookList, loading, fetchBooks }
 // })
 
-
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import axios from 'axios'
-
 export const useBookStore = defineStore('book', () => {
     const bookMap = ref({})  // { [categoryId: number]: book[] }
     const loading = ref(false)
 
-    // categoryIdList는 배열로 받음
     const fetchBooks = async (categoryIdList = []) => {
         loading.value = true
         try {
@@ -39,17 +33,6 @@ export const useBookStore = defineStore('book', () => {
             const uncachedIds = categoryIdList.filter(id => !bookMap.value[id])
             if (uncachedIds.length > 0) {
                 const res = await axios.post('/api/books', uncachedIds)
-                // 응답 형태가 { [categoryId]: books[] } 라면 그대로 저장
-                // 예: { 3: [...], 4: [...], 8: [...] }
-                // Object.entries(res.data).forEach(([key, books]) => {
-                //     bookMap.value[key] = books
-                // })
-
-                // res.data.forEach(book => {
-                //     const catId = book.categoryId
-                //     if (!bookMap.value[catId]) bookMap.value[catId] = []
-                //     bookMap.value[catId].push(book)
-                // })
 
                 res.data.forEach(book => {
                     const catId = book.categoryId
