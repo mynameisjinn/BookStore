@@ -6,6 +6,7 @@ import Tabs from '../../components/Tabs.vue';
 import {useMenuStore} from '../../stores/menu'
 import BookAdvertisement from "../../components/BookAdvertisement.vue";
 import BookCardList from "../../components/BookCardList.vue";
+import BookCardList_R from "../../components/BookCardList_R.vue";
 
 const menuStore = useMenuStore()
 const route = useRoute()
@@ -57,31 +58,64 @@ const currentMidCategory = computed(() => {
 })
 
 
-const tabs = computed(() => {
+// const tabs = computed(() => {
+//
+//   const matchedMid = menuTree.value.find(mid => {
+//     return mid.path === currentMidCategory.value.path
+//   })
+//
+//   const baseTab = {
+//     label: '전체',
+//     path: matchedMid.path,
+//     content: BookCardList_R
+//   }
+//
+//
+//   if (!matchedMid) return [baseTab]
+//
+//   const dynamicTabs = matchedMid.children.map(sub => ({
+//     label: sub.name,
+//     path: sub.path,
+//     content: {
+//       template: BookCardList_R
+//     }
+//   }))
+//
+//   return [baseTab, ...dynamicTabs]
+// })
 
+const tabs = computed(() => {
   const matchedMid = menuTree.value.find(mid => {
     return mid.path === currentMidCategory.value.path
   })
 
+  if (!matchedMid) return []
+
   const baseTab = {
     label: '전체',
     path: matchedMid.path,
-    content: BookCardList
+    content: {
+      template: BookCardList_R,
+      props: {
+        categoryId: matchedMid.children.map(c => c.categoryId)
+      }
+    }
   }
-
-
-  if (!matchedMid) return [baseTab]
 
   const dynamicTabs = matchedMid.children.map(sub => ({
     label: sub.name,
     path: sub.path,
     content: {
-      template: BookCardList
+      template: BookCardList_R,
+      props: {
+        categoryId: sub.categoryId
+      }
     }
   }))
 
   return [baseTab, ...dynamicTabs]
 })
+
 </script>
 <template>
     <div class="flex gap-4 mx-auto my-10 max-w-screen-lg ">

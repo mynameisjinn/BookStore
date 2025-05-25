@@ -53,7 +53,13 @@ watchEffect(() => {
           :key="index"
           v-show="openTab === index"
       >
-        <component :is="tab.content" />
+<!--        <component :is="tab.content" />-->
+        <component
+            :is="tab.content.template"
+            v-bind="tab.content.props"
+            :key="tab.path"
+        />
+
       </div>
     </div>
   </div>

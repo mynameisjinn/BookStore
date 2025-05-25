@@ -134,4 +134,17 @@ public class BookService {
             bookRepository.deleteBookList(bookIdList);
         }
     }
+
+    public List<BookVO> selectBookListByCategoryId(List<Integer> list) {
+
+//        List<Integer> categoryIds = new ArrayList<>();
+//
+//        if(!list.isEmpty()){
+//            for (BookVO vo : list ){
+//                categoryIds.add(vo.getCategoryId());
+//            }
+//        }
+
+        return bookRepository.selectBookListByCategoryId(list);
+    }
 }

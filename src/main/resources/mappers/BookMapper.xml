@@ -55,6 +55,7 @@
             ON B.AUTHOR_ID = A.ID
         JOIN PUBLISHER P
             ON B.PUBLISHER_ID = P.ID
+        ORDER BY B.CREATE_DATE DESC
     </select>
 
     <select id="selectBookByBookId" resultType="org.example.bookstore.vo.BookVO">
@@ -122,12 +123,27 @@
             OR P.NAME LIKE CONCAT('%', #{searchVal}, '%')
         </if>
     </select>
-
-
-    <delete id="deleteBookOne">
-        DELETE FROM BOOK
-        WHERE ID = #{bookId}
-    </delete>
+    <select id="selectBookListByCategoryId" resultType="org.example.bookstore.vo.BookVO">
+        SELECT  B.ID,
+        TITLE,
+        A.NAME AS authorName,
+        P.NAME AS publisherName,
+        PUBLISHED_DATE AS publishedDate,
+        B.AUTHOR_ID AS authorId,
+        B.PUBLISHER_ID AS publisherId,
+        B.PRICE,
+        B.CATEGORY_ID AS categoryId,
+        B.IMG_PATH AS imgPath
+        FROM    BOOK B
+        JOIN AUTHOR A
+        ON B.AUTHOR_ID = A.ID
+        JOIN PUBLISHER P
+        ON B.PUBLISHER_ID = P.ID
+        WHERE B.CATEGORY_ID IN
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 
     <delete id="deleteBookList">
         DELETE FROM BOOK
@@ -136,4 +152,12 @@
             #{id}
         </foreach>
     </delete>
+
+
+    <delete id="deleteBookOne">
+        DELETE FROM BOOK
+        WHERE ID = #{bookId}
+    </delete>
+
+
 </mapper>
