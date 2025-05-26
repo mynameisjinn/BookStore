@@ -6,6 +6,7 @@ import { useAuthStore } from '../../stores/auth'
 import { useMenuStore } from '../../stores/menu'
 import SimpleFooter from '../../components/SimpleFooter.vue'
 import { useToast } from 'vue-toastification'
+import {useAuthStore2} from "../../stores/auth-with-refresh.js";
 
 const toast = useToast();
 
@@ -14,40 +15,73 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 
+// const login = async () => {
+//     const authStore = useAuthStore()
+//     const menuStore = useMenuStore()
+//
+//     try {
+//         const res = await axios.post('/api/login', {
+//             email: email.value,
+//             password: password.value
+//         })
+//
+//         // JWT 토큰과 유저 정보를 store에 저장
+//         authStore.setToken(res.data.token)
+//         authStore.setUser(res.data.user)
+//         authStore.setRole(res.data.role)
+//
+//         // console.log(authStore.user)
+//
+//         menuStore.resetMenu()
+//         menuStore.fetchMenu()
+//
+//         if(res.data.role === 'ROLE_ADMIN'){
+//             router.push('/admin')
+//         } else {
+//             router.push('/')
+//         }
+//
+//         toast.success('로그인 성공!')
+//     } catch (err) {
+//         // console.error('로그인 실패', err)
+//         // alert('아이디, 비밀번호를 확인해주세요')
+//         toast.error('아이디, 비밀번호를 확인해주세요')
+//         password.value = ''
+//     }
+// }
+
 const login = async () => {
-    const authStore = useAuthStore()
-    const menuStore = useMenuStore()
-        
-    try {
-        const res = await axios.post('/api/login', {
-            email: email.value,
-            password: password.value
-        })
+  const authStore = useAuthStore2()
+  const menuStore = useMenuStore()
 
-        // JWT 토큰과 유저 정보를 store에 저장
-        authStore.setToken(res.data.token)
-        authStore.setUser(res.data.user)
-        authStore.setRole(res.data.role)
-        
-        // console.log(authStore.user)
+  try {
+    const res = await axios.post('/api/login', {
+      email: email.value,
+      password: password.value
+    }, {
+      withCredentials: true // ✅ 쿠키 사용을 위해 반드시 필요
+    })
 
-        menuStore.resetMenu()
-        menuStore.fetchMenu() 
+    // JWT는 쿠키에 저장되므로 setToken은 제거
+    authStore.setUser(res.data.user)
+    authStore.setRole(res.data.role)
 
-        if(res.data.role === 'ROLE_ADMIN'){
-            router.push('/admin')
-        } else {
-            router.push('/')
-        }
+    menuStore.resetMenu()
+    menuStore.fetchMenu()
 
-        toast.success('로그인 성공!')
-    } catch (err) {
-        // console.error('로그인 실패', err)
-        // alert('아이디, 비밀번호를 확인해주세요')
-        toast.error('아이디, 비밀번호를 확인해주세요')
-        password.value = ''
+    if (res.data.role === 'ROLE_ADMIN') {
+      router.push('/admin')
+    } else {
+      router.push('/')
     }
+
+    toast.success('로그인 성공!')
+  } catch (err) {
+    toast.error('아이디, 비밀번호를 확인해주세요')
+    password.value = ''
+  }
 }
+
 
 </script>
 

@@ -13,14 +13,15 @@ export const useCategoryStore = defineStore('category', () => {
     const fetchCategory = async () => {
         if (isLoaded.value) return
 
-        const authStore = useAuthStore()
-        authStore.loadToken()
+        // const authStore = useAuthStore()
+        // authStore.loadToken()
 
         try {
             const res = await axios.get('/api/admin/book/category', {
-                headers: {
-                    Authorization: `Bearer ${authStore.token}`
-                }
+                // headers: {
+                //     Authorization: `Bearer ${authStore.token}`
+                // }
+                withCredentials: true
             })
 
             rawCategory.value = res.data

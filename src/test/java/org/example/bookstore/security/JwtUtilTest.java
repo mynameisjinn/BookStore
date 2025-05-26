@@ -21,7 +21,7 @@ class JwtUtilTest {
     @BeforeEach
     void setUp() {
         // 1분 만료 시간 설정
-        jwtUtil.setExpirationMs(1000 * 60);
+        jwtUtil.setAccessTokenExpirationMs(1000 * 60);
 
         testUser = User.withUsername("test@example.com")
                 .password("password")
@@ -31,7 +31,7 @@ class JwtUtilTest {
 
     @Test
     void testGenerateAndValidateToken() {
-        String token = jwtUtil.generateToken(testUser);
+        String token = jwtUtil.generateAccessToken(testUser);
 
         assertNotNull(token);
         assertEquals("test@example.com", jwtUtil.extractUsername(token));
@@ -40,8 +40,8 @@ class JwtUtilTest {
 
     @Test
     void testTokenExpirationAfter1Minute() throws InterruptedException {
-        jwtUtil.setExpirationMs(1000); // 1초 만료
-        String token = jwtUtil.generateToken(testUser);
+        jwtUtil.setAccessTokenExpirationMs(1000); // 1초 만료
+        String token = jwtUtil.generateAccessToken(testUser);
 
         Thread.sleep(1500); // 1.5초 기다림
 

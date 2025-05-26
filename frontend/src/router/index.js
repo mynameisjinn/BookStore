@@ -20,6 +20,7 @@ import BookListView from "../views/admin/BookListView.vue";
 import BookEditView from "../views/admin/BookEditView.vue";
 import SearchView from "../views/pages/SearchView.vue";
 import NovelView_R from "../views/pages/NovelView_R.vue";
+import {useAuthStore2} from "../stores/auth-with-refresh.js";
 
 const routes = [
     {
@@ -108,7 +109,7 @@ const routes = [
         path: '/server-error',
         component: ServerErrorView,
         meta: { hideLayout: true },
-        beforeEnter: async (to, from, next) => {
+       /* beforeEnter: async (to, from, next) => {
             try {
                 await axios.get('/api/test');
                 // 서버 정상 -> 홈으로 리디렉션
@@ -117,7 +118,7 @@ const routes = [
                 // 서버 여전히 문제 -> 페이지 표시
                 next();
             }
-        }
+        }*/
     },
     {
         path: '/:pathMatch(.*)*',
@@ -133,9 +134,11 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
-    const authStore = useAuthStore()
-    const isAuthenticated = !!authStore.token
+/*router.beforeEach((to, from, next) => {
+    // const authStore = useAuthStore()
+    const authStore = useAuthStore2()
+    // const isAuthenticated = !!authStore.token
+    const isAuthenticated = !!authStore.user
 
     const userRole = authStore.role
 
@@ -143,7 +146,6 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !isAuthenticated) {
         next({ name: 'login' })
     }
-
 
     // 관리자 권한 체크 
     if (to.meta.requiresAdmin) {
@@ -163,6 +165,32 @@ router.beforeEach((to, from, next) => {
 
 
     next()
+})*/
+
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore2()
+    const isAuthenticated = !!authStore.user
+    const userRole = authStore.role
+
+    if (to.meta.requiresAuth && !isAuthenticated) {
+        return next({ name: 'login' }) // ✅ return 붙이기
+    }
+
+    if (to.meta.requiresAdmin) {
+        if (userRole !== 'ROLE_ADMIN') {
+            return next({ name: 'admin-login' }) // ✅ return
+        }
+    }
+
+    if (to.meta.requiresUser) {
+        if (userRole !== 'ROLE_USER') {
+            alert('사용자 전용 페이지')
+            return next({ name: 'admin-main' }) // ✅ return
+        }
+    }
+
+    return next() // ✅ 모든 조건이 통과했을 때만 호출
 })
+
 
 export default router;

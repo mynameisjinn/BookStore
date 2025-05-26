@@ -4,12 +4,14 @@ import { useAuthStore } from '../stores/auth'
 import { computed } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
+import {useAuthStore2} from "../stores/auth-with-refresh.js";
 
 const toast = useToast();
 
 const router = useRouter()
 
-const authStore = useAuthStore()
+// const authStore = useAuthStore()
+const authStore = useAuthStore2()
 const user = computed(() => authStore.user)
 
 const username = computed(() => {
@@ -24,14 +26,16 @@ const logout = () => {
 }
 
 const mypage = async () => {
-    const authStore = useAuthStore()
-    authStore.loadToken()
+    // const authStore = useAuthStore()
+    const authStore = useAuthStore2()
+    // authStore.loadToken()
 
     try {
         const res = await axios.get('/api/mypage', {
-            headers: {
-                Authorization: `Bearer ${authStore.token}`
-            }
+            // headers: {
+            //     Authorization: `Bearer ${authStore.token}`
+            // }
+          withCredentials: true
         })
 
         // 서버에서 받은 사용자 정보 출력

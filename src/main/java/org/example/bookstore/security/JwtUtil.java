@@ -22,7 +22,11 @@ public class JwtUtil {
 
     // 테스트
     @Setter
-    private long expirationMs = 1000 * 60 * 120; // 2시간
+    private long accessTokenExpirationMs = 1000 * 60 * 30; // 30분
+
+    @Setter
+    private long refreshTokenExpirationMs = 1000L * 60 * 60 * 24 * 7; // 7일
+
 
     // Key 객체 생성
     private Key getSigningKey() {
@@ -30,11 +34,20 @@ public class JwtUtil {
     }
 
     // JWT 생성
-    public String generateToken(UserDetails user) {
+    public String generateAccessToken(UserDetails user) {
         return Jwts.builder()
                 .subject(user.getUsername()) // 이메일
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expirationMs))
+                .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails user) {
+        return Jwts.builder()
+                .subject(user.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

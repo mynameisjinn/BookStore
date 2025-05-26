@@ -4,12 +4,14 @@ import {useAuthStore} from '../stores/auth'
 import {computed} from 'vue'
 import {useToast} from 'vue-toastification'
 import HeaderBottom from "../components/HeaderBottom.vue";
+import {useAuthStore2} from "../stores/auth-with-refresh.js";
 
 const toast = useToast();
 
 const router = useRouter()
 
-const authStore = useAuthStore()
+// const authStore = useAuthStore()
+const authStore = useAuthStore2()
 const user = computed(() => authStore.user)
 
 const username = computed(() => {

@@ -6,10 +6,13 @@ import axios from 'axios'
 import { useAuthStore } from '../../stores/auth'
 import BookForm from "../../components/admin/BookForm.vue";
 import router from "../../router/index.js";
+import {useToast} from "vue-toastification";
 
 const route = useRoute()
-const authStore = useAuthStore()
-authStore.loadToken()
+// const authStore = useAuthStore()
+// authStore.loadToken()
+
+const toast = useToast();
 
 const bookId = route.params.id
 const bookData = ref(null)
@@ -17,7 +20,8 @@ const bookData = ref(null)
 const fetchBookDetail = async () => {
   try {
     const res = await axios.get(`/api/admin/book/edit/${bookId}`, {
-      headers: { Authorization: `Bearer ${authStore.token}` }
+      // headers: { Authorization: `Bearer ${authStore.token}` }
+      withCredentials: true
     })
     bookData.value = res.data
     console.log('저장된 도서 데이터')
@@ -39,11 +43,12 @@ const handleUpdate = async (formData) => {
     await axios.put(`/api/admin/book/edit/${bookId}`, data, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${authStore.token}`
-      }
+        // Authorization: `Bearer ${authStore.token}`
+      },
+      withCredentials: true
     })
-    alert('도서 수정 완료!')
     router.push('/admin/book/list') // 수정 후 목록으로 이동
+    toast.success('도서 수정 완료!')
   } catch (e) {
     console.error('수정 실패:', e)
   }

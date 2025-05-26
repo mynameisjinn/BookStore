@@ -2,6 +2,7 @@ package org.example.bookstore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bookstore.security.PrincipalUserDetails;
@@ -10,7 +11,9 @@ import org.example.bookstore.security.JwtUtil;
 import org.example.bookstore.service.AccountService;
 import org.example.bookstore.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,44 +52,100 @@ public class AccountController {
     }
 
 
-    // TODO : 비밀번호 오류시 return body 에 string 말고 custom exception 만들어서 내보내기
+
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+//        String email = body.get("email");
+//        String password = body.get("password");
+//
+//        // 이메일과 비밀번호로 인증을 시도
+//        UsernamePasswordAuthenticationToken authInputToken =
+//                new UsernamePasswordAuthenticationToken(email, password);
+//
+//        try {
+//            Authentication auth = authenticationManager.authenticate(authInputToken);
+//
+//            // 1분 만료 시간 설정
+////            jwtUtil.setExpirationMs(1000 * 60);
+//
+//            String jwt = jwtUtil.generateAccessToken((UserDetails) auth.getPrincipal());
+//
+//            // 로그인한 유저 정보 추출 (CustomUserDetails에서 제공하는 member 정보)
+//            PrincipalUserDetails userDetails = (PrincipalUserDetails) auth.getPrincipal();
+//            MemberVO member = userDetails.getMember(); // 로그인한 유저 정보
+//
+//            MemberVO loginUser = new MemberVO();
+//            loginUser.setEmail(member.getEmail());
+//            loginUser.setAddress(member.getAddress());
+//            loginUser.setId(member.getId());
+//
+//            // JWT 토큰과 유저 정보를 함께 반환
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("token", jwt);
+//            response.put("user", loginUser); // 유저 정보 포함
+//            response.put("role", userDetails.getRole().getRole());
+//
+//            return ResponseEntity.ok(response);
+//        } catch (AuthenticationException e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
+//        }
+//    }
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String email = body.get("email");
         String password = body.get("password");
 
-        // 이메일과 비밀번호로 인증을 시도
         UsernamePasswordAuthenticationToken authInputToken =
                 new UsernamePasswordAuthenticationToken(email, password);
 
         try {
             Authentication auth = authenticationManager.authenticate(authInputToken);
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-            // 1분 만료 시간 설정
-//            jwtUtil.setExpirationMs(1000 * 60);
+            String accessToken = jwtUtil.generateAccessToken(userDetails);
+            String refreshToken = jwtUtil.generateRefreshToken(userDetails);
 
-            String jwt = jwtUtil.generateToken((UserDetails) auth.getPrincipal());
+            // 쿠키에 저장
+            ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessToken)
+                    .httpOnly(true)
+                    .secure(false) // HTTPS에서만 사용하려면 true
+                    .path("/")
+                    .maxAge(60 * 30) // 30분
+                    .sameSite("Lax") // 또는 "Strict" / "None"
+                    .build();
 
-            // 로그인한 유저 정보 추출 (CustomUserDetails에서 제공하는 member 정보)
-            PrincipalUserDetails userDetails = (PrincipalUserDetails) auth.getPrincipal();
-            MemberVO member = userDetails.getMember(); // 로그인한 유저 정보
+            ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
+                    .httpOnly(true)
+                    .secure(false)
+                    .path("/")
+                    .maxAge(60 * 60 * 24 * 7) // 7일
+                    .sameSite("Lax")
+                    .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE, accessTokenCookie.toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+
+            // 유저 정보
+            PrincipalUserDetails principal = (PrincipalUserDetails) userDetails;
+            MemberVO member = principal.getMember();
 
             MemberVO loginUser = new MemberVO();
             loginUser.setEmail(member.getEmail());
             loginUser.setAddress(member.getAddress());
             loginUser.setId(member.getId());
 
-            // JWT 토큰과 유저 정보를 함께 반환
-            Map<String, Object> response = new HashMap<>();
-            response.put("token", jwt);
-            response.put("user", loginUser); // 유저 정보 포함
-            response.put("role", userDetails.getRole().getRole());
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("user", loginUser);
+            responseBody.put("role", principal.getRole().getRole());
 
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(responseBody);
+
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 실패");
         }
     }
+
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody MemberVO member) {

@@ -12,14 +12,16 @@ export const useAuthorStore = defineStore('author', () => {
   const fetchAuthors = async () => {
     if (isLoaded.value) return // 이미 불러왔으면 다시 호출하지 않음
 
-    const authStore = useAuthStore()
-    authStore.loadToken()
+    // const authStore = useAuthStore()
+    // authStore.loadToken()
 
     try {
       const res = await axios.get('/api/admin/book/author/all', {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`
-        }
+        // headers: {
+        //   Authorization: `Bearer ${authStore.token}`
+        // }
+
+        withCredentials: true
       })
 
       authors.value = res.data

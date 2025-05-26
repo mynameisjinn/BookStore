@@ -7,16 +7,18 @@ import router from "../../router/index.js"
 import { useToast } from "vue-toastification"
 
 const toast = useToast()
-const authStore = useAuthStore()
-authStore.loadToken()
+// const authStore = useAuthStore()
+// authStore.loadToken()
 
 const callBookTable = ref(null)
 
 const fetchBooks = async () => {
   const res = await axios.get('/api/admin/book/list', {
-    headers: {
-      Authorization: `Bearer ${authStore.token}`
-    }
+    // headers: {
+    //   Authorization: `Bearer ${authStore.token}`
+    // }
+    withCredentials: true
+
   })
 
   return res.data.map(book => ({
@@ -45,9 +47,10 @@ const deleteOne = async (book) => {
 
   try {
     const res = await axios.post(`/api/admin/book/delete`, data,{
-      headers: {
-        Authorization: `Bearer ${authStore.token}`
-      }
+      // headers: {
+      //   Authorization: `Bearer ${authStore.token}`
+      // }
+      withCredentials: true
     })
     // BookTable 내부 fetchData() 호출
     callBookTable.value?.fetchData()
@@ -61,9 +64,10 @@ const deleteList = async (list) => {
   try {
     const data = list.value
     const res = await axios.post('/api/admin/book/delete-list',data,{
-      headers: {
-        Authorization: `Bearer ${authStore.token}`
-      }
+      // headers: {
+      //   Authorization: `Bearer ${authStore.token}`
+      // }
+      withCredentials: true
     });
 
     toast.warning(res.data);

@@ -7,8 +7,8 @@ import {useToast} from "vue-toastification";
 
 const toast = useToast();
 const handleRegister = async (formData) => {
-  const authStore = useAuthStore()
-  authStore.loadToken()
+  // const authStore = useAuthStore()
+  // authStore.loadToken()
 
   const data = new FormData()
   Object.entries(formData).forEach(([key, value]) => {
@@ -19,8 +19,9 @@ const handleRegister = async (formData) => {
     const res = await axios.post('/api/admin/book/upload', data, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${authStore.token}`
-      }
+        // Authorization: `Bearer ${authStore.token}`
+      },
+      withCredentials: true
     })
     // alert('도서 등록 성공!')
     router.push('/admin/book/list')

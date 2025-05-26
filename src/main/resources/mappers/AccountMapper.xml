@@ -34,7 +34,7 @@
 
     <insert id="insertMember">
         INSERT INTO member (EMAIL, PASSWORD, ADDRESS, ROLE_ID)
-        VALUES (#{email}, #{password}, #{address}, 1)
+        VALUES (#{email}, #{password}, #{address}, 2)
     </insert>
 
     <select id="selectRoleByMemberID"

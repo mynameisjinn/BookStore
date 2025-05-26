@@ -10,10 +10,24 @@ axios.interceptors.response.use(
         const status = error.response?.status;
         const errorMessage = error.response?.data?.error;
 
-
         if (status === 500) {
-            // console.error('500 에러 감지됨, 페이지 이동');
-            router.push('/server-error');
+            if (router.currentRoute.value.path !== '/server-error') {
+                router.push('/server-error');
+            }
+
+            /*
+            // 현재 경로가 server-error거나, 이미 체크한 경우는 무시
+            const currentPath = router.currentRoute.value.path;
+            const checked = router.currentRoute.value.query.checked;
+
+            if (currentPath !== '/server-error' && !checked) {
+                router.push({ path: '/server-error', query: { checked: true } });
+            }
+*/
+
+
+            // return 안 하면 무한루프 가능
+            return; // 혹은 return Promise.resolve(null);
         }
 
         if (status === 401) {

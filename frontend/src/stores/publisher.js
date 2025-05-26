@@ -10,14 +10,15 @@ export const usePublisherStore = defineStore('publisher', () => {
   const fetchPublishers = async () => {
     if (isLoaded.value) return // 중복 호출 방지
 
-    const authStore = useAuthStore()
-    authStore.loadToken()
+    // const authStore = useAuthStore()
+    // authStore.loadToken()
 
     try {
       const res = await axios.get('/api/admin/book/publisher/all', {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`
-        }
+        // headers: {
+        //   Authorization: `Bearer ${authStore.token}`
+        // }
+        withCredentials: true
       })
 
       publishers.value = res.data
