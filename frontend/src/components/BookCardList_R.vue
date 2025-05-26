@@ -3,6 +3,8 @@ import BookCard from "./BookCard.vue";
 import {computed, onMounted, watch} from 'vue'
 import {useBookStore} from "../stores/book.js";
 import LoadingBar from "./LoadingBar.vue";
+import {useLikeStore} from "../stores/like.js";
+import {useAuthStore2} from "../stores/auth-with-refresh.js";
 
 
 const props = defineProps({
@@ -28,6 +30,16 @@ const books = computed(() => {
 })
 
 const isLoaded = computed(() => bookStore.loading)
+
+const likeStore = useLikeStore()
+const authStore = useAuthStore2()
+const user = computed(() => authStore.user)
+
+watch(user, (newUser) => {
+  if (newUser?.id) {
+    likeStore.fetchLikedBooks(newUser.id)
+  }
+}, { immediate: true })
 
 
 </script>

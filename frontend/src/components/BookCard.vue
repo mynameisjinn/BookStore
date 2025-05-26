@@ -1,6 +1,7 @@
 
 <script setup>
 import ImgBox from "./ImgBox.vue";
+import LikeButton from "./LikeButton.vue";
 
 const props = defineProps({
   books: {
@@ -12,6 +13,9 @@ const props = defineProps({
   },
 })
 
+const handleLike = ({ bookId, liked }) => {
+  console.log(`📘 Book ID: ${bookId}, 좋아요 상태: ${liked}`)
+}
 </script>
 
 <template>
@@ -30,6 +34,12 @@ const props = defineProps({
       <p class="text-xs text-gray-600">{{ book.authorName }}</p>
       <p class="text-xs text-gray-600">출판사: {{ book.publisherName }}</p>
       <p class="text-sm text-gray-800 font-bold">{{ book.price }}원</p>
+      <div class="flex items-center space-x-2 mt-1">
+        <LikeButton :bookId="book.id" @liked="handleLike" />
+        <button class="w-6 h-6">
+          <img src="/images/cart.svg" alt="cart" />
+        </button>
+      </div>
     </div>
   </article>
 </template>

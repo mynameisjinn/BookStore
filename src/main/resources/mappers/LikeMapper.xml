@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.bookstore.repository.LikeRepository">
+
+
+    <insert id="insertUserLike" parameterType="org.example.bookstore.vo.LikesVO">
+        INSERT INTO LIKES (
+            BOOK_ID,
+            MEMBER_ID
+       )
+        VALUES  (#{bookId}, #{memberId})
+    </insert>
+
+    <delete id="deleteUserLike">
+        DELETE FROM LIKES
+        WHERE MEMBER_ID = #{memberId} AND BOOK_ID = #{bookId}
+    </delete>
+
+    <select id="selectUserLikeList" resultType="org.example.bookstore.vo.LikesVO">
+        SELECT BOOK_ID
+        FROM LIKES
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+</mapper>

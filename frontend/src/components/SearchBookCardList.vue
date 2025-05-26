@@ -1,6 +1,8 @@
 <script setup>
 import SearchBookCard from "./SearchBookCard.vue";
-import {computed} from "vue";
+import {computed, watch} from "vue";
+import {useAuthStore2} from "../stores/auth-with-refresh.js";
+import {useLikeStore} from "../stores/like.js";
 
 const props = defineProps({
   books: Array,
@@ -15,6 +17,16 @@ const changedBooks = computed(() =>
     }))
 )
 
+
+const likeStore = useLikeStore()
+const authStore = useAuthStore2()
+const user = computed(() => authStore.user)
+
+watch(user, (newUser) => {
+  if (newUser?.id) {
+    likeStore.fetchLikedBooks(newUser.id)
+  }
+}, { immediate: true })
 </script>
 
 <template>

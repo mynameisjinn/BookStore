@@ -57,6 +57,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary="모달 내 작가 조회 - 검색어 사용", description="도서 등록시 모낼 내에서 작가조회")
     @GetMapping("/author")
     public ResponseEntity<?> authorList(@RequestParam("searchVal") String searchVal) {
         try {
@@ -67,6 +68,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary="모달 내 작가 조회 - 전체", description="도서 등록시 모낼 내에서 작가조회. 화면단에서 검색어 필터링")
     @GetMapping("/author/all")
     public ResponseEntity<?> authorAll() {
         try {
@@ -77,6 +79,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary="모달 내 출판사 조회 - 검색어 사용", description="도서 등록시 모낼 내에서 출판사조회")
     @GetMapping("/publisher")
     public ResponseEntity<?> publisherList(@RequestParam("searchVal") String searchVal) {
         try {
@@ -87,6 +90,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary="모달 내 출판사 조회 - 전체", description="도서 등록시 모낼 내에서 출판사조회. 화면단에서 검색어 필터링")
     @GetMapping("/publisher/all")
     public ResponseEntity<?> publisherAll() {
         try {
@@ -98,6 +102,7 @@ public class BookController {
     }
 
 
+    @Operation(summary="도서 등록", description="관리자페이지 도서 등록")
     @PostMapping("/upload")
     public ResponseEntity<?> uploadBook(@ModelAttribute BookVO vo,
             @RequestParam(value = "imgFile", required = false) MultipartFile imgFile) {
@@ -109,6 +114,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary="도서 조회", description="관리자페이지 도서조회 - 등록된 모든 도서 들고오기")
     @GetMapping("/list")
     public ResponseEntity<?> selectBookList() {
         try {
@@ -119,13 +125,14 @@ public class BookController {
             throw new CustomBadRequestException("도서 목록 불러오기 실패");
         }
     }
-
+    @Operation(summary="등록한 도서 상세", description="등록된 도서의 id 값을 사용하여 도서 가져오기")
     @GetMapping("/edit/{id}")
     public ResponseEntity<BookVO> getBookById(@PathVariable("id") int bookId) {
         BookVO book = bookService.selectBookByBookId(bookId);
         return ResponseEntity.ok(book);
     }
 
+    @Operation(summary="등록한 도서 수정", description="등록된 도서의 id 값을 사용하여 도서 수정")
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> updateBook(@ModelAttribute BookVO vo,
                                              @RequestParam(value = "imgFile", required = false) MultipartFile imgFile) {
@@ -137,6 +144,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary="단일 도서 삭제", description="행에 있는 삭제 아이콘을 통한 단일 도서 삭제 ")
     @PostMapping("/delete")
     public ResponseEntity<?> deleteBookOne(@RequestBody BookVO vo) {
         try {
@@ -147,6 +155,7 @@ public class BookController {
         }
     }
 
+    @Operation(summary="다건 도서 삭제", description="'삭제'버튼을 통한 체크리스트에 포함된 도서 삭제 ")
     @PostMapping("/delete-list")
     public ResponseEntity<String> deleteBookList(@RequestBody List<BookVO> bookList) {
         try {

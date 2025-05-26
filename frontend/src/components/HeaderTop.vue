@@ -39,8 +39,8 @@ const mypage = async () => {
         })
 
         // 서버에서 받은 사용자 정보 출력
-        console.log(res.data)
-        alert(`${res.data.username}님, 마이페이지에 오신 것을 환영합니다!`)
+        // console.log(res.data)
+        // alert(`${res.data.username}님, 마이페이지에 오신 것을 환영합니다!`)
 
         router.push('/mypage')
 

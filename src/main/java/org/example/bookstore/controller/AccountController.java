@@ -45,6 +45,7 @@ public class AccountController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Operation(summary="이메일 중복체크", description="회원가입시 이메일 중복체크")
     @GetMapping("/check-email")
     public ResponseEntity<Map<String, Boolean>> checkEmail(@RequestParam String email) {
         boolean exists = accountService.checkExistMember(email);
@@ -91,6 +92,7 @@ public class AccountController {
 //        }
 //    }
 
+    @Operation(summary="로그인", description="jwt 를 이용한 로그인")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String email = body.get("email");
@@ -108,10 +110,15 @@ public class AccountController {
 
             // 쿠키에 저장
             ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessToken)
-                    .httpOnly(true)
+                    .httpOnly(true) //javaScript에서 접근 불가하게 설정.→ XSS 공격 방지 목적 (보안성 ↑)
                     .secure(false) // HTTPS에서만 사용하려면 true
-                    .path("/")
+                    .path("/") //이 쿠키를 보낼 요청 경로 범위 지정.'/'이므로 모든 경로에 대해 쿠키가 전송됨
                     .maxAge(60 * 30) // 30분
+                    /*
+                        CSRF 방지 관련 설정
+                        Lax는 일반적인 상황(링크 클릭 등)에서는 쿠키를 전송하지만, 크로스 사이트 폼 전송 같은 일부 상황에서는 막음
+                        → 보안과 유연성의 균형
+                    */
                     .sameSite("Lax") // 또는 "Strict" / "None"
                     .build();
 
@@ -147,6 +154,7 @@ public class AccountController {
     }
 
 
+    @Operation(summary="회원가입", description="사용자 회원가입")
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody MemberVO member) {
 
@@ -155,6 +163,7 @@ public class AccountController {
         return ResponseEntity.ok("회원가입 성공");
     }
 
+    @Operation(summary="마이페이지 조회", description="사용자 마이페이지 조회")
     @GetMapping("/mypage")
     public ResponseEntity<Map<String, Object>> mypage(@AuthenticationPrincipal UserDetails userDetails) {
         log.info("마이페이지 접근: " + userDetails.getUsername());

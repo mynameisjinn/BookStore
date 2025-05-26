@@ -15,7 +15,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "User Service", description = "사용자 페이지 API")
+@Tag(name = "User API", description = "사용자 페이지 API")
 @RestController
 public class UserController {
 

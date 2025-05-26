@@ -20,7 +20,7 @@ watch(
       try {
         const res = await axios.get(`/api/search/${newKeyword}`)
         dataList.value = res.data
-        console.log('검색 결과: ', dataList.value)
+        // console.log('검색 결과: ', dataList.value)
       } catch (e) {
         console.error('검색 실패:', e)
       }
