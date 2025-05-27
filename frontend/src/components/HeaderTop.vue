@@ -5,12 +5,16 @@ import { computed } from 'vue'
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import {useAuthStore2} from "../stores/auth-with-refresh.js";
+import {useConfirmStore} from "../stores/confirm.js";
 
 const toast = useToast();
 
 const router = useRouter()
 
 // const authStore = useAuthStore()
+
+const confirmStore = useConfirmStore()
+
 const authStore = useAuthStore2()
 const user = computed(() => authStore.user)
 
@@ -47,7 +51,13 @@ const mypage = async () => {
     } catch (error) {
         if (error.response?.status === 401) {
             // console.warn('인증 오류')
-            router.push('/login')
+            // router.push('/login')
+
+            confirmStore.openConfirm({
+              msg: '로그인이 필요한 기능입니다. 로그인하시겠습니까?',
+              onOk: () => router.push('/login')
+            })
+
         } else {
             // console.error('서버오류', error)
             alert('사용자만 접근가능한 메뉴\n사용자임에도 접근불가시 관리자 문의')

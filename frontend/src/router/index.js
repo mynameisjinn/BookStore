@@ -21,6 +21,10 @@ import BookEditView from "../views/admin/BookEditView.vue";
 import SearchView from "../views/pages/SearchView.vue";
 import NovelView_R from "../views/pages/NovelView_R.vue";
 import {useAuthStore2} from "../stores/auth-with-refresh.js";
+import MypageMain from "../components/MypageMain.vue";
+import MypageLike from "../components/MypageLike.vue";
+import MypageLayout from "../layouts/MypageLayout.vue";
+import {useConfirmStore} from "../stores/confirm.js";
 
 const routes = [
     {
@@ -52,8 +56,20 @@ const routes = [
     {
         path: '/mypage',
         name: 'mypage',
-        component: MypageView,
+        component: MypageLayout,
         meta: { requiresAuth: true,  requiresUser: true }, // 인증 필요 플래그
+        children: [
+            {
+                path: '',
+                name: 'mypage-main',
+                component: MypageMain,
+            },
+            {
+                path: 'likes',
+                name: 'mypage-like',
+                component: MypageLike
+            }
+        ]
     },
 
     // 소설
@@ -155,7 +171,7 @@ const router = createRouter({
         }
     }
 
-    // 사용자자 권한 체크 
+    // 사용자 권한 체크
     if (to.meta.requiresUser) {
         if (userRole !== 'ROLE_USER') {
             alert('사용자 전용 페이지')
@@ -172,24 +188,31 @@ router.beforeEach((to, from, next) => {
     const isAuthenticated = !!authStore.user
     const userRole = authStore.role
 
+    const confirmStore = useConfirmStore()
+
     if (to.meta.requiresAuth && !isAuthenticated) {
-        return next({ name: 'login' }) // ✅ return 붙이기
+        // return next({ name: 'login' })
+        confirmStore.openConfirm({
+            msg: '로그인이 필요한 기능입니다. 로그인하시겠습니까?',
+            onOk: () => router.push('/login')
+        })
+        return
     }
 
     if (to.meta.requiresAdmin) {
         if (userRole !== 'ROLE_ADMIN') {
-            return next({ name: 'admin-login' }) // ✅ return
+            return next({ name: 'admin-login' })
         }
     }
 
     if (to.meta.requiresUser) {
         if (userRole !== 'ROLE_USER') {
             alert('사용자 전용 페이지')
-            return next({ name: 'admin-main' }) // ✅ return
+            return next({ name: 'admin-main' })
         }
     }
 
-    return next() // ✅ 모든 조건이 통과했을 때만 호출
+    return next() // 모든 조건이 통과했을 때만 호출
 })
 
 
