@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bookstore.exception.CustomBadRequestException;
 import org.example.bookstore.service.LikeService;
+import org.example.bookstore.vo.BookVO;
 import org.example.bookstore.vo.LikesVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +43,9 @@ public class LikeController {
     }
 
     @GetMapping("/get/like")
-    public ResponseEntity<?> like(@RequestParam("memberId")int memberId) {
+    public ResponseEntity<?> likeBooks(@RequestParam("memberId")int memberId) {
         try {
-            List<LikesVO> userLikeBookList = likeService.selectUserLikeList(memberId);
+            List<BookVO> userLikeBookList = likeService.selectUserLikeList(memberId);
             return ResponseEntity.ok(userLikeBookList);
         } catch (Exception e){
             throw new CustomBadRequestException("좋아요 실패");

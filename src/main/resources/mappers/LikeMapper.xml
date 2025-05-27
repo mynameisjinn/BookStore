@@ -19,9 +19,30 @@
         WHERE MEMBER_ID = #{memberId} AND BOOK_ID = #{bookId}
     </delete>
 
-    <select id="selectUserLikeList" resultType="org.example.bookstore.vo.LikesVO">
-        SELECT BOOK_ID
-        FROM LIKES
+<!--    <select id="selectUserLikeList" resultType="org.example.bookstore.vo.LikesVO">-->
+<!--        SELECT BOOK_ID-->
+<!--        FROM LIKES-->
+<!--        WHERE MEMBER_ID = #{memberId}-->
+<!--    </select>-->
+
+    <select id="selectUserLikeList" resultType="org.example.bookstore.vo.BookVO">
+        SELECT  B.ID,
+            TITLE,
+            A.NAME AS authorName,
+            P.NAME AS publisherName,
+            PUBLISHED_DATE AS publishedDate,
+            B.AUTHOR_ID AS authorId,
+            B.PUBLISHER_ID AS publisherId,
+            B.PRICE,
+            B.CATEGORY_ID AS categoryId,
+            B.IMG_PATH AS imgPath
+        FROM LIKES L
+            JOIN BOOK B
+                ON L.BOOK_ID = B.ID
+            JOIN AUTHOR A
+                ON B.AUTHOR_ID = A.ID
+            JOIN PUBLISHER P
+                ON B.PUBLISHER_ID = P.ID
         WHERE MEMBER_ID = #{memberId}
     </select>
 </mapper>

@@ -15,6 +15,6 @@ public interface LikeRepository {
 
     void deleteUserLike(LikesVO vo);
 
-    List<LikesVO> selectUserLikeList(int memberId);
+    List<BookVO> selectUserLikeList(int memberId);
 
 }

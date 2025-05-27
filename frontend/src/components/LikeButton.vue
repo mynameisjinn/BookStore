@@ -20,16 +20,16 @@ const role = computed(() => authStore.role)
 
 const likeStore = useLikeStore()
 
-// 좋아요 여부는 전역에서 관리
-// const isLiked = computed(() => likeStore.isBookLiked(props.bookId))
-
+// const isLiked = computed(() => {
+//   const liked = likeStore.isBookLiked(props.bookId)
+//   return liked
+// })
 const isLiked = computed(() => {
-  const liked = likeStore.isBookLiked(props.bookId)
-  // console.log(props.bookId, '좋아요 상태:', liked)
-  // console.log('likedBookIds:', likeStore.likedBookIds)
-
-  return liked
+  // 의존성 명시적으로 추적
+  return likeStore.likedBookList.some(item => item.id === Number(props.bookId))
 })
+
+
 
 
 const confirmStore = useConfirmStore()
@@ -66,29 +66,20 @@ const toggleLike = () => {
             bookId: props.bookId,
             memberId: user.value.id
           })
-          likeStore.addLike(props.bookId)
+          /**
+           * addLike()는 { id: number } 객체를 기대
+           * likeStore.addLike(props.bookId)는 Number만 넘기므로 book.bookId에서 undefined 발생
+           * 조건문 내부가 잘못 동작하고, Vue의 반응성도 적용되지 않을 수 있음
+           */
+          // likeStore.addLike(props.bookId)
+          likeStore.addLike({ id: Number(props.bookId) })
         }
-
-        emit('liked', { bookId: props.bookId, liked: !isLiked.value })
-
       } catch (error) {
         console.error('좋아요 실패:', error)
       }
     }
   })
 }
-
-/*onMounted(() => {
-  if (user.value?.id) {
-    likeStore.fetchLikedBooks(user.value.id)
-  }
-})*/
-
-/*watch(user, (newUser) => {
-  if (newUser?.id) {
-    likeStore.fetchLikedBooks(newUser.id)
-  }
-}, { immediate: true })  // 바로 실행되도록 옵션 추가*/
 </script>
 
 <template>

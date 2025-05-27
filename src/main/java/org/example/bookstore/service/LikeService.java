@@ -24,7 +24,7 @@ public class LikeService {
         likeRepository.deleteUserLike(vo);
     }
 
-    public List<LikesVO> selectUserLikeList(int memberId) {
+    public List<BookVO> selectUserLikeList(int memberId) {
         return likeRepository.selectUserLikeList(memberId);
     }
 
