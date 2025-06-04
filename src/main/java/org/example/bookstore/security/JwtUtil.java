@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,11 @@ public class JwtUtil {
 
     // 테스트
     @Setter
+    @Getter
     private long accessTokenExpirationMs = 1000 * 60 * 30; // 30분
 
     @Setter
+    @Getter
     private long refreshTokenExpirationMs = 1000L * 60 * 60 * 24 * 7; // 7일
 
 

@@ -95,25 +95,31 @@ public class AccountController {
     @Operation(summary="로그인", description="jwt 를 이용한 로그인")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletResponse response) {
-        String email = body.get("email");
-        String password = body.get("password");
-
-        UsernamePasswordAuthenticationToken authInputToken =
-                new UsernamePasswordAuthenticationToken(email, password);
+//        String email = body.get("email");
+//        String password = body.get("password");
+//
+//        UsernamePasswordAuthenticationToken authInputToken =
+//                new UsernamePasswordAuthenticationToken(email, password);
 
         try {
-            Authentication auth = authenticationManager.authenticate(authInputToken);
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-            String accessToken = jwtUtil.generateAccessToken(userDetails);
-            String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+            Map<String, Object> loginResult = accountService.login(body.get("email"), body.get("password"));
+
+            long accessTokenAge = jwtUtil.getAccessTokenExpirationMs() / 1000;
+            long refreshTokenAge = jwtUtil.getRefreshTokenExpirationMs() / 1000;
+
+//            Authentication auth = authenticationManager.authenticate(authInputToken);
+//            UserDetails userDetails = (UserDetails) auth.getPrincipal();
+//
+//            String accessToken = jwtUtil.generateAccessToken(userDetails);
+//            String refreshToken = jwtUtil.generateRefreshToken(userDetails);
 
             // 쿠키에 저장
-            ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessToken)
+            ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken",  (String) loginResult.get("accessToken"))
                     .httpOnly(true) //javaScript에서 접근 불가하게 설정.→ XSS 공격 방지 목적 (보안성 ↑)
                     .secure(false) // HTTPS에서만 사용하려면 true
                     .path("/") //이 쿠키를 보낼 요청 경로 범위 지정.'/'이므로 모든 경로에 대해 쿠키가 전송됨
-                    .maxAge(60 * 30) // 30분
+                    .maxAge(accessTokenAge)
                     /*
                         CSRF 방지 관련 설정
                         Lax는 일반적인 상황(링크 클릭 등)에서는 쿠키를 전송하지만, 크로스 사이트 폼 전송 같은 일부 상황에서는 막음
@@ -122,11 +128,11 @@ public class AccountController {
                     .sameSite("Lax") // 또는 "Strict" / "None"
                     .build();
 
-            ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
+            ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", (String) loginResult.get("refreshToken"))
                     .httpOnly(true)
                     .secure(false)
                     .path("/")
-                    .maxAge(60 * 60 * 24 * 7) // 7일
+                    .maxAge(refreshTokenAge)
                     .sameSite("Lax")
                     .build();
 
@@ -134,6 +140,7 @@ public class AccountController {
             response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
 
             // 유저 정보
+/*
             PrincipalUserDetails principal = (PrincipalUserDetails) userDetails;
             MemberVO member = principal.getMember();
 
@@ -141,10 +148,11 @@ public class AccountController {
             loginUser.setEmail(member.getEmail());
             loginUser.setAddress(member.getAddress());
             loginUser.setId(member.getId());
+*/
 
             Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("user", loginUser);
-            responseBody.put("role", principal.getRole().getRole());
+            responseBody.put("user",  loginResult.get("user"));
+            responseBody.put("role", loginResult.get("role"));
 
             return ResponseEntity.ok(responseBody);
 
