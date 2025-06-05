@@ -30,10 +30,7 @@ import java.util.UUID;
 @RestController
 public class BookController {
 
-    @Autowired
-    private BookService bookService;
-
-
+    private final BookService bookService;
 
     @Operation(summary="책 카테고리조회", description="관리자페이지 책 카테고리조회")
     @GetMapping("/category")

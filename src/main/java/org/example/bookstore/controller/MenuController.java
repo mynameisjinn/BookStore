@@ -23,8 +23,7 @@ import java.util.List;
 @RestController
 public class MenuController {
 
-    @Autowired
-    private MenuService menuService;
+    private final MenuService menuService;
 
     @Value("${role.admin}")
     private String admin;

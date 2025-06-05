@@ -1,5 +1,6 @@
 package org.example.bookstore.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.bookstore.repository.AccountRepository;
 import org.example.bookstore.security.JwtUtil;
 import org.example.bookstore.security.PrincipalUserDetails;
@@ -15,17 +16,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @Service
 public class AccountService {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     public List<MemberVO> selectMemberInfo(){
 

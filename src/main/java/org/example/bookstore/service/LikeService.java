@@ -1,5 +1,6 @@
 package org.example.bookstore.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.bookstore.repository.LikeRepository;
 import org.example.bookstore.vo.BookVO;
 import org.example.bookstore.vo.LikesVO;
@@ -9,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 //@Transactional
+
+@RequiredArgsConstructor
 @Service
 public class LikeService {
 
-    @Autowired
-    private LikeRepository likeRepository;
+    private final LikeRepository likeRepository;
 
     public void insertUserLike(LikesVO vo) {
         // 중복 검사 후 insert 하기 !

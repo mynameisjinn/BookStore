@@ -17,8 +17,8 @@ import java.util.List;
 @RestController
 public class TestController {
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
+
     @Operation(summary="테스트", description="테스트 중입니다.")
     @GetMapping("test")
     public void getTest(){

@@ -19,8 +19,7 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
-    private BookService bookService;
+    private final BookService bookService;
 
     @Operation(summary="도서 검색", description="사용자 페이지 도서 조회 검색기준 - 도서명,출판사,작가명")
     @GetMapping("/search/{keyword}")

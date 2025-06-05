@@ -19,8 +19,7 @@ import java.util.List;
 @RestController
 public class LikeController {
 
-    @Autowired
-    private LikeService likeService;
+    private final LikeService likeService;
 
     @PostMapping("/like")
     public ResponseEntity<?> like(@RequestBody LikesVO vo) {

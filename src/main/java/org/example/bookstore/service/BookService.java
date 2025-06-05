@@ -1,5 +1,6 @@
 package org.example.bookstore.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.bookstore.repository.BookRepository;
 import org.example.bookstore.vo.AuthorVO;
 import org.example.bookstore.vo.BookVO;
@@ -21,11 +22,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class BookService {
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Value("${file.book.cover.upload.dir}")
     private String uploadBookDir;

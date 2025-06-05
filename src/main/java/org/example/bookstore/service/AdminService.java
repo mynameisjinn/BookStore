@@ -1,5 +1,6 @@
 package org.example.bookstore.service;
 
+import lombok.RequiredArgsConstructor;
 import org.example.bookstore.repository.AdminRepository;
 import org.example.bookstore.repository.MenuRepository;
 import org.example.bookstore.vo.CategoryVO;
@@ -9,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class AdminService {
 
-    @Autowired
-    private AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
 
     public List<CategoryVO> selectCategory(){
         return adminRepository.selectCategory();
