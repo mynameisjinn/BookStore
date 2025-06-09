@@ -53,6 +53,7 @@ const toggleFavorite = async () => {
         memberId: user.value.id
       })
       likeStore.addMenu({id: Number(props.menuId)})
+      likeStore.fetchFavoriteMenus(user.value.id, true); // 강제 새로고침
     }
   } catch (error) {
     console.error('즐겨찾기 실패:', error)

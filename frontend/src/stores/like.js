@@ -62,10 +62,10 @@ export const useLikeStore = defineStore('like', () => {
 
     const favoriteMenuList = ref([])
 
-    const fetchFavoriteMenus = async (memberId) => {
+    const fetchFavoriteMenus = async (memberId, forceReload = false) => {
         try {
 
-            if (favoriteMenuList.value.length > 0) return
+            if (!forceReload && favoriteMenuList.value.length > 0) return
 
             const res = await axios.get('/api/like/menus', {
                 params: { memberId },
@@ -76,7 +76,7 @@ export const useLikeStore = defineStore('like', () => {
             const data = Array.isArray(res.data) ? res.data : Object.values(res.data)
             favoriteMenuList.value = res.data
 
-            console.log(favoriteMenuList.value)
+            // console.log(favoriteMenuList.value)
         } catch (error) {
             console.error('즐겨찾기 목록 조회 실패:', error)
         }
