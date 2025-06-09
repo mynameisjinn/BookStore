@@ -35,7 +35,7 @@ const novelAllSubMenus = computed(() => {
 
 <template>
     <div class="p-4">
-        <h2 class="text-lg font-bold mb-3">📚 소설 카테고리 하위 메뉴</h2>
+        <h2 class="text-lg font-bold mb-3">소설 카테고리 하위 메뉴</h2>
         <ul class="space-y-1 text-gray-700">
             <li v-for="menu in novelAllSubMenus" :key="menu.id">
                 <router-link :to="menu.path" class="hover:underline">{{ menu.name }}</router-link>

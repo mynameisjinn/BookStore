@@ -7,6 +7,7 @@ import org.example.bookstore.exception.CustomBadRequestException;
 import org.example.bookstore.service.LikeService;
 import org.example.bookstore.vo.BookVO;
 import org.example.bookstore.vo.LikesVO;
+import org.example.bookstore.vo.MenuVO;
 import org.example.bookstore.vo.UserMenuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -77,10 +78,10 @@ public class LikeController {
     @GetMapping("/menus")
     public ResponseEntity<?> favoriteMenus(@RequestParam("memberId")int memberId) {
         try {
-            List<UserMenuVO> list = likeService.selectUserFavoriteMenuList(memberId);
+            List<MenuVO> list = likeService.selectUserFavoriteMenuList(memberId);
             return ResponseEntity.ok(list);
         } catch (Exception e){
-            throw new CustomBadRequestException("좋아요 실패");
+            throw new CustomBadRequestException("즐겨찾기 목록 조회 실패");
         }
     }
 

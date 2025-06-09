@@ -26,6 +26,7 @@ import MypageLike from "../components/MypageLike.vue";
 import MypageLayout from "../layouts/MypageLayout.vue";
 import {useConfirmStore} from "../stores/confirm.js";
 import CategoryView from "../views/pages/CategoryView.vue";
+import MyMenuSlider from "../components/MyMenuSlider.vue";
 
 const routes = [
     {
@@ -49,6 +50,11 @@ const routes = [
         path: '/search',
         name: 'search',
         component: SearchView,
+    },
+    {
+        path: '/mymenus',
+        name: 'my-menus',
+        component: MyMenuSlider,
     },
 
 

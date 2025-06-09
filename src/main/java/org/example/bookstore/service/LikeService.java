@@ -44,7 +44,7 @@ public class LikeService {
         likeRepository.deleteUserFavoriteMenu(vo);
     }
 
-    public List<UserMenuVO> selectUserFavoriteMenuList(int memberId) {
+    public List<MenuVO> selectUserFavoriteMenuList(int memberId) {
         return likeRepository.selectUserFavoriteMenuList(memberId);
     }
 

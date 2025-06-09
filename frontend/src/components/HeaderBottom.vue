@@ -61,8 +61,21 @@ watch(user, (newUser) => {
                 ]">
                 {{ tab.name }}
             </div>
-            <div class="cursor-pointer transition-colors duration-200 text-gray-500 hover:text-red-400">
-              My Menu
+            <div
+                v-if="user"
+                class="cursor-pointer transition-colors duration-200"
+            >
+              <router-link
+                  to="/mymenus"
+                  class="transition-colors duration-200"
+                  :class="[
+                  route.path === '/mymenus'
+                    ? 'text-red-600 border-b-2 border-red-500 pb-2 font-semibold'
+                    : 'text-gray-500 hover:text-red-400'
+                ]"
+              >
+                My Menus
+              </router-link>
             </div>
         </div>
 

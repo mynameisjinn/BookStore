@@ -16,5 +16,5 @@ public interface LikeRepository {
 
     void insertUserFavoriteMenu(UserMenuVO vo);
     void deleteUserFavoriteMenu(UserMenuVO vo);
-    List<UserMenuVO> selectUserFavoriteMenuList(int memberId);
+    List<MenuVO> selectUserFavoriteMenuList(int memberId);
 }

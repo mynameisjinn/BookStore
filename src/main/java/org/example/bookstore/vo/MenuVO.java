@@ -12,4 +12,5 @@ public class MenuVO {
   private int depth;
   private int categoryId;
 
+  private String mainMenu;
 }

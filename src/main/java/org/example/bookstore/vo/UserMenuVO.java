@@ -8,5 +8,5 @@ public class UserMenuVO {
   private long id;
   private long memberId;
   private long menuId;
-  private String path;
+//  private String path;
 }

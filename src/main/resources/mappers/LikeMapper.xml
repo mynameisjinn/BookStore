@@ -62,12 +62,36 @@
         WHERE MEMBER_ID = #{memberId} AND MENU_ID = #{menuId}
     </delete>
 
-    <select id="selectUserFavoriteMenuList" resultType="org.example.bookstore.vo.UserMenuVO">
+    <select id="selectUserFavoriteMenuList" resultType="org.example.bookstore.vo.MenuVO">
+        WITH RECURSIVE MENU_TREE AS (
+            SELECT
+                ID,
+                NAME,
+                PARENT_ID,
+                ID AS ROOT_ID,
+                NAME AS ROOT_NAME
+            FROM MENU
+            WHERE PARENT_ID IS NULL
+            UNION ALL
+            SELECT
+                M.ID,
+                M.NAME,
+                M.PARENT_ID,
+                MT.ROOT_ID,
+                MT.ROOT_NAME
+            FROM MENU M
+            JOIN MENU_TREE MT
+                ON M.PARENT_ID = MT.ID
+        )
         SELECT  M.ID,
-                M.PATH
+                M.PATH,
+                M.NAME,
+                MT.ROOT_NAME AS mainMenu
         FROM USER_MENU UM
         JOIN MENU M
-        ON UM.MENU_ID = M.ID
+            ON UM.MENU_ID = M.ID
+        JOIN MENU_TREE MT
+            ON M.ID = MT.ID
         WHERE UM.MEMBER_ID = #{memberId}
     </select>
 </mapper>
