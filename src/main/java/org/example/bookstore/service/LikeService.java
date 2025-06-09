@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.bookstore.repository.LikeRepository;
 import org.example.bookstore.vo.BookVO;
 import org.example.bookstore.vo.LikesVO;
+import org.example.bookstore.vo.MenuVO;
+import org.example.bookstore.vo.UserMenuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,20 @@ public class LikeService {
         return likeRepository.selectUserLikeList(memberId);
     }
 
+
+
+    public void insertUserFavoriteMenu(UserMenuVO vo) {
+        likeRepository.insertUserFavoriteMenu(vo);
+    }
+
+
+    public void deleteUserFavoriteMenu(UserMenuVO vo) {
+        likeRepository.deleteUserFavoriteMenu(vo);
+    }
+
+    public List<UserMenuVO> selectUserFavoriteMenuList(int memberId) {
+        return likeRepository.selectUserFavoriteMenuList(memberId);
+    }
 
 
 }

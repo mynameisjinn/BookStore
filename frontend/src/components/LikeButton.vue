@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, watch} from 'vue'
+import {computed} from 'vue'
 import { useConfirmStore } from '../stores/confirm.js'
 import { useAuthStore2 } from '../stores/auth-with-refresh.js'
 import router from '../router'
@@ -12,7 +12,6 @@ const props = defineProps({
     required: true
   }
 })
-const emit = defineEmits(['liked'])
 
 const authStore = useAuthStore2()
 const user = computed(() => authStore.user)
@@ -53,7 +52,7 @@ const toggleLike = () => {
 
         if (isLiked.value) {
           // 좋아요 취소
-          await axios.delete('/api/like', {
+          await axios.delete('/api/like/book', {
             data: {
               bookId: props.bookId,
               memberId: user.value.id
@@ -62,7 +61,7 @@ const toggleLike = () => {
           likeStore.removeLike(props.bookId)
         } else {
           // 좋아요 등록
-          await axios.post('/api/like', {
+          await axios.post('/api/like/book', {
             bookId: props.bookId,
             memberId: user.value.id
           })

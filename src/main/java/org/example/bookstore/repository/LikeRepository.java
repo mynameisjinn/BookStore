@@ -1,9 +1,7 @@
 package org.example.bookstore.repository;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.example.bookstore.vo.BookVO;
-import org.example.bookstore.vo.CategoryVO;
-import org.example.bookstore.vo.LikesVO;
+import org.example.bookstore.vo.*;
 
 import java.util.List;
 
@@ -12,9 +10,11 @@ public interface LikeRepository {
 
 //    List<B>
     void insertUserLike(LikesVO vo);
-
     void deleteUserLike(LikesVO vo);
-
     List<BookVO> selectUserLikeList(int memberId);
 
+
+    void insertUserFavoriteMenu(UserMenuVO vo);
+    void deleteUserFavoriteMenu(UserMenuVO vo);
+    List<UserMenuVO> selectUserFavoriteMenuList(int memberId);
 }

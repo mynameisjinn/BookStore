@@ -19,12 +19,13 @@ import AdminPageLayout from "../layouts/AdminPageLayout.vue";
 import BookListView from "../views/admin/BookListView.vue";
 import BookEditView from "../views/admin/BookEditView.vue";
 import SearchView from "../views/pages/SearchView.vue";
-import NovelView_R from "../views/pages/NovelView_R.vue";
+import NovelView_R from "../views/pages/CategoryView.vue";
 import {useAuthStore2} from "../stores/auth-with-refresh.js";
 import MypageMain from "../components/MypageMain.vue";
 import MypageLike from "../components/MypageLike.vue";
 import MypageLayout from "../layouts/MypageLayout.vue";
 import {useConfirmStore} from "../stores/confirm.js";
+import CategoryView from "../views/pages/CategoryView.vue";
 
 const routes = [
     {
@@ -72,12 +73,18 @@ const routes = [
         ]
     },
 
-    // 소설
+    // "소설"
     {
         path: '/category/novel/:catchAll(.*)*',
         name: 'novel',
-        component: NovelView_R
-        ,
+        component: CategoryView,
+    },
+
+    // "컴퓨터/IT"
+    {
+        path: '/category/it/:catchAll(.*)*',
+        name: 'it',
+        component: CategoryView,
     },
 
 

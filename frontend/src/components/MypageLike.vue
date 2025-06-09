@@ -17,10 +17,10 @@ watch(user, (newUser) => {
 
 <template>
   <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-    <BookCard :books="likeStore.likedBookList" />
+<!--    <BookCard :books="likeStore.likedBookList" />-->
+    <BookCard
+        v-if="likeStore.likedBookList.length > 0"
+        :books="likeStore.likedBookList"
+    />
   </div>
 </template>
-
-<style scoped>
-
-</style>

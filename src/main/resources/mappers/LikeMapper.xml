@@ -5,7 +5,7 @@
 
 <mapper namespace="org.example.bookstore.repository.LikeRepository">
 
-
+    <!--  도서 좋아요 -->
     <insert id="insertUserLike" parameterType="org.example.bookstore.vo.LikesVO">
         INSERT INTO LIKES (
             BOOK_ID,
@@ -44,5 +44,30 @@
             JOIN PUBLISHER P
                 ON B.PUBLISHER_ID = P.ID
         WHERE MEMBER_ID = #{memberId}
+    </select>
+
+
+
+    <!--  메뉴 즐겨찾기    -->
+    <insert id="insertUserFavoriteMenu">
+        INSERT INTO USER_MENU (
+            MENU_ID,
+            MEMBER_ID
+        )
+        VALUES  (#{menuId}, #{memberId})
+    </insert>
+
+    <delete id="deleteUserFavoriteMenu">
+        DELETE FROM USER_MENU
+        WHERE MEMBER_ID = #{memberId} AND MENU_ID = #{menuId}
+    </delete>
+
+    <select id="selectUserFavoriteMenuList" resultType="org.example.bookstore.vo.UserMenuVO">
+        SELECT  M.ID,
+                M.PATH
+        FROM USER_MENU UM
+        JOIN MENU M
+        ON UM.MENU_ID = M.ID
+        WHERE UM.MEMBER_ID = #{memberId}
     </select>
 </mapper>

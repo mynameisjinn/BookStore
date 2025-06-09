@@ -27,10 +27,6 @@ defineProps({
   })
 }*/
 
-const handleLike = ({ bookId, liked }) => {
-  console.log(`📘 Book ID: ${bookId}, 좋아요 상태: ${liked}`)
-}
-
 </script>
 
 <template>
@@ -74,7 +70,7 @@ const handleLike = ({ bookId, liked }) => {
 <!--          </svg>-->
 <!--        </button>-->
 
-        <LikeButton :bookId="book.id" @liked="handleLike" />
+        <LikeButton :bookId="book.id" />
 
 
         <!-- 장바구니 버튼 -->
