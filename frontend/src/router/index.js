@@ -55,6 +55,7 @@ const routes = [
         path: '/mymenus',
         name: 'my-menus',
         component: MyMenuSlider,
+        meta: { requiresAuth: true,  requiresUser: true },
     },
 
 

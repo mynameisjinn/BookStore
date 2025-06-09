@@ -33,7 +33,7 @@ const groupedMenus = computed(() => {
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="w-full max-w-screen-lg mx-auto px-4 mt-3 mb-4">
     <h2 class="text-2xl font-bold mb-6">좋아요 한 메뉴 List</h2>
 
     <div
