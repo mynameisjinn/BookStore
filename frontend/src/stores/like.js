@@ -94,6 +94,10 @@ export const useLikeStore = defineStore('like', () => {
         favoriteMenuList.value = favoriteMenuList.value.filter(item => item.id !== menuId)
     }
 
+    const resetFavorite = () => {
+        favoriteMenuList.value = []
+    }
+
     return {
         likedBookList,
         fetchLikedBooks,
@@ -104,6 +108,7 @@ export const useLikeStore = defineStore('like', () => {
         fetchFavoriteMenus,
         isMenuLiked,
         addMenu,
-        removeMenu
+        removeMenu,
+        resetFavorite
     }
 })

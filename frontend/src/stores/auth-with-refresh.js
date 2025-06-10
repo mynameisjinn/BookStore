@@ -2,6 +2,7 @@ import axios from "axios";
 import {useMenuStore} from "./menu.js";
 import {defineStore} from "pinia";
 import {ref, computed} from "vue";
+import {useLikeStore} from "./like.js";
 
 export const useAuthStore2 = defineStore('auth', () => {
     const user = ref(null)
@@ -51,6 +52,9 @@ export const useAuthStore2 = defineStore('auth', () => {
         const menuStore = useMenuStore()
         menuStore.resetMenu()
         menuStore.fetchMenu()
+
+        const likeStore = useLikeStore()
+        likeStore.resetFavorite()
 
         // 서버에도 로그아웃 요청(Optional)
         try {
