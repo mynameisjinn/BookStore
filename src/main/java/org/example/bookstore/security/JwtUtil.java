@@ -18,8 +18,11 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    @Value("${jwt.secret.access}")
+    private String accessSecret;
+
+    @Value("${jwt.secret.refresh}")
+    private String refreshSecret;
 
     // 테스트
     @Setter
@@ -32,50 +35,67 @@ public class JwtUtil {
 
 
     // Key 객체 생성
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+    private Key getAccessSigningKey() {
+        return Keys.hmacShaKeyFor(accessSecret.getBytes());
+    }
+    private Key getRefreshSigningKey() {
+        return Keys.hmacShaKeyFor(refreshSecret.getBytes());
     }
 
     // JWT 생성
     public String generateAccessToken(UserDetails user) {
         return Jwts.builder()
                 .subject(user.getUsername()) // 이메일
+                .claim("type", "access") // 구분자 추가
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + accessTokenExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(getAccessSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public String generateRefreshToken(UserDetails user) {
         return Jwts.builder()
                 .subject(user.getUsername())
+                .claim("type", "refresh") // 구분자 추가
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + refreshTokenExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .signWith(getRefreshSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     // username(email) 추출
-    public String extractUsername(String token) {
-        return getClaims(token).getBody().getSubject();
+    public String extractUsername(String token, String type) {
+
+        return getClaims(token,type).getBody().getSubject();
     }
 
     // 토큰 유효성 검사
-    public boolean validateToken(String token, UserDetails user) {
-        String username = extractUsername(token);
-        return username.equals(user.getUsername()) && !isTokenExpired(token);
+    public boolean validateToken(String token, UserDetails user, String type) {
+        String username = extractUsername(token, type);
+        return username.equals(user.getUsername()) && !isTokenExpired(token, type);
     }
 
     // 토큰 만료 여부
-    public boolean isTokenExpired(String token) {
-        return getClaims(token).getBody().getExpiration().before(new Date());
+    public boolean isTokenExpired(String token, String type) {
+        return getClaims(token,type).getBody().getExpiration().before(new Date());
     }
 
     // 토큰에서 Claims 추출
-    private Jws<Claims> getClaims(String token) {
-        JwtParser parser = Jwts.parser()
-                .setSigningKey(getSigningKey())
-                .build();
+    private Jws<Claims> getClaims(String token, String type) {
+        JwtParser parser;
+
+        if("access".equals(type)) {
+            parser = Jwts.parser()
+                    .setSigningKey(getAccessSigningKey())
+                    .build();
+        } else if ("refresh".equals(type)) {
+            parser = Jwts.parser()
+                    .setSigningKey(getRefreshSigningKey())
+                    .build();
+        } else {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다");
+        }
+
         return parser.parseClaimsJws(token);
     }
 
